@@ -1,0 +1,577 @@
+.pageContainer {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: #000000;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.uConstruction {
+    background-color: #883c18;
+    color: #ffffff;
+    padding-bottom: 0px;
+    font-size: 15px;
+    z-index: 100;
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 20px;
+    overflow: hidden;
+}
+.descImg
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    margin-top: 50px;
+}
+
+.uConstruction p {
+    position: relative;
+    /*How fast the animation is, defined by seconds below*/
+    animation: slideIn 5s linear infinite;
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateY(-100%);
+        /* Starting position here*/
+    }
+
+    10% {
+        transform: translateY(0);
+        /* Middle position, when the text will pause */
+    }
+
+    85% {
+        transform: translateY(0);
+        /* when the text will move again */
+    }
+    100% {
+        transform: translateY(100%);
+        /*End position*/
+    }
+}
+
+
+
+.container {
+    padding: 0;
+    margin: 0;
+    font-family: 'Merriweather', serif;
+    background-color: #000;
+}
+
+.header {
+    color: #ffffff;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+    transition: background-color 1.5s;
+    height: 130px;
+    background: rgba(0, 0, 0, 1);
+}
+
+.logoTitleNav {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 100px;
+    margin-right: 1rem;
+}
+
+.titleNav {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 2rem;
+    border-left: 1px solid #ffffff;
+}
+
+.title {
+    margin: 0;
+    color: #ceb780;
+    font-size: 2rem;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 200;
+    letter-spacing: 0.20em;
+}
+
+.bookingTitle {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: medium;
+}
+
+.nav {
+    display: flex;
+    margin-top: 0.5rem;
+}
+
+.nav a {
+    color: #ceb780;
+    margin-left: 2rem;
+    text-decoration: none;
+    position: relative;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 0.30em;
+}
+
+.nav a::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    background-color: #ceb780;
+    bottom: -2px;
+    left: 0;
+    transition: width 0.3s ease;
+}
+
+.nav a:hover::after {
+    width: 100%;
+}
+
+.nav a:first-child {
+    margin-left: 0rem;
+}
+
+.main {
+    padding: 0;
+    background: #000000;
+    color: #ffffff;
+    flex: 1;
+}
+
+body.scrolled .header {
+    background: #000000;
+}
+
+.hero {
+    background: url('/hero.png') no-repeat center bottom;
+    /* Align the background image to the bottom */
+    background-size: 100% auto;
+    /* Ensure the image width extends to the screen width */
+    height: 100vh;
+    /* Keep the height of the hero section to the full viewport height */
+    color: #fffffd;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 2rem 7rem 7rem;
+    animation: slideAnimation 50s infinite linear;
+    /* Apply the slide animation */
+}
+
+@keyframes slideAnimation {
+    0% {
+        background-position-y: 60%;
+        /* Start the animation with the image fully visible at the bottom */
+    }
+
+    100% {
+        background-position-y: 0;
+        /* End the animation with the image fully visible at the top */
+    }
+}
+
+.heroText {
+    text-align: left;
+    z-index: 3;
+    font-weight: 200;
+    letter-spacing: 0.40em;
+}
+
+.heroSmall {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.heroLarge {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 3rem;
+    margin: 0.5rem 0;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.85));
+    z-index: 2;
+}
+
+.contactInfoHeader
+{
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    font-size: 14px;
+    text-decoration: underline;
+    letter-spacing: 0.15rem;
+    margin-top: 10px;
+}
+.contactInfoHeader p:first-child {
+    margin-right: 10px;
+}
+
+.section {
+    margin: 10rem 0;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 300;
+    display: flex;
+    justify-content: space-evenly;
+    // background-color: #2d0000;
+}
+
+.descSection {
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 300;
+    // background-color: #1b1b1b;
+    width: 60%;
+    /* Adjusted width for better alignment */
+    margin: 0 auto;
+    /* Centers the section horizontally */
+    padding: 20px;
+    /* Optional: Adds rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Optional: Adds subtle shadow for depth */
+    margin-top: 80px;
+}
+
+.descTitle {
+    text-align: center;
+    font-size: 1.8em;
+    /* Adjust font size for title */
+    margin-bottom: 10px;
+}
+
+
+.description {
+    text-align: center;
+    font-size: 1.2em;
+    /* Adjust font size for description */
+    line-height: 1.6;
+    /* Adjust line height for better readability */
+}
+
+.rooms,
+.amenities {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.dining {
+
+    display: flex;
+    justify-content: center;
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 200px;
+    // background-color: #883c18;
+}
+
+.restaurant {
+    width: 100%;
+    /* Set width to occupy almost half of the container */
+    display: flex;
+    flex-direction: column;
+    // align-items: center;
+    text-align: left;
+    margin-top: 20px;
+    /* Adjust margin as needed */
+}
+
+.restaurant img {
+    width: 100%;
+    height: 550px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.diningDesc1
+{
+    width: 400px;
+    text-align: left;
+}
+
+.diningDesc2 {
+    width: 600px;
+    text-align: left;
+}
+
+.room,
+.amenity {
+    margin: 1rem;
+    text-align: left;
+}
+
+.room img,
+.amenity img {
+    width: 100%;
+    height: auto;
+}
+
+
+
+.roomContainer {
+    display: flex;
+    align-items: center;
+    margin: 2rem 0;
+    /* Adjust margin to create space between each roomContainer */
+}
+
+
+
+.roomImageContainer {
+    flex: 1;
+    max-width: 50%;
+}
+
+.roomImage {
+    width: 100%;
+    /* Ensure the image fits its container */
+    height: auto;
+    border-radius: 5px;
+}
+
+.roomTextContainer {
+    font-style: italic;
+    flex: 1;
+    margin-left: 2rem;
+    /* Adjust the margin to create space between image and text */
+    font-family: 'Segoe UI', sans-serif;
+    font-size: large;
+    font-weight: 300;
+    width: 50px;
+    text-align: left;
+    margin-right: 50px;
+}
+
+.descTitle2 {
+    text-align: left;
+    font-size: 1.8em;
+    /* Adjust font size for title */
+    margin-bottom: 10px;
+}
+
+.booking {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+@keyframes slideDown {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+}
+
+.bookingBar {
+    position: fixed;
+    width: 100%;
+    top: 130px;
+    background-color: rgba(252, 251, 251, 0.5);
+    padding: 1.0rem;
+    box-sizing: border-box;
+    z-index: 2;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility 0s, transform 0.3s ease, opacity 0.3s ease;
+}
+
+.bookingBar.visible {
+    visibility: visible;
+    transform: translateY(0);
+    opacity: 1;
+    animation: slideDown 0.3s forwards;
+}
+
+.bookingBar.hidden {
+    animation: slideUp 0.3s forwards;
+    transition: visibility 0s 0.3s, transform 0.3s ease, opacity 0.3s ease;
+}
+
+.bookingSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    // margin-left: 100px;
+    color: #000000;
+}
+
+.datePickerContainer,
+.roomTypeContainer {
+    margin-bottom: 1rem;
+}
+
+.customSelect {
+    position: relative;
+}
+
+.customSelect select {
+    width: 100%;
+    padding: 8px 16px;
+    border: 1px solid #a0522d;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    cursor: pointer;
+    font-size: 16px;
+    color: #000;
+    outline: none;
+}
+
+.customSelect::after {
+    content: '\25BC';
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.customSelect select::-ms-expand {
+    display: none;
+}
+
+.bookingInput {
+    margin: 0.5rem;
+}
+
+.bookingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.searchButton {
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 400;
+    padding: 4px 20px;
+    border: 1px solid #4e2816;
+    background-color: #000000;
+    color: #ceb780;
+    height: 34px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.searchButton:hover {
+    background-color: #ceb780;
+    color: #1a1a1a;
+}
+
+.searchButton:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #ceb780;
+}
+
+
+.footer {
+    background: #141414;
+    color: #ffffff;
+    text-align: center;
+    padding: 1rem;
+    gap: 0.5rem;
+}
+
+.footerNav {
+    display: flex;
+    justify-content: space-between;
+    /* Distributes space between columns */
+    align-items: flex-start;
+}
+
+.footerNavCol {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 10%;
+    gap: 0.5rem;
+}
+
+
+.footerNavCol:nth-child(3) {
+    margin-left: auto;
+    flex-direction: row;
+    margin-right: 30%;
+    margin-top: 2%;
+
+    /* Pushes the social icons to the right */
+}
+
+.footerNav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+}
+
+.footerNav a:hover::after {
+    width: 0;
+    text-decoration: underline;
+}
+
+.footerNavCol a img.socialIcon {
+    width: 24px;
+    /* Adjust the size as needed */
+    height: 24px;
+    margin-right: 0.5rem;
+}
+
+.footer p {
+    margin-top: 5rem;
+    text-align: center;
+    color: #ceb780;
+}

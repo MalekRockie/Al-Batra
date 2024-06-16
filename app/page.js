@@ -1,113 +1,227 @@
-import Image from "next/image";
+"use client";
+
+import Head from 'next/head';
+import { useState, useEffect } from 'react';
+import { Box } from '@mui/material';
+import RoomTypeSelection from './RoomTypeSelection';
+import CustomDateRangePicker from './CustomDateRangePicker';
+import styles from '../styles/Home.module.scss';
+// import LanguageSwitch from '../components/LanguageSwitch';
+// import { useTranslation } from 'react-i18next';
 
 export default function Home() {
+  // const {t} = useTranslation("common")
+  const [roomType, setRoomType] = useState('');
+  const [selectedDates, setSelectedDates] = useState([null, null]);
+  const [isBookingVisible, setIsBookingVisible] = useState(false);
+  const [isScrolledToMax, setIsScrolledToMax] = useState(false);
+  const [isMouseOver, setIsMouseOver] = useState(false);
+
+  const handleDateRangeChange = (dates) => {
+    setSelectedDates(dates);
+  };
+
+  const toggleBookingSection = () => {
+    setIsBookingVisible(!isBookingVisible);
+  };
+
+   useEffect(() => {
+        function handleScroll() {
+            const scrollPosition = window.scrollY;
+            console.log('Scroll Position:', scrollPosition);
+            setIsScrolledToMax(scrollPosition === 0);
+        }
+
+        function handleMouseOver() {
+            console.log('Mouse Over Header');
+            setIsMouseOver(true);
+        }
+
+        function handleMouseOut() {
+            console.log('Mouse Out of Header');
+            setIsMouseOver(false);
+        }
+
+        window.addEventListener('scroll', handleScroll);
+        const header = document.querySelector(`.${styles.header}`);
+        header.addEventListener('mouseover', handleMouseOver);
+        header.addEventListener('mouseout', handleMouseOut);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            header.removeEventListener('mouseover', handleMouseOver);
+            header.removeEventListener('mouseout', handleMouseOut);
+        };
+    }, []);
+
+    useEffect(() => {
+        console.log('isScrolledToMax:', isScrolledToMax);
+        console.log('isMouseOver:', isMouseOver);
+    }, [isScrolledToMax, isMouseOver]);
+
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.js</code>
+    <div className={styles.pageContainer}>
+      <div className={styles.uConstruction}>
+        <p>
+          Website still Under construction!
         </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+      </div>
+      <div className={styles.container}>
+        <Head>
+          <title>Al-Batra Hotel</title>
+          <link rel="icon" href="/favicon.ico" />
+          <meta name="description" content="Experience the finest luxury at our hotel" />
+          <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
+        </Head>
+
+            <header className={`${styles.header} ${isScrolledToMax && !isMouseOver ? styles.gradient : styles.solid}`}>
+            <div className={styles.logoTitleNav}>
+            <img src="/logo.png" alt="Al-Batra Hotel Logo" className={styles.logo} />
+            <div className={styles.titleNav}>
+              <h1 className={styles.title}>AL-BATRA HOTEL</h1>
+              <nav className={styles.nav}>
+                <a href="#home">HOME</a>
+                <a href="#rooms">ROOMS</a>
+                <a href="#dining">DINING</a>
+                <a href="#amenities">AMENITIES</a>
+                <a href="#booking" onClick={toggleBookingSection}>BOOKING</a>
+              </nav>
+            </div>
+          </div>
+        </header>
+
+        <div className={`${styles.bookingBar} ${isBookingVisible ? styles.visible : styles.hidden}`}>
+          <section id="booking" className={styles.bookingSection}>
+            <Box className={styles.bookingContainer}>
+              <div className={styles.datePickerContainer}>
+                <div className={styles.bookingTitle}>CHECK IN - CHECK OUT</div>
+                <CustomDateRangePicker onDateRangeChange={handleDateRangeChange} />
+              </div>
+              <div className={styles.roomTypeContainer}>
+                <div className={styles.bookingTitle}>ROOM SIZE</div>
+                <RoomTypeSelection />
+              </div>
+              <button className={styles.searchButton}>
+                CHECK RATES
+              </button>
+            </Box>
+          </section>
         </div>
+
+        <main className={styles.main}>
+          <section className={styles.hero}>
+            <div className={styles.heroText}>
+              <h2 className={styles.heroSmall}>AL-BATRA HOTEL</h2>
+              <h1 className={styles.heroLarge}>TRIPOLI</h1>
+              <p className={styles.heroSmall}>
+                Ahmed Shawky St. - Tripoli, Libya
+              </p>
+              <div className={styles.contactInfoHeader}>
+                <p>info@albatrahotel.net</p>
+                <p>+218 21-3345509</p>
+              </div>
+
+            </div>
+          </section>
+          <div className={styles.descImg}>
+            <img src="/logo.png" alt="Al-Batra Hotel Logo" className={styles.descImg}/>
+          </div>
+          
+          <div className={styles.descSection}>
+
+            <div className={styles.descTitle}>
+              ELEGANT LUXURY INFUSED WITH LIBYAN HOSPITALITY
+            </div>
+            <div className={styles.description}>
+              Welcome to Al Batra Hotel, where Libyan heritage meets modern sophistication. Located in the heart of Tripoli, our hotel offers an unparalleled experience in a city rich with history and vibrant culture. Explore iconic landmarks like the Red Castle Museum and the ancient Roman arch of Marcus Aurelius, or stroll through the bustling markets and scenic Mediterranean coastlines. Start your day with a lavish breakfast at Al Batra Bistro, unwind at our luxurious spa, and end your evening with exquisite cuisine and refreshing drinks at our Rooftop Lounge, all while overlooking the picturesque cityscape of Tripoli.
+            </div>
+          </div>
+
+<section id="rooms" className={styles.section}>
+  {/* <div className={styles.descTitle}>Our Rooms</div> */}
+  <div className={styles.rooms}>
+    <div className={styles.roomContainer}>
+
+      <div className={styles.roomTextContainer}>
+        <div className={styles.descTitle2}>Deluxe Room</div>
+        <p>Spacious and elegantly designed.</p>
+        <p>Experience the epitome of luxury in our Deluxe Rooms. Spacious and elegantly designed, each detail is meticulously crafted to provide unparalleled comfort and sophistication. Indulge in plush bedding, state-of-the-art amenities, and breathtaking views, creating an unforgettable retreat that embodies refined elegance.</p>
+      </div>      
+      <div className={styles.roomImageContainer}>
+        <img src="/room1.jpg" alt="Deluxe Room" className={styles.roomImage} />
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+    </div>
+  </div>
+  {/* <div className={styles.rooms}>
+    <div className={styles.roomContainer}>
+      <div className={styles.roomImageContainer}>
+        <img src="/room2.jpg" alt="Suite" className={styles.roomImage} />
       </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <div className={styles.roomTextContainer}>
+        <h4>Suite</h4>
+        <p>Luxury and comfort with stunning views.</p>
       </div>
-    </main>
+    </div>
+  </div> */}
+</section>
+
+
+          <section id="dining" className={styles.section}>
+            {/* <div className={styles.descTitle}>Dining</div> */}
+            <div className={styles.dining}>
+              <div className={styles.restaurant}>
+                <img src="/dining1.jpg" alt="Restaurant" />
+                <div className={styles.diningDesc1}>
+                  <div className={styles.descTitle2}>Gourmet Restaurant</div>
+                  <p>Indulge in culinary excellence at our Gourmet Restaurant, where each dish is a masterpiece crafted with precision and passion. From local delicacies to international flavors, savor an exquisite dining experience amidst an ambiance of refined elegance.</p>
+                </div>
+
+              </div>
+              </div>
+              <div className={styles.dining}>
+              <div className={styles.restaurant}>
+                <img src="/dining2.jpg" alt="Cafe" />
+                <div className={styles.diningDesc2}>
+                <div className={styles.descTitle2}>Luxury Cafe</div>
+                <p>Escape into a world of indulgence at our Luxury Cafe, where every sip of coffee and bite of pastry is a moment of pure bliss. Relax in elegant surroundings and savor the rich aroma of freshly brewed coffee and decadent pastries crafted by skilled artisans.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+<footer className={styles.footer}>
+  <div className={styles.footerNav}>
+    <div className={styles.footerNavCol}>
+      <a href="#home">Home</a>
+      <a href="#rooms">Rooms</a>
+      <a href="#booking">Booking</a>
+    </div>
+    <div className={styles.footerNavCol}>
+      <a href="#contactUs">Contact Us</a>
+      <a href="#about">About</a>
+    </div>
+    <div className={styles.footerNavCol}>
+      <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">
+        <img src="/TikTokLogo.png" alt="TikTok" className={styles.socialIcon}/>
+      </a>
+      <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+        <img src="/FacebookLogo.png" alt="Facebook" className={styles.socialIcon}/>
+      </a>
+      <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
+        <img src="/X_Logo.png" alt="Twitter" className={styles.socialIcon}/>
+      </a>
+      <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+        <img src="/InstagramLogo.png" alt="Instagram" className={styles.socialIcon}/>
+      </a>
+    </div>
+  </div>
+  <p>&copy; 2024 Al-Batra Hotel. All rights reserved.</p>
+</footer>
+
+
+      </div>
+    </div>
   );
 }
