@@ -1,7 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: 'export',
-    distDir: 'dist',
+    output: 'export',
+    basePath: '/Al-Batra',
+    assetPrefix: '/Al-Batra/',
+    images: {
+    unoptimized: true,
+  },
 
 };
 

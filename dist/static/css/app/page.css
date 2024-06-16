@@ -1,0 +1,763 @@
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[9].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[9].use[5]!./styles/RoomTypeSelection.module.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+.RoomTypeSelection_roomTypeSelection__xgmm7 {
+  position: relative;
+}
+
+.RoomTypeSelection_roomTypeInput__Kniho {
+  padding: 6px 26px;
+  border: 1px solid #bcbcbc;
+  background-color: #f1f1f1;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 8px;
+  width: 250px;
+  font-family: "Lucida Calligraphy", "Apple Chancery", "Bradley Hand", cursive;
+  font-style: italic;
+}
+
+.RoomTypeSelection_roomTypePopup__L0pdF {
+  position: absolute;
+  font-family: "Segoe UI", sans-serif;
+  font-size: small;
+  letter-spacing: 0.25mm;
+  font-weight: 450;
+  top: 100%;
+  left: 0;
+  width: 500px;
+  /* Increased width for larger popup */
+  border: 1px solid #b7b7b7;
+  background-color: #e7e7e7;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 2rem;
+}
+
+.RoomTypeSelection_roomContainer__7_XiV {
+  margin-bottom: 1rem;
+  background-color: #fbfbfb;
+  border: 1px solid #e3e3e3;
+  /* Different background color for room containers */
+  padding: 1rem;
+  border-radius: 0px;
+  position: relative;
+}
+
+.RoomTypeSelection_removeRoomButton__thChp {
+  background: none;
+  border: none;
+  color: rgb(109, 45, 5);
+  font-size: 1.5rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding-right: 8px;
+  cursor: pointer;
+}
+
+.RoomTypeSelection_guestsContainer__L5Kq6 {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.RoomTypeSelection_guestsContainer__L5Kq6 div {
+  display: flex;
+  align-items: center;
+}
+
+.RoomTypeSelection_guestsContainer__L5Kq6 span {
+  margin-right: 0.5rem;
+}
+
+.RoomTypeSelection_guestsContainer__L5Kq6 button {
+  padding: 0.25rem 0.5rem;
+  border: none;
+  background-color: #f4f4f4;
+  cursor: pointer;
+  margin: 0 0.5rem;
+}
+
+.RoomTypeSelection_Button__FuPft {
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 450;
+  padding: 0rem 1rem;
+  background-color: #000000;
+  color: #ceb780;
+  height: 34px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-top: 1rem;
+  margin-left: 10px;
+  box-sizing: border-box;
+}
+
+.RoomTypeSelection_Button__FuPft:hover {
+  background-color: #ceb780;
+  color: #1a1a1a;
+}
+
+.RoomTypeSelection_Button__FuPft:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #ceb780;
+}
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[9].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[9].use[5]!./styles/CustomDateRangePicker.module.scss ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+.CustomDateRangePicker_dateRangePicker__cMsbR {
+  position: relative;
+  display: inline-block;
+  color: #000;
+}
+
+.CustomDateRangePicker_dateRangeInput__b_PMN {
+  padding: 6px 24px;
+  border: 1px solid #bcbcbc;
+  border-radius: 0px;
+  background-color: #f1f1f1;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 8px;
+  width: 250px;
+  font-family: "Lucida Calligraphy", "Apple Chancery", "Bradley Hand", cursive;
+  font-style: italic;
+  /* If you want italic style */
+  /* Fixed width */
+}
+
+.CustomDateRangePicker_calendarPopup__RKPTc {
+  font-family: "Segoe UI", sans-serif;
+  position: absolute;
+  top: 35px;
+  left: 0;
+  z-index: 1000;
+  background-color: #f8f8f8;
+  border: 1px solid #bcbcbc;
+  border-radius: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
+
+.CustomDateRangePicker_monthNavigation__Zv0JV {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.CustomDateRangePicker_calendarsContainer__eZZj5 {
+  display: flex;
+}
+
+.CustomDateRangePicker_calendar__wlWOW {
+  margin: 0 25px;
+  text-align: center;
+}
+
+.CustomDateRangePicker_monthHeader__mbFk3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 18px;
+  /* Larger font size */
+}
+
+.CustomDateRangePicker_weekDays__RAUtM,
+.CustomDateRangePicker_days__fw1V8 {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.CustomDateRangePicker_weekDay__0mPHn,
+.CustomDateRangePicker_day__SKovx {
+  padding: 8px;
+  margin: 2px;
+  font-size: 16px;
+  /* Larger font size */
+}
+
+.CustomDateRangePicker_day__SKovx {
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.CustomDateRangePicker_day__SKovx:hover {
+  background-color: #f5deb3;
+}
+
+.CustomDateRangePicker_today__pByL3 {
+  font-weight: bold;
+  color: #913b3b;
+}
+
+.CustomDateRangePicker_selected__r3_Rb {
+  background-color: #a0522d;
+  color: #ffffff;
+}
+
+.CustomDateRangePicker_inRange__gB4j8 {
+  background-color: #626262;
+}
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[9].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[9].use[5]!./styles/Home.module.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+@charset "UTF-8";
+.Home_pageContainer__fUliY {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: #000000;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.Home_uConstruction__zajvh {
+  background-color: #883c18;
+  color: #ffffff;
+  padding-bottom: 0px;
+  font-size: 15px;
+  z-index: 100;
+  text-align: center;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 20px;
+  overflow: hidden;
+}
+
+.Home_descImg__hrM2i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  margin-top: 50px;
+}
+
+.Home_uConstruction__zajvh p {
+  position: relative;
+  /*How fast the animation is, defined by seconds below*/
+  animation: Home_slideIn__GfgWp 5s linear infinite;
+}
+
+@keyframes Home_slideIn__GfgWp {
+  0% {
+    transform: translateY(-100%);
+    /* Starting position here*/
+  }
+  10% {
+    transform: translateY(0);
+    /* Middle position, when the text will pause */
+  }
+  85% {
+    transform: translateY(0);
+    /* when the text will move again */
+  }
+  100% {
+    transform: translateY(100%);
+    /*End position*/
+  }
+}
+.Home_container__B1VFq {
+  padding: 0;
+  margin: 0;
+  font-family: "Merriweather", serif;
+  background-color: #000;
+}
+
+.Home_header__4gLs1 {
+  color: #ffffff;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 10;
+  transition: background-color 1.5s;
+  height: 130px;
+  background: rgb(0, 0, 0);
+}
+
+.Home_logoTitleNav__6lngJ {
+  display: flex;
+  align-items: center;
+}
+
+.Home_logo__Nw1fV {
+  height: 100px;
+  margin-right: 1rem;
+}
+
+.Home_titleNav__LXP71 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 2rem;
+  border-left: 1px solid #ffffff;
+}
+
+.Home_title__CJM6I {
+  margin: 0;
+  color: #ceb780;
+  font-size: 2rem;
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 200;
+  letter-spacing: 0.2em;
+}
+
+.Home_bookingTitle__XbW1A {
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 700;
+  font-size: medium;
+}
+
+.Home_nav__cgM_N {
+  display: flex;
+  margin-top: 0.5rem;
+}
+
+.Home_nav__cgM_N a {
+  color: #ceb780;
+  margin-left: 2rem;
+  text-decoration: none;
+  position: relative;
+  font-family: "Segoe UI", sans-serif;
+  letter-spacing: 0.3em;
+}
+
+.Home_nav__cgM_N a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background-color: #ceb780;
+  bottom: -2px;
+  left: 0;
+  transition: width 0.3s ease;
+}
+
+.Home_nav__cgM_N a:hover::after {
+  width: 100%;
+}
+
+.Home_nav__cgM_N a:first-child {
+  margin-left: 0rem;
+}
+
+.Home_main__3vDCl {
+  padding: 0;
+  background: #000000;
+  color: #ffffff;
+  flex: 1;
+}
+
+body.Home_scrolled__9tya_ .Home_header__4gLs1 {
+  background: #000000;
+}
+
+.Home_hero__B0w79 {
+  background: url("/hero.png") no-repeat center bottom;
+  /* Align the background image to the bottom */
+  background-size: 100% auto;
+  /* Ensure the image width extends to the screen width */
+  height: 100vh;
+  /* Keep the height of the hero section to the full viewport height */
+  color: #fffffd;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 2rem 7rem 7rem;
+  animation: Home_slideAnimation__0MCpP 50s infinite linear;
+  /* Apply the slide animation */
+}
+
+@keyframes Home_slideAnimation__0MCpP {
+  0% {
+    background-position-y: 60%;
+    /* Start the animation with the image fully visible at the bottom */
+  }
+  100% {
+    background-position-y: 0;
+    /* End the animation with the image fully visible at the top */
+  }
+}
+.Home_heroText__VXB7q {
+  text-align: left;
+  z-index: 3;
+  font-weight: 200;
+  letter-spacing: 0.4em;
+}
+
+.Home_heroSmall__7vsVD {
+  font-family: "Segoe UI", sans-serif;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.Home_heroLarge__qNXw2 {
+  font-family: "Segoe UI", sans-serif;
+  font-size: 3rem;
+  margin: 0.5rem 0;
+}
+
+.Home_hero__B0w79::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.85));
+  z-index: 2;
+}
+
+.Home_contactInfoHeader__NTN1Z {
+  font-family: "Segoe UI", sans-serif;
+  display: flex;
+  font-size: 14px;
+  text-decoration: underline;
+  letter-spacing: 0.15rem;
+  margin-top: 10px;
+}
+
+.Home_contactInfoHeader__NTN1Z p:first-child {
+  margin-right: 10px;
+}
+
+.Home_section__2F020 {
+  margin: 10rem 0;
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 300;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.Home_descSection__HrVf0 {
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 300;
+  width: 60%;
+  /* Adjusted width for better alignment */
+  margin: 0 auto;
+  /* Centers the section horizontally */
+  padding: 20px;
+  /* Optional: Adds rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Optional: Adds subtle shadow for depth */
+  margin-top: 80px;
+}
+
+.Home_descTitle__deE7p {
+  text-align: center;
+  font-size: 1.8em;
+  /* Adjust font size for title */
+  margin-bottom: 10px;
+}
+
+.Home_description__W1Hx1 {
+  text-align: center;
+  font-size: 1.2em;
+  /* Adjust font size for description */
+  line-height: 1.6;
+  /* Adjust line height for better readability */
+}
+
+.Home_rooms__BpXA_,
+.Home_amenities__eAxxT {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.Home_dining__xKi_i {
+  display: flex;
+  justify-content: center;
+  text-align: left;
+  margin-top: 20px;
+  margin-bottom: 200px;
+}
+
+.Home_restaurant__JTk9J {
+  width: 100%;
+  /* Set width to occupy almost half of the container */
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-top: 20px;
+  /* Adjust margin as needed */
+}
+
+.Home_restaurant__JTk9J img {
+  width: 100%;
+  height: 550px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.Home_diningDesc1__Le8qy {
+  width: 400px;
+  text-align: left;
+}
+
+.Home_diningDesc2__Nxcr8 {
+  width: 600px;
+  text-align: left;
+}
+
+.Home_room__clNRt,
+.Home_amenity__ALYfl {
+  margin: 1rem;
+  text-align: left;
+}
+
+.Home_room__clNRt img,
+.Home_amenity__ALYfl img {
+  width: 100%;
+  height: auto;
+}
+
+.Home_roomContainer__Xr1Ge {
+  display: flex;
+  align-items: center;
+  margin: 2rem 0;
+  /* Adjust margin to create space between each roomContainer */
+}
+
+.Home_roomImageContainer__GvSn3 {
+  flex: 1;
+  max-width: 50%;
+}
+
+.Home_roomImage__1QKyh {
+  width: 100%;
+  /* Ensure the image fits its container */
+  height: auto;
+  border-radius: 5px;
+}
+
+.Home_roomTextContainer__TrGWR {
+  font-style: italic;
+  flex: 1;
+  margin-left: 2rem;
+  /* Adjust the margin to create space between image and text */
+  font-family: "Segoe UI", sans-serif;
+  font-size: large;
+  font-weight: 300;
+  width: 50px;
+  text-align: left;
+  margin-right: 50px;
+}
+
+.Home_descTitle2__H0KgO {
+  text-align: left;
+  font-size: 1.8em;
+  /* Adjust font size for title */
+  margin-bottom: 10px;
+}
+
+.Home_booking__7xlkE {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+@keyframes Home_slideDown__Ngsls {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes Home_slideUp__fXpVV {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+.Home_bookingBar__ojeRX {
+  position: fixed;
+  width: 100%;
+  top: 130px;
+  background-color: rgba(252, 251, 251, 0.5);
+  padding: 1rem;
+  box-sizing: border-box;
+  z-index: 2;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: visibility 0s, transform 0.3s ease, opacity 0.3s ease;
+}
+
+.Home_bookingBar__ojeRX.Home_visible__yA1A4 {
+  visibility: visible;
+  transform: translateY(0);
+  opacity: 1;
+  animation: Home_slideDown__Ngsls 0.3s forwards;
+}
+
+.Home_bookingBar__ojeRX.Home_hidden__Yczgv {
+  animation: Home_slideUp__fXpVV 0.3s forwards;
+  transition: visibility 0s 0.3s, transform 0.3s ease, opacity 0.3s ease;
+}
+
+.Home_bookingSection__hAZUb {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  color: #000000;
+}
+
+.Home_datePickerContainer__4Eqb2,
+.Home_roomTypeContainer__uDhtG {
+  margin-bottom: 1rem;
+}
+
+.Home_customSelect__dTGOP {
+  position: relative;
+}
+
+.Home_customSelect__dTGOP select {
+  width: 100%;
+  padding: 8px 16px;
+  border: 1px solid #a0522d;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  cursor: pointer;
+  font-size: 16px;
+  color: #000;
+  outline: none;
+}
+
+.Home_customSelect__dTGOP::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.Home_customSelect__dTGOP select::-ms-expand {
+  display: none;
+}
+
+.Home_bookingInput__e_f26 {
+  margin: 0.5rem;
+}
+
+.Home_bookingContainer__yecq5 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.Home_searchButton__d1dwr {
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 400;
+  padding: 4px 20px;
+  border: 1px solid #4e2816;
+  background-color: #000000;
+  color: #ceb780;
+  height: 34px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.Home_searchButton__d1dwr:hover {
+  background-color: #ceb780;
+  color: #1a1a1a;
+}
+
+.Home_searchButton__d1dwr:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #ceb780;
+}
+
+.Home_footer__S146O {
+  background: #141414;
+  color: #ffffff;
+  text-align: center;
+  padding: 1rem;
+  gap: 0.5rem;
+}
+
+.Home_footerNav__2gV2B {
+  display: flex;
+  justify-content: space-between;
+  /* Distributes space between columns */
+  align-items: flex-start;
+}
+
+.Home_footerNavCol__PdblY {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 10%;
+  gap: 0.5rem;
+}
+
+.Home_footerNavCol__PdblY:nth-child(3) {
+  margin-left: auto;
+  flex-direction: row;
+  margin-right: 30%;
+  margin-top: 2%;
+  /* Pushes the social icons to the right */
+}
+
+.Home_footerNav__2gV2B a {
+  color: #ffffff;
+  text-decoration: none;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+.Home_footerNav__2gV2B a:hover::after {
+  width: 0;
+  text-decoration: underline;
+}
+
+.Home_footerNavCol__PdblY a img.Home_socialIcon__Ef9lB {
+  width: 24px;
+  /* Adjust the size as needed */
+  height: 24px;
+  margin-right: 0.5rem;
+}
+
+.Home_footer__S146O p {
+  margin-top: 5rem;
+  text-align: center;
+  color: #ceb780;
+}
