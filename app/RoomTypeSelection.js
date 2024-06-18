@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styles from '../styles/RoomTypeSelection.module.scss';
+import styles from '../scss/RoomTypeSelection.module.scss';
 
 const RoomTypeSelection = () => {
   const [isOpen, setIsOpen] = useState(false);

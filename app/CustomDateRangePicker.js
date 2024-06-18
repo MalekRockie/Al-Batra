@@ -4,7 +4,7 @@ import {
   startOfMonth, endOfMonth, isSameDay, isWithinInterval,
   isBefore
 } from 'date-fns';
-import styles from '../styles/CustomDateRangePicker.module.scss';
+import styles from '../scss/CustomDateRangePicker.module.scss';
 
 const CustomDateRangePicker = ({ onDateRangeChange }) => {
   const today = new Date();

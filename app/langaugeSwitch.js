@@ -1,4 +1,3 @@
-// components/LanguageSwitch.js
 import { useRouter } from 'next/router';
 
 export default function LanguageSwitch() {

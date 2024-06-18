@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import RoomTypeSelection from './RoomTypeSelection';
 import CustomDateRangePicker from './CustomDateRangePicker';
-import styles from '../styles/Home.module.scss';
+import styles from '../scss/Home.module.scss';
 // import LanguageSwitch from '../components/LanguageSwitch';
 // import { useTranslation } from 'react-i18next';
 
@@ -69,7 +69,7 @@ export default function Home() {
       </div>
       <div className={styles.container}>
         <Head>
-          <title>Al-Batra Hotel</title>
+          <title>Al Batra Hotel</title>
           <link rel="icon" href="/favicon.ico" />
           <meta name="description" content="Experience the finest luxury at our hotel" />
           <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
@@ -77,7 +77,7 @@ export default function Home() {
 
             <header className={`${styles.header} ${isScrolledToMax && !isMouseOver ? styles.gradient : styles.solid}`}>
             <div className={styles.logoTitleNav}>
-            <img src="/logo.png" alt="Al-Batra Hotel Logo" className={styles.logo} />
+            <img src="logo.png" alt="Al-Batra Hotel Logo" className={styles.logo} />
             <div className={styles.titleNav}>
               <h1 className={styles.title}>AL-BATRA HOTEL</h1>
               <nav className={styles.nav}>
@@ -125,7 +125,7 @@ export default function Home() {
             </div>
           </section>
           <div className={styles.descImg}>
-            <img src="/logo.png" alt="Al-Batra Hotel Logo" className={styles.descImg}/>
+            <img src="logo.png" alt="Al-Batra Hotel Logo" className={styles.descImg}/>
           </div>
           
           <div className={styles.descSection}>
@@ -149,7 +149,7 @@ export default function Home() {
         <p>Experience the epitome of luxury in our Deluxe Rooms. Spacious and elegantly designed, each detail is meticulously crafted to provide unparalleled comfort and sophistication. Indulge in plush bedding, state-of-the-art amenities, and breathtaking views, creating an unforgettable retreat that embodies refined elegance.</p>
       </div>      
       <div className={styles.roomImageContainer}>
-        <img src="/room1.jpg" alt="Deluxe Room" className={styles.roomImage} />
+        <img src="room1.jpg" alt="Deluxe Room" className={styles.roomImage} />
       </div>
     </div>
   </div>
@@ -171,7 +171,7 @@ export default function Home() {
             {/* <div className={styles.descTitle}>Dining</div> */}
             <div className={styles.dining}>
               <div className={styles.restaurant}>
-                <img src="/dining1.jpg" alt="Restaurant" />
+                <img src="dining1.jpg" alt="Restaurant" />
                 <div className={styles.diningDesc1}>
                   <div className={styles.descTitle2}>Gourmet Restaurant</div>
                   <p>Indulge in culinary excellence at our Gourmet Restaurant, where each dish is a masterpiece crafted with precision and passion. From local delicacies to international flavors, savor an exquisite dining experience amidst an ambiance of refined elegance.</p>
@@ -181,7 +181,7 @@ export default function Home() {
               </div>
               <div className={styles.dining}>
               <div className={styles.restaurant}>
-                <img src="/dining2.jpg" alt="Cafe" />
+                <img src="dining2.jpg" alt="Cafe" />
                 <div className={styles.diningDesc2}>
                 <div className={styles.descTitle2}>Luxury Cafe</div>
                 <p>Escape into a world of indulgence at our Luxury Cafe, where every sip of coffee and bite of pastry is a moment of pure bliss. Relax in elegant surroundings and savor the rich aroma of freshly brewed coffee and decadent pastries crafted by skilled artisans.</p>
@@ -204,16 +204,16 @@ export default function Home() {
     </div>
     <div className={styles.footerNavCol}>
       <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">
-        <img src="/TikTokLogo.png" alt="TikTok" className={styles.socialIcon}/>
+        <img src="TikTokLogo.png" alt="TikTok" className={styles.socialIcon}/>
       </a>
       <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-        <img src="/FacebookLogo.png" alt="Facebook" className={styles.socialIcon}/>
+        <img src="FacebookLogo.png" alt="Facebook" className={styles.socialIcon}/>
       </a>
       <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
-        <img src="/X_Logo.png" alt="Twitter" className={styles.socialIcon}/>
+        <img src="X_Logo.png" alt="Twitter" className={styles.socialIcon}/>
       </a>
       <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-        <img src="/InstagramLogo.png" alt="Instagram" className={styles.socialIcon}/>
+        <img src="InstagramLogo.png" alt="Instagram" className={styles.socialIcon}/>
       </a>
     </div>
   </div>
