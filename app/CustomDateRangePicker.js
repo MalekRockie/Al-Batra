@@ -26,21 +26,23 @@ const CustomDateRangePicker = ({ onDateRangeChange }) => {
     };
   }, [calendarRef]);
 
-  const handleDateClick = (date) => {
-    const [start, end] = selectedDates;
+const handleDateClick = (date) => {
+  const [start, end] = selectedDates;
 
-    if (!start || (start && end)) {
-      setSelectedDates([date, null]);
-    } else if (isBefore(date, start)) {
-      setSelectedDates([date, start]);
-    } else {
-      setSelectedDates([start, date]);
-    }
+  if (!start || (start && end)) {
+    setSelectedDates([date, null]);
+  } else if (isBefore(date, start)) {
+    setSelectedDates([date, start]);
+  } else {
+    setSelectedDates([start, date]);
+  }
 
-    if (onDateRangeChange) {
-      onDateRangeChange(selectedDates);
-    }
-  };
+  const updatedDates = [start, date]; // Update the dates here
+  if (onDateRangeChange) {
+    onDateRangeChange(updatedDates); // Call the onDateRangeChange with updatedDates
+  }
+};
+
 
   const renderCalendar = (month) => {
     const start = startOfMonth(month);

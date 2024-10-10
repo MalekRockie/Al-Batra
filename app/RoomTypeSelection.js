@@ -1,10 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from '../scss/RoomTypeSelection.module.scss';
 
-const RoomTypeSelection = () => {
+const RoomTypeSelection = ({onRoomTypeChange}) => {
+const [selectedRoomType, setSelectedRoomType] = useState('');
+
   const [isOpen, setIsOpen] = useState(false);
   const [rooms, setRooms] = useState([{ adults: 1, children: 0 }]);
   const popupRef = useRef(null);
+
+
+  const handleRoomUpdate = (newRooms) => {
+    setRooms(newRooms);
+    if (onRoomTypeChange)
+      {
+        onRoomTypeChange(newRooms);
+      }
+  };
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -31,13 +42,13 @@ const RoomTypeSelection = () => {
   const handleAdultChange = (index, value) => {
     const newRooms = [...rooms];
     newRooms[index].adults = Math.max(1, Math.min(value, 3 - newRooms[index].children));
-    setRooms(newRooms);
+    handleRoomUpdate(newRooms);
   };
 
   const handleChildChange = (index, value) => {
     const newRooms = [...rooms];
     newRooms[index].children = Math.max(0, Math.min(value, 3 - newRooms[index].adults));
-    setRooms(newRooms);
+    handleRoomUpdate(newRooms);
   };
 
   return (

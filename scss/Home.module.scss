@@ -1,3 +1,4 @@
+/* Existing CSS */
 .pageContainer {
     height: 100vh;
     margin: 0;
@@ -23,8 +24,8 @@
     height: 20px;
     overflow: hidden;
 }
-.descImg
-{
+
+.descImg {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -34,32 +35,26 @@
 
 .uConstruction p {
     position: relative;
-    /*How fast the animation is, defined by seconds below*/
     animation: slideIn 5s linear infinite;
 }
 
 @keyframes slideIn {
     0% {
         transform: translateY(-100%);
-        /* Starting position here*/
     }
 
     10% {
         transform: translateY(0);
-        /* Middle position, when the text will pause */
     }
 
     85% {
         transform: translateY(0);
-        /* when the text will move again */
     }
+
     100% {
         transform: translateY(100%);
-        /*End position*/
     }
 }
-
-
 
 .container {
     padding: 0;
@@ -163,11 +158,8 @@ body.scrolled .header {
 
 .hero {
     background: url('/hero.png') no-repeat center bottom;
-    /* Align the background image to the bottom */
     background-size: 100% auto;
-    /* Ensure the image width extends to the screen width */
     height: 100vh;
-    /* Keep the height of the hero section to the full viewport height */
     color: #fffffd;
     position: relative;
     z-index: 1;
@@ -176,18 +168,15 @@ body.scrolled .header {
     justify-content: flex-start;
     padding: 2rem 7rem 7rem;
     animation: slideAnimation 50s infinite linear;
-    /* Apply the slide animation */
 }
 
 @keyframes slideAnimation {
     0% {
         background-position-y: 60%;
-        /* Start the animation with the image fully visible at the bottom */
     }
 
     100% {
         background-position-y: 0;
-        /* End the animation with the image fully visible at the top */
     }
 }
 
@@ -221,8 +210,7 @@ body.scrolled .header {
     z-index: 2;
 }
 
-.contactInfoHeader
-{
+.contactInfoHeader {
     font-family: 'Segoe UI', sans-serif;
     display: flex;
     font-size: 14px;
@@ -230,6 +218,7 @@ body.scrolled .header {
     letter-spacing: 0.15rem;
     margin-top: 10px;
 }
+
 .contactInfoHeader p:first-child {
     margin-right: 10px;
 }
@@ -240,38 +229,28 @@ body.scrolled .header {
     font-weight: 300;
     display: flex;
     justify-content: space-evenly;
-    // background-color: #2d0000;
 }
 
 .descSection {
     font-family: 'Segoe UI', sans-serif;
     font-weight: 300;
-    // background-color: #1b1b1b;
     width: 60%;
-    /* Adjusted width for better alignment */
     margin: 0 auto;
-    /* Centers the section horizontally */
     padding: 20px;
-    /* Optional: Adds rounded corners */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Optional: Adds subtle shadow for depth */
     margin-top: 80px;
 }
 
 .descTitle {
     text-align: center;
     font-size: 1.8em;
-    /* Adjust font size for title */
     margin-bottom: 10px;
 }
-
 
 .description {
     text-align: center;
     font-size: 1.2em;
-    /* Adjust font size for description */
     line-height: 1.6;
-    /* Adjust line height for better readability */
 }
 
 .rooms,
@@ -282,24 +261,19 @@ body.scrolled .header {
 }
 
 .dining {
-
     display: flex;
     justify-content: center;
     text-align: left;
     margin-top: 20px;
     margin-bottom: 200px;
-    // background-color: #883c18;
 }
 
 .restaurant {
     width: 100%;
-    /* Set width to occupy almost half of the container */
     display: flex;
     flex-direction: column;
-    // align-items: center;
     text-align: left;
     margin-top: 20px;
-    /* Adjust margin as needed */
 }
 
 .restaurant img {
@@ -309,8 +283,7 @@ body.scrolled .header {
     border-radius: 5px;
 }
 
-.diningDesc1
-{
+.diningDesc1 {
     width: 400px;
     text-align: left;
 }
@@ -332,16 +305,11 @@ body.scrolled .header {
     height: auto;
 }
 
-
-
 .roomContainer {
     display: flex;
     align-items: center;
     margin: 2rem 0;
-    /* Adjust margin to create space between each roomContainer */
 }
-
-
 
 .roomImageContainer {
     flex: 1;
@@ -350,7 +318,6 @@ body.scrolled .header {
 
 .roomImage {
     width: 100%;
-    /* Ensure the image fits its container */
     height: auto;
     border-radius: 5px;
 }
@@ -359,7 +326,6 @@ body.scrolled .header {
     font-style: italic;
     flex: 1;
     margin-left: 2rem;
-    /* Adjust the margin to create space between image and text */
     font-family: 'Segoe UI', sans-serif;
     font-size: large;
     font-weight: 300;
@@ -371,7 +337,6 @@ body.scrolled .header {
 .descTitle2 {
     text-align: left;
     font-size: 1.8em;
-    /* Adjust font size for title */
     margin-bottom: 10px;
 }
 
@@ -441,7 +406,6 @@ body.scrolled .header {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    // margin-left: 100px;
     color: #000000;
 }
 
@@ -516,7 +480,6 @@ body.scrolled .header {
     box-shadow: 0 0 0 2px #ceb780;
 }
 
-
 .footer {
     background: #141414;
     color: #ffffff;
@@ -528,7 +491,6 @@ body.scrolled .header {
 .footerNav {
     display: flex;
     justify-content: space-between;
-    /* Distributes space between columns */
     align-items: flex-start;
 }
 
@@ -540,14 +502,11 @@ body.scrolled .header {
     gap: 0.5rem;
 }
 
-
 .footerNavCol:nth-child(3) {
     margin-left: auto;
     flex-direction: row;
     margin-right: 30%;
     margin-top: 2%;
-
-    /* Pushes the social icons to the right */
 }
 
 .footerNav a {
@@ -565,7 +524,6 @@ body.scrolled .header {
 
 .footerNavCol a img.socialIcon {
     width: 24px;
-    /* Adjust the size as needed */
     height: 24px;
     margin-right: 0.5rem;
 }
@@ -574,4 +532,96 @@ body.scrolled .header {
     margin-top: 5rem;
     text-align: center;
     color: #ceb780;
+}
+
+/* Carousel CSS */
+.carouselContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    overflow: hidden;
+    position: relative;
+    background-color: #282828;
+    /* Background color for the carousel container */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.carouselSlide {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carouselItem {
+    min-width: 100%;
+    height: 80vh;
+    /* Increased height for larger images */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.carouselImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 2px solid #ceb780;
+    /* Border around the image */
+}
+
+.carouselText {
+    color: #ffffff;
+    /* Text color */
+    font-family: 'Segoe UI', sans-serif;
+    margin-top: 10px;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.carouselButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.carouselButton.prev {
+    left: 10px;
+}
+
+.carouselButton.next {
+    right: 10px;
+}
+
+.carouselButton:focus {
+    outline: none;
+}
+
+.carouselIndicators {
+    position: absolute;
+    bottom: 10px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.carouselIndicator {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.carouselIndicator.active {
+    background-color: #fff;
 }

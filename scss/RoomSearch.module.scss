@@ -1,0 +1,132 @@
+.label1
+{
+    justify-content: center;
+}
+
+.Container1 {
+    margin-top: 220px;
+    display: flex;
+    flex-direction: column;
+    /* Change to column to align elements vertically */
+    align-items: center;
+    /* Center horizontally */
+    // background-color: #ceb780;
+    height: auto;
+    /* Set auto height to accommodate both the line and text */
+    padding-bottom: 20px;
+    /* Add some padding for spacing */
+}
+
+.Container2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // background-color: #ceb780;
+    text-align: center;
+    height: 50px;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 200;
+    font-size: xx-large;
+    letter-spacing: 0.20em;
+    margin-top: 20px;
+    padding: 0;
+}
+
+.line {
+    width: 1200px;
+    border: none;
+    border-top: 1px solid #ceb780;
+    margin-top: 50px;
+}
+
+.RoomsLists
+{
+    text-align: center;
+    align-items: center;
+    margin: auto;
+    // background-color: #ceb780;
+    width: 80rem;
+}
+
+.RoomContainer
+{
+    margin-top: 40px;
+    text-align: center;
+    border: 1px solid #ceb780;
+    // border-bottom: 0;
+    background-color: #0e0e0e;
+    display: flex;
+    // height: 20rem;
+}
+
+.roomImage
+{
+    width: 40rem;
+    // height: 100%;
+    padding-right: 2rem;
+    padding-left: 0%;
+    align-items: flex-end;
+}
+
+.RoomTitle
+{
+    color: #ffffff;
+    padding-top: 5rem;
+    padding-left: 2rem;
+    font-size: x-large;
+    text-align: left;
+        position: relative;
+}
+
+.RoomDescription {
+    font-size: large;
+    padding-left: 0%;
+    padding-top: 1rem;
+    color: #ceb780;
+    text-align: left;
+}
+
+.reserveButton {
+    margin-top: 1.5rem;
+    margin-right: 3rem;
+    padding: 10px 20px;
+    background-color: #ceb780;
+    border: none;
+    color: #1a1a1a;
+    font-size: medium;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 0.1em;
+    float: right;
+    /* Aligns button to the right */
+}
+
+.reserveButton:hover {
+    background-color: #1a1a1a;
+    color: #ceb780;
+}
+
+// RoomSearch.module.scss
+
+.optionsContainer {
+    display: none; // Default to hidden
+    transition: opacity 0.3s ease; // Add transition for smooth appearance
+    opacity: 0; // Start with an opacity of 0
+    width: 80rem;
+    margin: auto;
+}
+
+.optionsContainer.visible {
+    display: block; // Show the options container when visible
+    opacity: 1; // Set opacity to 1 for visible state
+}
+
+.option {
+    padding: 10px; // Some padding for the options
+    border: 1px solid #ceb780; // Example border for options
+    border-top: 0;
+    height: 6rem;
+    background-color: rgb(39, 39, 39); // Background color
+    cursor: pointer; // Pointer cursor on hover
+}
