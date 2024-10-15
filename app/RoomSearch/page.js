@@ -9,20 +9,40 @@ import styles from '../../scss/Home.module.scss';
 import RoomSearchModule from '../../scss/RoomSearch.module.scss';
 import { useRouter } from 'next/navigation';
 
+
+const LoadingSpinner = () => (
+  <div className={RoomSearchModule.spinnerContainer}>
+    <div className={RoomSearchModule.spinner}></div> {/* Add spinner CSS */}
+    <p>Loading room types...</p>
+  </div>
+);
+
+
+
 const RoomSearch = () => {
   const router = useRouter();
-
   const today = new Date();
   const tomorrow = new Date();
   tomorrow.setDate(today.getDate() + 1);
+  const CurrentBill = 0;
 
   const [isBookingVisible, setIsBookingVisible] = useState(true);
   const [isScrolledToMax, setIsScrolledToMax] = useState(false);
   const [isMouseOver, setIsMouseOver] = useState(false);
   const [selectedDates, setSelectedDates] = useState([today, tomorrow]);
   const [selectedRoomType, setSelectedRoomType] = useState(null);
-  const [roomType, setRoomType] = useState([{ adults: 1, children: 0 }]);
-  const [isOptionsVisible, setIsOptionsVisible] = useState(false); // Added state for options visibility
+  const [roomType, setRoomType] = useState([]); // Initialize as empty array to hold fetched room types
+  const [activeRoomIndex, setActiveRoomIndex] = useState(null); // Track which room's packages to show
+  const [isLoading, setIsLoading] = useState(false); // Loading state for fetch
+
+  const handleSelectPackage = (roomType, checkInDate, checkOutDate) => {
+  const params = new URLSearchParams({
+    roomType,
+    checkInDate,
+    checkOutDate,
+  });
+  router.push(`./CustomerDetails?${params.toString()}`);
+};
 
   const handleDateRangeChange = (dates) => {
     setSelectedDates(dates);
@@ -34,25 +54,34 @@ const RoomSearch = () => {
     console.log('Selected Room Type:', roomType);
   };
 
+  const fetchRoomTypes = async (checkInDate, checkOutDate) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(
+        `http://localhost:8080/room/availableRoomTypes?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`
+      );
+      const data = await response.json();
+      console.log('Fetched room types:', data);
+      setRoomType(data); // Set the fetched room types in the state
+    } catch (error) {
+      console.error('Error fetching room types:', error);
+    } finally 
+    {
+      setIsLoading(false);
+    }
+  };
+
   const handleUpdateSearch = () => {
     console.log('Selected Dates: ', selectedDates);
     console.log('Room Types length: ', roomType.length);
-    if (selectedDates[0] && selectedDates[1] && roomType.length > 0) {
-      const pathname = '/RoomSearch';
-      const checkIn = selectedDates[0]?.toISOString();
-      const checkOut = selectedDates[1]?.toISOString();
-      const rooms = JSON.stringify(roomType);
+    if (selectedDates[0] && selectedDates[1]) {
+      const checkIn = selectedDates[0].toISOString().split('T')[0]; // Format as YYYY-MM-DD
+      const checkOut = selectedDates[1].toISOString().split('T')[0]; // Format as YYYY-MM-DD
 
-      console.log({ checkIn, checkOut, rooms });
+      console.log({ checkIn, checkOut });
 
-      // Manually construct the URL with query parameters
-      const searchParams = new URLSearchParams({
-        checkIn,
-        checkOut,
-        rooms,
-      }).toString();
-
-      router.push(`${pathname}?${searchParams}`);
+      // Fetch room types from the API with selected dates
+      fetchRoomTypes(checkIn, checkOut);
     } else {
       alert('Please select a check-in/check-out date and room size!');
     }
@@ -62,9 +91,8 @@ const RoomSearch = () => {
     setIsBookingVisible(!isBookingVisible);
   };
 
-  const toggleOptions = () => {
-    console.log("Click");
-    setIsOptionsVisible(!isOptionsVisible); // Toggle options visibility
+  const toggleOptions = (index) => {
+    setActiveRoomIndex(activeRoomIndex === index ? null : index);
   };
 
   useEffect(() => {
@@ -73,6 +101,7 @@ const RoomSearch = () => {
       setIsScrolledToMax(scrollPosition === 0);
     }
 
+    
     function handleMouseOver() {
       setIsMouseOver(true);
     }
@@ -95,8 +124,23 @@ const RoomSearch = () => {
 
   useEffect(() => {}, [isScrolledToMax, isMouseOver]);
 
+  useEffect(() => {
+    if (selectedDates[0] && selectedDates[1]) {
+      const checkIn = selectedDates[0].toISOString().split('T')[0]; // Format as YYYY-MM-DD
+      const checkOut = selectedDates[1].toISOString().split('T')[0]; // Format as YYYY-MM-DD
+
+      console.log({ checkIn, checkOut });
+
+      // Fetch room types from the API with selected dates
+      fetchRoomTypes(checkIn, checkOut);
+    } else {
+      alert('Please select a check-in/check-out date and room size!');
+    }
+  }, [selectedDates]);
+
   return (
-    <div>
+    <div className={RoomSearchModule.main}>
+      {/* Header */}
       <header
         className={`${styles.header} ${
           isScrolledToMax && !isMouseOver ? styles.gradient : styles.solid
@@ -118,6 +162,8 @@ const RoomSearch = () => {
           </div>
         </div>
       </header>
+
+      {/* Booking Section */}
       <div
         className={`${styles.bookingBar} ${
           isBookingVisible ? styles.visible : styles.hidden
@@ -140,42 +186,116 @@ const RoomSearch = () => {
         </section>
       </div>
 
+      {/* Rooms Section */}
       <div className={RoomSearchModule.Container1}>
         <div className={RoomSearchModule.Container2}>OUR ACCOMMODATIONS</div>
         <hr className={RoomSearchModule.line} />
       </div>
 
-      <div className={RoomSearchModule.RoomsLists}>
-        <div className={RoomSearchModule.RoomContainer}>
-          <div>
-            <img
-              src="room1.jpg"
-              alt="Deluxe Room"
-              className={RoomSearchModule.roomImage}
-            />
-          </div>
-
-          <div className={RoomSearchModule.RoomTitle}>
-            Deluxe Double Room
-            <div className={RoomSearchModule.RoomDescription}>
-              This luxurious double room offers a spacious king-size bed, elegant furnishings,
-              and modern amenities. Perfect for couples or small families looking for a
-              comfortable stay.
-            </div>
-            <button
-              className={RoomSearchModule.reserveButton}
-              onClick={toggleOptions}
-            >
-              Reserve Now
-            </button>
-          </div>
-
+      
+      
+      {/* Room List */}
+      {/* Loading spinner */}
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <div className={RoomSearchModule.RoomsLists}>
+          {roomType.length > 0 ? (
+            roomType.map((room, index) => (
+              <div key={index}>
+                <div className={RoomSearchModule.RoomContainer}>
+                  <div>
+                    <img
+                      src={`room1.jpg`}
+                      alt={room.typeName}
+                      className={RoomSearchModule.roomImage}
+                    />
+                  </div>
+                  <div className={RoomSearchModule.RoomTitle}>
+                    {room.typeName}
+                    <div className={RoomSearchModule.RoomDescription}>
+                      This room offers a comfortable stay with a minimum price of ${room.minRate}.
+                    </div>
+                  </div>
+                  <button
+                    className={RoomSearchModule.reserveButton}
+                    onClick={() => toggleOptions(index)} // Pass index of the room
+                  >
+                    RESERVE NOW
+                  </button>
+                </div>
+                {activeRoomIndex === index && (
+                  <div
+                    className={`${RoomSearchModule.optionsContainer} ${
+                      activeRoomIndex === index ? RoomSearchModule.visible : ''
+                    }`}
+                  >
+                    <div className={RoomSearchModule.option}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div className={RoomSearchModule.optionTitle}>Bed & Breakfast Package</div>
+                        <div className={RoomSearchModule.optionPricingDesc}>
+                          <div>Avg Price per Night:</div>
+                          <div className={RoomSearchModule.optionPricing}> ${room.minRate} per night</div>
+                        </div>
+                      </div>
+                      <button className={RoomSearchModule.ReserveButton} onClick={() => handleSelectPackage(room.typeName, selectedDates[0].toISOString().split('T')[0], selectedDates[1].toISOString().split('T')[0])}>
+                        SELECT PACKAGE
+                      </button>
+                    </div>
+                    <div className={RoomSearchModule.option}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div className={RoomSearchModule.optionTitle}>Full-Board Package (Includes All Meals)</div>
+                        <div className={RoomSearchModule.optionPricingDesc}>
+                          <div>Avg Price per Night:</div>
+                          <div className={RoomSearchModule.optionPricing}> ${room.minRate} per night</div>
+                        </div>
+                      </div>
+                      <button className={RoomSearchModule.ReserveButton} onClick={() => handleSelectPackage(room.typeName, selectedDates[0].toISOString().split('T')[0], selectedDates[1].toISOString().split('T')[0])}>
+                        SELECT PACKAGE
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            <div>No rooms available for the selected dates.</div>
+          )}
         </div>
+      )}
+
+      
+
+      <div className={RoomSearchModule.footerContainer}>
+        <footer className={styles.footer}>
+          <div className={styles.footerNav}>
+            <div className={styles.footerNavCol}>
+              <a href="#home">Home</a>
+              <a href="#rooms">Rooms</a>
+              <a href="#booking">Booking</a>
+            </div>
+            <div className={styles.footerNavCol}>
+              <a href="#contactUs">Contact Us</a>
+              <a href="#about">About</a>
+            </div>
+            <div className={styles.footerNavCol}>
+              <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">
+                <img src="TikTokLogo.png" alt="TikTok" className={styles.socialIcon} />
+              </a>
+              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+                <img src="FacebookLogo.png" alt="Facebook" className={styles.socialIcon} />
+              </a>
+              <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
+                <img src="X_Logo.png" alt="Twitter" className={styles.socialIcon} />
+              </a>
+              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+                <img src="InstagramLogo.png" alt="Instagram" className={styles.socialIcon} />
+              </a>
+            </div>
+          </div>
+          <p>&copy; 2024 Al-Batra Hotel. All rights reserved.</p>
+        </footer>
       </div>
-      <div id="optionsContainer" className={`${RoomSearchModule.optionsContainer} ${isOptionsVisible ? RoomSearchModule.visible : ''}`}>
-        <div className={RoomSearchModule.option}>Breakfast Only</div>
-        <div className={RoomSearchModule.option}>Lunch and Dinner as well</div>
-    </div>
     </div>
   );
 };

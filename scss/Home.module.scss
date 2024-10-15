@@ -1,13 +1,15 @@
 /* Existing CSS */
 .pageContainer {
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-    background: #000000;
-    color: #ffffff;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    /* Ensure footer stays at the bottom */
+    min-height: 100vh;
+    /* Ensure it takes up full viewport height */
+    background: #000000;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
 }
 
 .uConstruction {
@@ -146,10 +148,10 @@
 }
 
 .main {
+    flex-grow: 1;
     padding: 0;
     background: #000000;
     color: #ffffff;
-    flex: 1;
 }
 
 body.scrolled .header {
@@ -485,7 +487,8 @@ body.scrolled .header {
     color: #ffffff;
     text-align: center;
     padding: 1rem;
-    gap: 0.5rem;
+    position: relative;
+    width: 100%;
 }
 
 .footerNav {

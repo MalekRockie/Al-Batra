@@ -28,7 +28,7 @@
     font-weight: 200;
     font-size: xx-large;
     letter-spacing: 0.20em;
-    margin-top: 20px;
+    margin-top: 70px;
     padding: 0;
 }
 
@@ -48,23 +48,29 @@
     width: 80rem;
 }
 
-.RoomContainer
-{
+.RoomContainer {
     margin-top: 40px;
     text-align: center;
     border: 1px solid #ceb780;
-    // border-bottom: 0;
     background-color: #0e0e0e;
     display: flex;
-    // height: 20rem;
+    height: 18rem;
+    z-index: 2;
+    // position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    align-items: flex-start;
+    justify-content: space-between;
 }
 
-.roomImage
-{
-    width: 40rem;
-    // height: 100%;
-    padding-right: 2rem;
-    padding-left: 0%;
+
+.roomImage {
+    width: 100%;
+    max-width: 28rem;
+    height: auto;
+    object-fit: cover;
+    padding-right: 0;
+    padding-left: 0;
     align-items: flex-end;
 }
 
@@ -75,7 +81,7 @@
     padding-left: 2rem;
     font-size: x-large;
     text-align: left;
-        position: relative;
+    position: relative;
 }
 
 .RoomDescription {
@@ -87,9 +93,9 @@
 }
 
 .reserveButton {
-    margin-top: 1.5rem;
-    margin-right: 3rem;
-    padding: 10px 20px;
+    margin-top: 14rem;
+    margin-right: 2.2rem;
+    padding: 7px 30px;
     background-color: #ceb780;
     border: none;
     color: #1a1a1a;
@@ -98,35 +104,177 @@
     transition: background-color 0.3s ease, color 0.3s ease;
     font-family: 'Segoe UI', sans-serif;
     letter-spacing: 0.1em;
-    float: right;
-    /* Aligns button to the right */
+
+
 }
 
 .reserveButton:hover {
-    background-color: #1a1a1a;
+    background-color: #0e0e0e;
     color: #ceb780;
+    border: 1px solid #ceb780;
 }
 
 // RoomSearch.module.scss
 
 .optionsContainer {
     display: none; // Default to hidden
-    transition: opacity 0.3s ease; // Add transition for smooth appearance
+    transition: opacity 0.3s ease; 
     opacity: 0; // Start with an opacity of 0
     width: 80rem;
     margin: auto;
+    padding-bottom: 5rem;
 }
 
 .optionsContainer.visible {
     display: block; // Show the options container when visible
     opacity: 1; // Set opacity to 1 for visible state
+    // animation: slideIn 0.2s linear;
+    z-index: 1;
 }
 
 .option {
-    padding: 10px; // Some padding for the options
+    padding: 20px; // Some padding for the options
+    padding-left: 100px;
     border: 1px solid #ceb780; // Example border for options
     border-top: 0;
-    height: 6rem;
-    background-color: rgb(39, 39, 39); // Background color
-    cursor: pointer; // Pointer cursor on hover
+    height: 10rem;
+    background-color: #0e0e0e;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 200;
+    z-index: 5;
+    text-align: left;
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateY(-80%);
+    }
+
+    10% {
+        transform: translateY(-50);
+    }
+
+    85% {
+        transform: translateY(-25);
+    }
+
+    100% {
+        transform: translateY(-0%);
+    }
+}
+
+@keyframes slideOut {
+    0% {
+        transform: translateY(0%);
+    }
+
+    10% {
+        transform: translateY(-25);
+    }
+
+    85% {
+        transform: translateY(-50);
+    }
+
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+
+.ReserveButton
+{
+    margin-top: 1.5rem;
+    margin-right: 1.5rem;
+    padding: 7px 20px;
+    background-color: #ceb780;
+    border: none;
+    color: #1a1a1a;
+    font-size: medium;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    // font-family: 'Segoe UI', sans-serif;
+    // letter-spacing: 0.1em;
+    font-weight: 450;
+    float: right;
+}
+
+.ReserveButton:hover {
+    background-color: #0e0e0e;
+    color: #ceb780;
+    border: 1px solid #ceb780;
+}
+
+.footerContainer {
+    margin-top: 20rem;
+    bottom: 0;
+    left: 0;
+    background: #141414;
+    width: 100%;
+    color: #ceb780;
+    text-align: center;
+    z-index: 1000;
+}
+
+.optionPricingDesc
+{
+    font-size: 12px;
+    text-align: right;
+    justify-content: space-between;
+    display: flex;
+    align-items: baseline;
+    margin-right: 2rem;
+}
+
+.optionPricing
+{
+    font-size: x-large;
+    text-align: right;
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+
+.optionTitle
+{
+    font-size: medium;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    margin-top: 2rem;
+}
+
+.spinnerContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    margin-top: 20px;
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    /* Light gray border */
+    border-left-color: #737373;
+    /* Solid black left border for the spinning effect */
+    border-radius: 50%;
+    /* Make it a circle */
+    width: 40px;
+    /* Size of the spinner */
+    height: 40px;
+    animation: spin 1s linear infinite;
+    /* Spin animation */
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+        /* Complete one full rotation */
+    }
+}
+
+.spinner p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+    /* Optional: style the text */
 }
