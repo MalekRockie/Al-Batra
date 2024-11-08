@@ -4,17 +4,12 @@
 }
 
 .Container1 {
-    margin-top: 220px;
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
-    /* Change to column to align elements vertically */
     align-items: center;
-    /* Center horizontally */
-    // background-color: #ceb780;
     height: auto;
-    /* Set auto height to accommodate both the line and text */
     padding-bottom: 20px;
-    /* Add some padding for spacing */
 }
 
 .Container2 {
@@ -30,6 +25,20 @@
     letter-spacing: 0.20em;
     margin-top: 70px;
     padding: 0;
+}
+
+.Container3 {
+    margin-top: 220px;
+    display: flex;
+    flex-direction: column;
+    /* Change to column to align elements vertically */
+    align-items: center;
+    /* Center horizontally */
+    // background-color: #ceb780;
+    height: auto;
+    /* Set auto height to accommodate both the line and text */
+    padding-bottom: 20px;
+    /* Add some padding for spacing */
 }
 
 .line {

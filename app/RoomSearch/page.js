@@ -186,10 +186,14 @@ const RoomSearch = () => {
         </section>
       </div>
 
+      {/* Selected Room */}
+      <div className={RoomSearchModule.Container3}>
+        <hr className={RoomSearchModule.line} />
+      </div>
       {/* Rooms Section */}
       <div className={RoomSearchModule.Container1}>
-        <div className={RoomSearchModule.Container2}>OUR ACCOMMODATIONS</div>
         <hr className={RoomSearchModule.line} />
+        <div className={RoomSearchModule.Container2}>OUR ACCOMMODATIONS</div>
       </div>
 
       

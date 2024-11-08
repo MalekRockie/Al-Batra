@@ -2,11 +2,15 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import CustomDateRangePicker from '../CustomDateRangePicker';
-import RoomTypeSelection from '../RoomTypeSelection';
 import { Box } from '@mui/material';
 import Link from 'next/link';
 import CustomerDetailsModule from '../../scss/CustomerDetails.module.scss';
-import styles from '../../scss/Home.module.scss';
+import countriesData from '../../public/countries_codes.JSON';
+import PhoneInput from "react-phone-input-2";
+import 'react-phone-input-2/lib/style.css'
+
+
+
 
 const CustomerDetails = () => {
   const router = useRouter();
@@ -15,20 +19,38 @@ const CustomerDetails = () => {
   const [checkOutDate, setCheckOutDate] = useState('');
   const [isBookingVisible, setIsBookingVisible] = useState(true);
   const [isScrolledToMax, setIsScrolledToMax] = useState(false);
+  const [phone, setPhone] = useState('');
+  const [reservationID, setReservationID] = useState('');
+  const [isReservationSuccessful, setIsReservationSuccessful] = useState(false);
+  const [countries, setCountries] = useState([]);
+  const [selectedDialCode, setSelectedDialCode] = useState('');
+
+
 
   const [formData, setFormData] = useState({
+  customer: {
     first_name: '',
     last_name: '',
     email_address: '',
     confirmEmailAddress: '',
-    phone_number: '',
+    phone_number: '6782947183',
     date_of_Birth: "1978-10-08",
-    nationality: '',
-    checkInDate: '',
-    checkOutDate: '',
-    roomType: '',
-    // expiryYear: ''
-  });
+    nationality: ''
+  },
+  reservations: [
+    {
+      reservation: {
+        checkInDate: '2024-12-23',
+        checkOutDate: '2024-12-25',
+        status: 'Pending',
+        payment_Status: 'Pending',
+        special_Requests: ''
+      },
+      roomTypeID: 'DDR'
+    }
+  ]
+});
+
 
   const [formErrors, setFormErrors] = useState({
     first_name: false,
@@ -49,99 +71,144 @@ const CustomerDetails = () => {
     setRoomType(roomTypeParam || '');
     setCheckInDate(checkInDateParam || '');
     setCheckOutDate(checkOutDateParam || '');
+
+    console.log("CheckInDate: ", checkInDateParam);
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
 
-  const toggleBookingSection = () => {
+
+const toggleBookingSection = () => {
     setIsBookingVisible(!isBookingVisible);
   };
 
-const handleSubmit = async (event) => {
-  event.preventDefault();
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
 
-  let errors = {};
-
-  if (!formData.first_name) errors.first_name = true;
-  if (!formData.last_name) errors.last_name = true;
-  if (!formData.phone_number) errors.phone_number = true;
-  if (!formData.email_address) errors.email_address = true;
-  if (!formData.confirmEmailAddress || formData.confirmEmailAddress !== formData.email_address) {
-    errors.confirmEmailAddress = true;
-  }
-  if (!formData.nationality) errors.nationality = true;
-
-  setFormErrors(errors);
-
-  // // Stop submission if there are errors
-  // if (Object.keys(errors).length > 0) {
-  //   alert("Please fill in all required fields correctly.");
-  //   return;
-  // }
-
-  
-  console.log('Customer info:', formData);
-
-  try {
-    const response = await fetch("http://localhost:8080/api/customers/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
+    setFormData((prev) => ({
+      ...prev,
+      customer: {
+        ...prev.customer,
+        [name]: value,
       },
-      body: JSON.stringify(formData) // Using formData directly
-    });
+    }));
+        setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: value.trim() === '' || (name === 'confirmEmailAddress' && value !== formData.customer.email_address),
+      }));
+    };
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+
+
+{/* Submission starts here */}
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    let errors = {};
+
+    if (!formData.customer.first_name) errors.first_name = true;
+    if (!formData.customer.last_name) errors.last_name = true;
+    if (!formData.customer.phone_number) errors.phone_number = true;
+    if (!formData.customer.email_address) errors.email_address = true;
+    if (!formData.customer.confirmEmailAddress || formData.customer.confirmEmailAddress !== formData.customer.email_address) {
+      errors.confirmEmailAddress = true;
+    }
+    if (!formData.customer.nationality) errors.nationality = true;
+
+    setFormErrors(errors);
+
+    // Stop submission if there are errors
+    if (Object.keys(errors).length > 0) {
+      alert("Please fill in all required fields correctly.");
+      return;
     }
 
-    // Check if the response has content before parsing as JSON
-    const responseText = await response.text();
-    if (responseText) {
-      const data = JSON.parse(responseText);
-      console.log("Customer created successfully:", data); // Handle the response
-    } else {
-      console.log("Customer created successfully, but no response data.");
+    console.log('Customer info:', formData);
+
+    // Submit form data to API if there are no errors
+    try {
+      const response = await fetch("http://localhost:8080/reservation/createReservation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data && data.reservationID)
+        {
+          setReservationID(data.reservationID);
+          setIsReservationSuccessful(true);
+        }
+
+    } catch (error) {
+      console.error("Error creating customer:", error);
     }
-    
-  } catch (error) {
-    console.error("Error creating customer:", error);
-  }
-};
+  };
+{/* Submission ends here */}
+
+
+
+
+  const allowedCountries = countriesData.countries.map(country => country.code.toLowerCase());
+
+
 
 
 
   return (
+  <div className={CustomerDetailsModule.page}>
+      {isReservationSuccessful ? (
+        <div>
+          <Box className={CustomerDetailsModule.bookingContainer}>
+              <img src="logo.png" alt="Al-Batra Hotel Logo" className={CustomerDetailsModule.logo} />
+          </Box>
+        <div className={CustomerDetailsModule.successMessage}>
+          <div className={CustomerDetailsModule.ThankContainer}>
+          <p>Thank you!</p>
+            <div className={CustomerDetailsModule.ThankDetails}>
+                <p>Your reservation has been confirmed.<br/> We look forward to your stay! Please check your emails for more details</p>
+              <p>Your reservation ID is:<br/></p>
+              <div className={CustomerDetailsModule.ResID}>{reservationID} </div>
+            </div>
+          </div>
 
-    <div className={CustomerDetailsModule.main}>
-      {/* Header */}
-      {/* <header
-        className={`${styles.header} ${
-          isScrolledToMax && !isMouseOver ? styles.gradient : styles.solid
-        }`}
-      >
-        <div className={styles.logoTitleNav}>
-          <img src="logo.png" alt="Al-Batra Hotel Logo" className={styles.logo} />
-          <div className={styles.titleNav}>
-            <h1 className={styles.title}>AL-BATRA HOTEL</h1>
-            <nav className={styles.nav}>
-              <Link href="/">HOME</Link>
-              <a href="#rooms">ROOMS</a>
-              <a href="#dining">DINING</a>
-              <a href="#amenities">AMENITIES</a>
-              <a href="#booking" onClick={toggleBookingSection}>
-                BOOKING
-              </a>
-            </nav>
+          <div className={CustomerDetailsModule.ReservationSection}>
+            <div className={CustomerDetailsModule.ReservationSectionTitle}>
+              Reservation Details:
+            </div>
+            <div className={CustomerDetailsModule.ReservationSectionBox}>
+              <div>
+                <div>
+                  Room(s): 
+                   
+                </div>
+                <img src={`room1.jpg`} className={CustomerDetailsModule.img}/>{roomType} <br/> <br/> 
+              </div>
+                <div>
+                  <div className={CustomerDetailsModule.ReservationSectionBoxTitle}>
+                    Check In Date:
+                  </div>
+                  <div>
+                    {checkInDate}
+                  </div>
+                </div>
+                <div className={CustomerDetailsModule.ReservationSectionBoxTitle}>
+                  Check In Date: <br/> {checkOutDate}
+                </div>
+                <div className={CustomerDetailsModule.ReservationSectionBoxTitle}>
+                  Nights: <br/> 5
+                </div>
+            </div>
           </div>
         </div>
-      </header> */}
+        </div>
+      ) : (
+        <div className={CustomerDetailsModule.main}>
 
       {/* Booking Section */}
       <div className={CustomerDetailsModule.bookingBar}>
@@ -215,6 +282,7 @@ const handleSubmit = async (event) => {
                     </div>
                   </div>
                   <div className={CustomerDetailsModule.InputLabel}>
+
                     <div className={CustomerDetailsModule.LabelText}>
                       Mobile Phone Number*
                     </div>
@@ -240,12 +308,11 @@ const handleSubmit = async (event) => {
               <div className={CustomerDetailsModule.inputBox}>
                 <div className={CustomerDetailsModule.Individual_InputBox}>
                   <input
-                    type="text"
                     name="first_name"
+                    type="text"
                     value={formData.first_name}
                     onChange={handleInputChange}
                     className={`${CustomerDetailsModule.inputBox} ${formErrors.first_name ? CustomerDetailsModule.inputError : ''}`}
-                    required
                   />
                 </div>
 
@@ -256,35 +323,43 @@ const handleSubmit = async (event) => {
                     value={formData.last_name}
                     onChange={handleInputChange}
                     className={`${CustomerDetailsModule.inputBox} ${formErrors.last_name ? CustomerDetailsModule.inputError : ''}`}
-                    required
                   />
                 </div>
 
                 <div className={CustomerDetailsModule.Individual_InputBox}>
-                  <input
-                    type="text"
-                    name="phone_number"
+
+                  
+                    {/* Dropdown for selecting country code */}
+                  <PhoneInput
+                    country={'us'} // Set the initial country code (e.g., 'us' for United States)
                     value={formData.phone_number}
-                    onChange={handleInputChange}
-                    className={`${CustomerDetailsModule.inputBox} ${formErrors.phone_number ? CustomerDetailsModule.inputError : ''}`}
-                    required
+                    inputStyle={{width:"100%", borderRadius:"0", height:"2.44rem", border: "0.5px"}}
+                    inputProps={{
+                      name: 'phone',
+                      required: true,
+                      autoFocus: true
+                    }}
+                    onChange={phone => setPhone(phone)} // Handle the change event
+                    onlyCountries={allowedCountries}
                   />
+
+
                 </div>
 
                 <div className={CustomerDetailsModule.Individual_InputBox}>
                   <input
-                    type="text"
+                    type="email"
+                    required  
                     name="email_address"
                     value={formData.email_address}
                     onChange={handleInputChange}
                     className={`${CustomerDetailsModule.inputBox} ${formErrors.email_address ? CustomerDetailsModule.inputError : ''}`}
-                    required
                   />
                 </div>
 
                 <div className={CustomerDetailsModule.Individual_InputBox}>
                   <input
-                    type="text"
+                    type="email"
                     name="confirmEmailAddress"
                     value={formData.confirmEmailAddress}
                     onChange={handleInputChange}
@@ -384,11 +459,11 @@ const handleSubmit = async (event) => {
             <button className={CustomerDetailsModule.searchButton} onClick={handleSubmit}>
               BOOK
             </button>
-
         </div>
       </div>
-      .
     </div>
+    )}
+  </div>
   );
 };
 
