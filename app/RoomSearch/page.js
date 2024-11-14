@@ -26,6 +26,11 @@ const RoomSearch = () => {
   tomorrow.setDate(today.getDate() + 1);
   const CurrentBill = 0;
 
+  //Testing Here
+  const [tempSelectedRooms, setTempSelectedRooms] = useState([]);
+  const [selectedRooms, setSelectedRooms] = useState([])
+  
+  
   const [isBookingVisible, setIsBookingVisible] = useState(true);
   const [isScrolledToMax, setIsScrolledToMax] = useState(false);
   const [isMouseOver, setIsMouseOver] = useState(false);
@@ -49,9 +54,16 @@ const RoomSearch = () => {
     console.log('Selected Dates:', dates);
   };
 
+const handleRoomSelectedChange = (newRooms) => {
+  console.log("Room data received:", newRooms); // Debugging log
+  setTempSelectedRooms(newRooms);
+};
+
+
+
   const handleRoomTypeChange = (roomType) => {
-    setSelectedRoomType(roomType);
-    console.log('Selected Room Type:', roomType);
+    setSelectedRooms(roomType);
+    console.log('Selected Room Type:', newRooms);
   };
 
   const fetchRoomTypes = async (checkInDate, checkOutDate) => {
@@ -61,7 +73,7 @@ const RoomSearch = () => {
         `http://localhost:8080/room/availableRoomTypes?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`
       );
       const data = await response.json();
-      console.log('Fetched room types:', data);
+      // console.log('Fetched room types:', data);
       setRoomType(data); // Set the fetched room types in the state
     } catch (error) {
       console.error('Error fetching room types:', error);
@@ -72,13 +84,21 @@ const RoomSearch = () => {
   };
 
   const handleUpdateSearch = () => {
-    console.log('Selected Dates: ', selectedDates);
-    console.log('Room Types length: ', roomType.length);
+    setSelectedRooms(tempSelectedRooms);
+    // console.log('Updated Selected Rooms:', selectedRooms);
+    // console.log('Selected Dates: ', selectedDates);
+    // console.log('Room Types length: ', roomType.length);
+    tempSelectedRooms.forEach((room, index) => {
+    console.log(`Room ${index + 1}:`, room);  // Logs each room in the array
+  });
+
+    // console.log('Selected Room:', selectedRooms[1]);
+
     if (selectedDates[0] && selectedDates[1]) {
       const checkIn = selectedDates[0].toISOString().split('T')[0]; // Format as YYYY-MM-DD
       const checkOut = selectedDates[1].toISOString().split('T')[0]; // Format as YYYY-MM-DD
 
-      console.log({ checkIn, checkOut });
+      // console.log({ checkIn, checkOut });
 
       // Fetch room types from the API with selected dates
       fetchRoomTypes(checkIn, checkOut);
@@ -124,19 +144,41 @@ const RoomSearch = () => {
 
   useEffect(() => {}, [isScrolledToMax, isMouseOver]);
 
+  // RoomSearch Component
+// useEffect(() => {
+//   console.log('Updated Selected Rooms:', selectedRooms);
+// }, [selectedRooms]);
+
+
   useEffect(() => {
+    
+    const defaultRoom = { adults: 1, children: 0, roomType: 'pick', package: ''};
+    const roomPackage = { roomType: '', package: ''};
+    // If `selectedRooms` is empty or not yet set, use the default values
+    if (selectedRooms.length === 0) {
+      // console.log('Default Room:', defaultRoom);
+      selectedRooms[0] = defaultRoom
+    } 
+    // else {
+    //   // Otherwise, log the selected rooms and their details
+    //   selectedRooms.forEach((room, index) => {
+    //     console.log(`Room ${index + 1}:`, room);
+    //   });
+    // }
+    // console.log('Rooms: ', selectedRooms[1]);
+
     if (selectedDates[0] && selectedDates[1]) {
       const checkIn = selectedDates[0].toISOString().split('T')[0]; // Format as YYYY-MM-DD
       const checkOut = selectedDates[1].toISOString().split('T')[0]; // Format as YYYY-MM-DD
 
-      console.log({ checkIn, checkOut });
+      // console.log({ checkIn, checkOut });
 
       // Fetch room types from the API with selected dates
       fetchRoomTypes(checkIn, checkOut);
     } else {
       alert('Please select a check-in/check-out date and room size!');
     }
-  }, [selectedDates]);
+  }, [selectedRooms, selectedDates]);
 
   return (
     <div className={RoomSearchModule.main}>
@@ -177,7 +219,7 @@ const RoomSearch = () => {
             </div>
             <div className={styles.roomTypeContainer}>
               <div className={styles.bookingTitle}>ROOM SIZE</div>
-              <RoomTypeSelection />
+              <RoomTypeSelection onRoomTypeChange={handleRoomSelectedChange}/>
             </div>
             <button className={styles.searchButton} onClick={handleUpdateSearch}>
               UPDATE SEARCH
@@ -189,10 +231,25 @@ const RoomSearch = () => {
       {/* Selected Room */}
       <div className={RoomSearchModule.Container3}>
         <hr className={RoomSearchModule.line} />
+        <div className={RoomSearchModule.RoomsRequested}>
+
+        {
+          selectedRooms.map((rooms, index) => {
+            return (
+              <div className={RoomSearchModule.selectedRoomContainer}>
+                Room {index + 1} | {rooms.adults}  Adults<br/>
+                Select Room Size <br/>
+                Select Package <br/>
+              </div>
+            )
+            })
+        }
+
+        </div>
+        <hr className={RoomSearchModule.line} />
       </div>
       {/* Rooms Section */}
       <div className={RoomSearchModule.Container1}>
-        <hr className={RoomSearchModule.line} />
         <div className={RoomSearchModule.Container2}>OUR ACCOMMODATIONS</div>
       </div>
 
@@ -242,7 +299,7 @@ const RoomSearch = () => {
                           <div className={RoomSearchModule.optionPricing}> ${room.minRate} per night</div>
                         </div>
                       </div>
-                      <button className={RoomSearchModule.ReserveButton} onClick={() => handleSelectPackage(room.typeName, selectedDates[0].toISOString().split('T')[0], selectedDates[1].toISOString().split('T')[0])}>
+                      <button className={RoomSearchModule.ReserveButton} onClick={() => handleSelectPackage(index, room.typeName, selectedDates[0].toISOString().split('T')[0], selectedDates[1].toISOString().split('T')[0])}>
                         SELECT PACKAGE
                       </button>
                     </div>

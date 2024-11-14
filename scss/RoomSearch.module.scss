@@ -4,7 +4,6 @@
 }
 
 .Container1 {
-    margin-top: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,24 +27,40 @@
 }
 
 .Container3 {
-    margin-top: 220px;
+    margin: auto;
+    margin-top: 250px;
     display: flex;
     flex-direction: column;
-    /* Change to column to align elements vertically */
     align-items: center;
-    /* Center horizontally */
-    // background-color: #ceb780;
     height: auto;
-    /* Set auto height to accommodate both the line and text */
-    padding-bottom: 20px;
-    /* Add some padding for spacing */
+    width: 70rem;
+    // padding-bottom: 20px;
+}
+
+.RoomsRequested
+{
+    // margin: auto;
+    margin-top: 1rem;
+    // border: 1px solid #ceb780;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: start;
+}
+
+.selectedRoomContainer
+{
+    border-bottom: 1px solid #ceb780;
+    // background-color:#555;
+    margin-right: 10rem;
+    font-size: small;
 }
 
 .line {
     width: 1200px;
     border: none;
     border-top: 1px solid #ceb780;
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 .RoomsLists

@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from '../scss/RoomTypeSelection.module.scss';
 
 const RoomTypeSelection = ({onRoomTypeChange}) => {
-const [selectedRoomType, setSelectedRoomType] = useState('');
+// const [selectedRoomType, setSelectedRoomType] = useState('');
 
   const [isOpen, setIsOpen] = useState(false);
-  const [rooms, setRooms] = useState([{ adults: 1, children: 0 }]);
+  const [rooms, setRooms] = useState([{ adults: 1, children: 0, roomType: '', package: '' }]);
   const popupRef = useRef(null);
 
 
@@ -17,7 +17,9 @@ const [selectedRoomType, setSelectedRoomType] = useState('');
       }
   };
 
+
   useEffect(() => {
+    
     function handleClickOutside(event) {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
         setIsOpen(false);
@@ -30,14 +32,19 @@ const [selectedRoomType, setSelectedRoomType] = useState('');
   }, [popupRef]);
 
   const addRoom = () => {
-    setRooms([...rooms, { adults: 1, children: 0 }]);
+    const newRooms = [...rooms, { adults: 1, children: 0, roomType: '', package: '' }];
+    setRooms(newRooms);
+    handleRoomUpdate(newRooms);
   };
 
-  const removeRoom = (index) => {
-    if (rooms.length > 1) {
-      setRooms(rooms.filter((_, roomIndex) => roomIndex !== index));
-    }
-  };
+const removeRoom = (index) => {
+  if (rooms.length > 1) {
+    const updatedRooms = rooms.filter((_, roomIndex) => roomIndex !== index);
+    setRooms(updatedRooms);
+    onRoomTypeChange(updatedRooms);
+  }
+};
+
 
   const handleAdultChange = (index, value) => {
     const newRooms = [...rooms];
@@ -50,6 +57,8 @@ const [selectedRoomType, setSelectedRoomType] = useState('');
     newRooms[index].children = Math.max(0, Math.min(value, 3 - newRooms[index].adults));
     handleRoomUpdate(newRooms);
   };
+
+  
 
   return (
     <div className={styles.roomTypeSelection}>
@@ -109,7 +118,7 @@ const [selectedRoomType, setSelectedRoomType] = useState('');
               </div>
             </div>
           ))}
-          {rooms.length < 5 && (
+          {rooms.length < 4 && (
             <button className={styles.Button} onClick={addRoom}>
               ADD ROOM
             </button>

@@ -122,8 +122,7 @@ const toggleBookingSection = () => {
       return;
     }
 
-    console.log('Customer info:', formData);
-
+    
     // Submit form data to API if there are no errors
     try {
       const response = await fetch("http://localhost:8080/reservation/createReservation", {
@@ -133,16 +132,17 @@ const toggleBookingSection = () => {
         },
         body: JSON.stringify(formData),
       });
-
+      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
+      
       const data = await response.json();
       if (data && data.reservationID)
         {
           setReservationID(data.reservationID);
           setIsReservationSuccessful(true);
+          console.log('Customer info:', formData);
         }
 
     } catch (error) {
@@ -331,7 +331,7 @@ const toggleBookingSection = () => {
                   
                     {/* Dropdown for selecting country code */}
                   <PhoneInput
-                    country={'us'} // Set the initial country code (e.g., 'us' for United States)
+                    country={'ly'} // Set the initial country code (e.g., 'us' for United States)
                     value={formData.phone_number}
                     inputStyle={{width:"100%", borderRadius:"0", height:"2.44rem", border: "0.5px"}}
                     inputProps={{
