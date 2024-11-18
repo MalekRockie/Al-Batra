@@ -43,6 +43,17 @@ const handleDateClick = (date) => {
   }
 };
 
+const openCalenderBox = () => 
+  {
+    if(isOpen)
+      {
+        setIsOpen(false);
+      }
+    if(!isOpen)
+    {
+      setIsOpen(true);
+    }
+  }
 
   const renderCalendar = (month) => {
     const start = startOfMonth(month);
@@ -76,7 +87,7 @@ const handleDateClick = (date) => {
 
   return (
     <div className={styles.dateRangePicker}>
-      <div className={styles.dateRangeInput} onClick={() => setIsOpen(!isOpen)}>
+      <div className={styles.dateRangeInput} onClick={() => openCalenderBox()}>
         {`${format(selectedDates[0], 'MMM d, yyyy')} - ${selectedDates[1] ? format(selectedDates[1], 'MMM d, yyyy') : ''}`}
       </div>
       {isOpen && (

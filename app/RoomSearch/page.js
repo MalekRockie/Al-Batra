@@ -8,6 +8,7 @@ import Link from 'next/link';
 import styles from '../../scss/Home.module.scss';
 import RoomSearchModule from '../../scss/RoomSearch.module.scss';
 import { useRouter } from 'next/navigation';
+import { FALSE } from 'sass';
 
 
 const LoadingSpinner = () => (
@@ -29,42 +30,94 @@ const RoomSearch = () => {
   //Testing Here
   const [tempSelectedRooms, setTempSelectedRooms] = useState([]);
   const [selectedRooms, setSelectedRooms] = useState([])
-  
+
   
   const [isBookingVisible, setIsBookingVisible] = useState(true);
   const [isScrolledToMax, setIsScrolledToMax] = useState(false);
   const [isMouseOver, setIsMouseOver] = useState(false);
   const [selectedDates, setSelectedDates] = useState([today, tomorrow]);
   const [selectedRoomType, setSelectedRoomType] = useState(null);
-  const [roomType, setRoomType] = useState([]); // Initialize as empty array to hold fetched room types
-  const [activeRoomIndex, setActiveRoomIndex] = useState(null); // Track which room's packages to show
-  const [isLoading, setIsLoading] = useState(false); // Loading state for fetch
+  const [roomType, setRoomType] = useState([]); 
+  const [AvailablePackages, setAvailablePackages] = useState([]);
+  const [activeRoomIndex, setActiveRoomIndex] = useState(null); 
+  const [activeSelectedRoomIndex, setSelectedActiveRoomIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSelectPackage = (roomType, checkInDate, checkOutDate) => {
-  const params = new URLSearchParams({
-    roomType,
-    checkInDate,
-    checkOutDate,
+  const [PackageSelection, setPackageSelection] = useState(true);
+
+  //handles selecting the room before prompting the used to select the package for each room
+const handleSelectRoomType = (roomIndex, roomTypePicked) => {
+  setSelectedRooms(prevSelectedRooms => {
+    const updatedRooms = [...prevSelectedRooms];
+    updatedRooms[roomIndex] = {
+      ...updatedRooms[roomIndex],
+      roomType: roomTypePicked, // Set the selected package type
+    };
+    setPackageSelection(false);
+    return updatedRooms;
   });
-  router.push(`./CustomerDetails?${params.toString()}`);
+
+  // If last room is configured, proceed to CustomerDetails
+  // if (roomIndex === selectedRooms.length - 1) {
+  //   console.log("Room Index: ", roomIndex);
+  //   console.log("selectedRooms length: ", selectedRooms.length);
+  //   const params = new URLSearchParams({
+  //     roomType: selectedRooms[roomIndex].roomType,
+  //     checkInDate: selectedDates[0].toISOString().split('T')[0],
+  //     checkOutDate: selectedDates[1].toISOString().split('T')[0],
+  //   });
+  //   router.push(`./CustomerDetails?${params.toString()}`);
+  // } else {
+  //   // Move to the next room for selection
+  //   setSelectedActiveRoomIndex(roomIndex + 1);
+  //   //Move to the top of the screen
+  //   window.scrollTo(0, 0);
+  //   setActiveRoomIndex(null);
+  // }
 };
+
+//Handles selecting the package for each selected room once that room is selected
+const handleSelectpackage = (package_type) => 
+  {
+    selectedRooms[activeSelectedRoomIndex].package = package_type;
+    setPackageSelection(true);
+    console.log("Package selected: ", package_type);
+    console.log("for room: ", activeSelectedRoomIndex);
+    
+    if(activeSelectedRoomIndex === selectedRooms.length - 1)
+      {
+        const params = new URLSearchParams({
+          selectedRooms,
+          checkInDate: selectedDates[0].toISOString().split('T')[0],
+          checkOutDate: selectedDates[1].toISOString().split('T')[0],
+        });
+        router.push(`./CustomerDetails?${params.toString()}`);
+      }else {
+        setSelectedActiveRoomIndex(activeSelectedRoomIndex + 1);
+        window.scrollTo(0, 0);
+        setActiveRoomIndex(null);
+      }
+  }
+
+
 
   const handleDateRangeChange = (dates) => {
     setSelectedDates(dates);
     console.log('Selected Dates:', dates);
   };
 
+
+//Handles change of selected rooms from the RoomTypeSelection
 const handleRoomSelectedChange = (newRooms) => {
   console.log("Room data received:", newRooms); // Debugging log
   setTempSelectedRooms(newRooms);
 };
 
 
-
-  const handleRoomTypeChange = (roomType) => {
-    setSelectedRooms(roomType);
-    console.log('Selected Room Type:', newRooms);
-  };
+  // const handleRoomTypeChange = (roomType) => {
+  //   setSelectedRooms(roomType);
+  //   console.log('Selected Room Type:', newRooms);
+  // };
 
   const fetchRoomTypes = async (checkInDate, checkOutDate) => {
     try {
@@ -73,7 +126,7 @@ const handleRoomSelectedChange = (newRooms) => {
         `http://localhost:8080/room/availableRoomTypes?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`
       );
       const data = await response.json();
-      // console.log('Fetched room types:', data);
+      console.log('Fetched room types:', data);
       setRoomType(data); // Set the fetched room types in the state
     } catch (error) {
       console.error('Error fetching room types:', error);
@@ -83,22 +136,73 @@ const handleRoomSelectedChange = (newRooms) => {
     }
   };
 
+  const fetchAvailablePackages = async() => {
+    try 
+    {
+      setIsLoading(true);
+      const response = await fetch(
+        `http://localhost:8080/PackagePlan/GetAvailablePackages`
+      );
+      const data = await response.json();
+      console.log("Fetched available Package plans: ", data);
+      setAvailablePackages(data);
+    }
+    catch(error)
+    {
+      console.error('Error fetching available package plans: ', error);
+    }
+    finally
+    {
+      setIsLoading(false);
+    }
+  };
+
+  const handleChangeSelectedRoom = (roomToChangeIndex) => 
+    {
+      setPackageSelection(true);
+      const changedRooms = selectedRooms.map((room, index) => 
+        {
+          if (index > roomToChangeIndex)
+          {
+            return { ...room, roomType: null, package: null};
+          }
+          return room;
+        });
+      setSelectedActiveRoomIndex(roomToChangeIndex);
+      selectedRooms[roomToChangeIndex].roomType = null;
+      selectedRooms[roomToChangeIndex].package = null;
+      setSelectedRooms(changedRooms);
+    }
+
+  const handleEditRoomPackage = (roomToChangeIndex) => 
+    {
+      setPackageSelection(false);
+      const changedRooms = selectedRooms.map((room, index) => 
+        {
+          if (index > roomToChangeIndex)
+          {
+            return { ...room, roomType: null, package: null};
+          }
+          return room;
+        });
+      setSelectedActiveRoomIndex(roomToChangeIndex);
+      selectedRooms[roomToChangeIndex].package = null;
+      setSelectedRooms(changedRooms);
+    }
+
   const handleUpdateSearch = () => {
-    setSelectedRooms(tempSelectedRooms);
-    // console.log('Updated Selected Rooms:', selectedRooms);
-    // console.log('Selected Dates: ', selectedDates);
-    // console.log('Room Types length: ', roomType.length);
+
+    setPackageSelection(true);
+    setSelectedActiveRoomIndex(0);
+    setSelectedRooms(JSON.parse(JSON.stringify(tempSelectedRooms)));
     tempSelectedRooms.forEach((room, index) => {
     console.log(`Room ${index + 1}:`, room);  // Logs each room in the array
   });
-
-    // console.log('Selected Room:', selectedRooms[1]);
 
     if (selectedDates[0] && selectedDates[1]) {
       const checkIn = selectedDates[0].toISOString().split('T')[0]; // Format as YYYY-MM-DD
       const checkOut = selectedDates[1].toISOString().split('T')[0]; // Format as YYYY-MM-DD
 
-      // console.log({ checkIn, checkOut });
 
       // Fetch room types from the API with selected dates
       fetchRoomTypes(checkIn, checkOut);
@@ -144,7 +248,7 @@ const handleRoomSelectedChange = (newRooms) => {
 
   useEffect(() => {}, [isScrolledToMax, isMouseOver]);
 
-  // RoomSearch Component
+// RoomSearch Component
 // useEffect(() => {
 //   console.log('Updated Selected Rooms:', selectedRooms);
 // }, [selectedRooms]);
@@ -152,7 +256,7 @@ const handleRoomSelectedChange = (newRooms) => {
 
   useEffect(() => {
     
-    const defaultRoom = { adults: 1, children: 0, roomType: 'pick', package: ''};
+    const defaultRoom = { adults: 1, children: 0, roomType: null, package: null};
     const roomPackage = { roomType: '', package: ''};
     // If `selectedRooms` is empty or not yet set, use the default values
     if (selectedRooms.length === 0) {
@@ -175,6 +279,7 @@ const handleRoomSelectedChange = (newRooms) => {
 
       // Fetch room types from the API with selected dates
       fetchRoomTypes(checkIn, checkOut);
+      fetchAvailablePackages();
     } else {
       alert('Please select a check-in/check-out date and room size!');
     }
@@ -229,25 +334,70 @@ const handleRoomSelectedChange = (newRooms) => {
       </div>
 
       {/* Selected Room */}
-      <div className={RoomSearchModule.Container3}>
-        <hr className={RoomSearchModule.line} />
-        <div className={RoomSearchModule.RoomsRequested}>
+      {selectedRooms.length >= 0 && (
+          <div className={RoomSearchModule.Container3}>
+            <hr className={RoomSearchModule.line} />
+            <div className={RoomSearchModule.RoomsRequested}>
 
-        {
-          selectedRooms.map((rooms, index) => {
-            return (
-              <div className={RoomSearchModule.selectedRoomContainer}>
-                Room {index + 1} | {rooms.adults}  Adults<br/>
-                Select Room Size <br/>
-                Select Package <br/>
-              </div>
-            )
-            })
-        }
+            {
+              selectedRooms.map((rooms, index) => {
+                return (
+                  <div className={index == activeSelectedRoomIndex && RoomSearchModule.selectedRoomContainer}>
+                    <div className={index != activeSelectedRoomIndex && RoomSearchModule.unSelectedRoomContainer}>
 
-        </div>
-        <hr className={RoomSearchModule.line} />
-      </div>
+                      
+                      <div className={RoomSearchModule.RoomsRequestedBoldFont}>
+                      Room {index + 1} | {rooms.adults == 1 && `${rooms.adults} Adult`} 
+                      {rooms.adults > 1 && `${rooms.adults} Adults`}
+                      {rooms.children == 1 && ` | ${rooms.children} Child`} 
+                      {rooms.children > 1 && ` | ${rooms.children} Children`}
+                      <br/>
+                      {rooms.roomType == null && index == activeSelectedRoomIndex && `CHOOSE ROOM`}
+
+
+                    <div className={RoomSearchModule.RoomsRequestedNonBoldFont}>
+                      {rooms.roomType == null && index != activeSelectedRoomIndex && `CHOOSE ROOM`}
+                      {rooms.roomType != null && (
+                        <div>
+                        {rooms.roomType}<span> | </span>
+                        <a className={RoomSearchModule.underlinedClick} onClick={() => handleChangeSelectedRoom(index)}>Edit</a>
+                        </div>
+                      )}
+                      </div>
+                    </div>
+
+
+
+                      <div className={RoomSearchModule.RoomsRequestedBoldFont}>
+                        {rooms.package == null && !PackageSelection && index === activeSelectedRoomIndex && (<div>CHOOSE PACKAGE</div>)}
+                      </div>
+
+                      
+                      <div className={RoomSearchModule.RoomsRequestedNonBoldFont}>
+                        {rooms.package == null && PackageSelection && (<div>CHOOSE PACKAGE</div>)}
+                        {rooms.package == null && index != activeSelectedRoomIndex && !PackageSelection && (<div>CHOOSE PACKAGE</div>)}
+                        {rooms.package != null &&  (
+                          <div>{rooms.package}<span> | </span>
+                          <a className={RoomSearchModule.underlinedClick} onClick={() => handleEditRoomPackage(index)}>Edit</a>
+                        
+                        </div>
+                      )} 
+                      <br/>
+                      </div>
+
+                    </div>
+                  </div>
+                )
+                })
+            }
+
+            </div>
+            <hr className={RoomSearchModule.line2} />
+          </div>
+      )}
+
+
+
       {/* Rooms Section */}
       <div className={RoomSearchModule.Container1}>
         <div className={RoomSearchModule.Container2}>OUR ACCOMMODATIONS</div>
@@ -260,31 +410,50 @@ const handleRoomSelectedChange = (newRooms) => {
       {isLoading ? (
         <LoadingSpinner />
       ) : (
+
         <div className={RoomSearchModule.RoomsLists}>
+
+
           {roomType.length > 0 ? (
             roomType.map((room, index) => (
               <div key={index}>
-                <div className={RoomSearchModule.RoomContainer}>
-                  <div>
-                    <img
-                      src={`room1.jpg`}
-                      alt={room.typeName}
-                      className={RoomSearchModule.roomImage}
-                    />
-                  </div>
-                  <div className={RoomSearchModule.RoomTitle}>
-                    {room.typeName}
-                    <div className={RoomSearchModule.RoomDescription}>
-                      This room offers a comfortable stay with a minimum price of ${room.minRate}.
+
+                {PackageSelection == true && (
+                  <div className={RoomSearchModule.RoomContainer}>
+                    <div className={RoomSearchModule.roomImageContainer}>
+                      <img
+                        src={`room1.jpg`}
+                        alt={room.typeName}
+                        className={RoomSearchModule.roomImage}
+                      />
+                    </div>
+                    <div className={RoomSearchModule.RoomCardContainerRightside}>
+                      <div className={RoomSearchModule.RoomTitleAndDesc}>
+
+                        {room.typeName}
+                        <div className={RoomSearchModule.RoomDescription}>
+                          {room.roomDesc}
+                          <div className={RoomSearchModule.viewMoreDetails} onClick={()=> {toggleOptions(index)}}>
+                            View More details
+                          </div>
+                        </div>
+
+                      </div>
+                      <div className={RoomSearchModule.reserveButtonContainer}>
+                        <button
+                          className={RoomSearchModule.reserveButton}
+                          onClick={() => handleSelectRoomType(activeSelectedRoomIndex, room.typeName)}
+                        >
+                          SELECT ROOM
+                        </button>
+                      </div>
+
                     </div>
                   </div>
-                  <button
-                    className={RoomSearchModule.reserveButton}
-                    onClick={() => toggleOptions(index)} // Pass index of the room
-                  >
-                    RESERVE NOW
-                  </button>
-                </div>
+                )
+                }
+
+
                 {activeRoomIndex === index && (
                   <div
                     className={`${RoomSearchModule.optionsContainer} ${
@@ -299,24 +468,11 @@ const handleRoomSelectedChange = (newRooms) => {
                           <div className={RoomSearchModule.optionPricing}> ${room.minRate} per night</div>
                         </div>
                       </div>
-                      <button className={RoomSearchModule.ReserveButton} onClick={() => handleSelectPackage(index, room.typeName, selectedDates[0].toISOString().split('T')[0], selectedDates[1].toISOString().split('T')[0])}>
-                        SELECT PACKAGE
-                      </button>
-                    </div>
-                    <div className={RoomSearchModule.option}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div className={RoomSearchModule.optionTitle}>Full-Board Package (Includes All Meals)</div>
-                        <div className={RoomSearchModule.optionPricingDesc}>
-                          <div>Avg Price per Night:</div>
-                          <div className={RoomSearchModule.optionPricing}> ${room.minRate} per night</div>
-                        </div>
-                      </div>
-                      <button className={RoomSearchModule.ReserveButton} onClick={() => handleSelectPackage(room.typeName, selectedDates[0].toISOString().split('T')[0], selectedDates[1].toISOString().split('T')[0])}>
-                        SELECT PACKAGE
-                      </button>
                     </div>
                   </div>
                 )}
+
+                
               </div>
             ))
           ) : (
@@ -325,7 +481,41 @@ const handleRoomSelectedChange = (newRooms) => {
         </div>
       )}
 
-      
+        {AvailablePackages.map((pkg, index) => (
+          <div key={index}>
+            {PackageSelection == false && (
+              <div className={RoomSearchModule.RoomsLists}>
+                <div className={RoomSearchModule.PkgContainer}>
+                    <div className={RoomSearchModule.roomImageContainer}>
+                      <img
+                              src={`room3.jpg`}
+                              className={RoomSearchModule.roomImage}
+                            />
+                    </div>
+                    <div className={RoomSearchModule.RoomCardContainerRightside}>
+                      <div className={RoomSearchModule.RoomTitleAndDesc}>
+                        <div className={RoomSearchModule.packageTitle}>
+                          {pkg.package_Type}
+                          <div className={RoomSearchModule.PackageDescriptionEN}>
+                            {pkg.package_desc_EN}
+                          </div>
+                        </div>
+                      </div>
+                      <div className={RoomSearchModule.reserveButtonContainer}>
+                      <button 
+                      className={RoomSearchModule.reserveButton}
+                      onClick={()=> handleSelectpackage(pkg.package_Type)}
+                      >
+                        SELECT PACKAGE
+                      </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+          </div>
+        ))}
+
 
       <div className={RoomSearchModule.footerContainer}>
         <footer className={styles.footer}>

@@ -27,7 +27,8 @@
 }
 
 .Container3 {
-    margin: auto;
+    margin-right: auto;
+    margin-left: auto ;
     margin-top: 250px;
     display: flex;
     flex-direction: column;
@@ -46,14 +47,45 @@
     width: 100%;
     align-items: center;
     justify-content: start;
+    margin-bottom: 0%;    
+    // font-size: medium;
 }
+.RoomsRequestedBoldFont
+{
+    font-size: x-small;
+    font-weight: 500;
+    letter-spacing:0.1em;
+}
+
+
+.RoomsRequestedNonBoldFont {
+    // background-color: red;
+    font-weight: 200;
+    font-size: x-small;
+    letter-spacing: 0.1em;
+    // padding-bottom: 0.8rem;
+}
+
 
 .selectedRoomContainer
 {
-    border-bottom: 1px solid #ceb780;
+    border-bottom: 3px solid #ffffff;
     // background-color:#555;
-    margin-right: 10rem;
+    margin-right: 5rem;
+    width: 200px;
+}
+
+.unSelectedRoomContainer {
+    // background-color:#555;
+    margin-right: 5rem;
     font-size: small;
+    width: 200px;
+}
+
+.underlinedClick
+{
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .line {
@@ -61,6 +93,12 @@
     border: none;
     border-top: 1px solid #ceb780;
     margin-top: 30px;
+}
+
+.line2 {
+    width: 1200px;
+    border: none;
+    border-top: 1px solid #ceb780;
 }
 
 .RoomsLists
@@ -78,7 +116,7 @@
     border: 1px solid #ceb780;
     background-color: #0e0e0e;
     display: flex;
-    height: 18rem;
+    height: 16rem;
     z-index: 2;
     // position: relative;
     overflow: hidden;
@@ -87,6 +125,20 @@
     justify-content: space-between;
 }
 
+.PkgContainer {
+    margin-top: 40px;
+    text-align: center;
+    border: 1px solid #ceb780;
+    background-color: #0e0e0e;
+    display: flex;
+    height: 18rem;
+    z-index: 2;
+    // position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    align-items: flex-start;
+    justify-content: space-between;
+}
 
 .roomImage {
     width: 100%;
@@ -98,38 +150,80 @@
     align-items: flex-end;
 }
 
-.RoomTitle
+.roomImageContainer {
+    width: 40rem;
+    // max-width: 28rem;
+    // height: auto;
+    // object-fit: cover;
+    // padding-right: 0;
+    // padding-left: 0;
+    // align-items: flex-end;
+}
+
+.RoomCardContainerRightside
 {
     color: #ffffff;
-    padding-top: 5rem;
-    padding-left: 2rem;
     font-size: x-large;
     text-align: left;
-    position: relative;
+    width: 100%;
+    height: 100%;
+    // background-color: #ef0000;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.RoomTitleAndDesc
+{
+    width: 40rem;
+    margin-left: 2rem;
+    margin-top: 1rem;
+    font-weight: 300;
+    height: 8.8rem;
+    // overflow: auto;
+    // background-color: rebeccapurple;
 }
 
 .RoomDescription {
-    font-size: large;
-    padding-left: 0%;
+    font-size: 1.4ex;
     padding-top: 1rem;
     color: #ceb780;
     text-align: left;
 }
 
+.PackageDescriptionEN{
+    font-size: 1.3ex;
+    padding-top: 1rem;
+    color: #ceb780;
+    text-align: left;
+}
+
+.packageTitle
+{
+    text-align: center;
+}
+
+.reserveButtonContainer
+{
+    width: 10rem;
+    // background-color: #ff0000;
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: 5rem;
+    margin-bottom: 5rem;
+}
+
 .reserveButton {
-    margin-top: 14rem;
-    margin-right: 2.2rem;
-    padding: 7px 30px;
+    margin: auto;
+    // margin-right: 2.2rem;
+    padding: 5px 5px;
+    width: 12rem;
     background-color: #ceb780;
-    border: none;
+    // border: none;
     color: #1a1a1a;
     font-size: medium;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    // cursor: pointer;
+    // transition: background-color 0.3s ease, color 0.3s ease;
     font-family: 'Segoe UI', sans-serif;
     letter-spacing: 0.1em;
-
-
 }
 
 .reserveButton:hover {
@@ -139,6 +233,17 @@
 }
 
 // RoomSearch.module.scss
+
+.viewMoreDetails
+{
+    text-align: left;
+    margin-top: 5rem;
+    width: 8rem;
+    color: white;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 
 .optionsContainer {
     display: none; // Default to hidden
