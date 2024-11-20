@@ -8,7 +8,6 @@ import Link from 'next/link';
 import styles from '../../scss/Home.module.scss';
 import RoomSearchModule from '../../scss/RoomSearch.module.scss';
 import { useRouter } from 'next/navigation';
-import { FALSE } from 'sass';
 
 
 const LoadingSpinner = () => (
@@ -41,18 +40,23 @@ const RoomSearch = () => {
   const [AvailablePackages, setAvailablePackages] = useState([]);
   const [activeRoomIndex, setActiveRoomIndex] = useState(null); 
   const [activeSelectedRoomIndex, setSelectedActiveRoomIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true);
   const [PackageSelection, setPackageSelection] = useState(true);
+  const [totalCostEstimate, setTotalCostEstimate] = useState(0);
+  //should be true only when the used is about to proceed to the next page
+  const [isRoomSelectionComplete, setRoomSelectionComplete] = useState(false);
+
 
   //handles selecting the room before prompting the used to select the package for each room
-const handleSelectRoomType = (roomIndex, roomTypePicked) => {
+const handleSelectRoomType = (roomIndex, roomTypePicked, room_Price) => {
   setSelectedRooms(prevSelectedRooms => {
     const updatedRooms = [...prevSelectedRooms];
     updatedRooms[roomIndex] = {
       ...updatedRooms[roomIndex],
       roomType: roomTypePicked, // Set the selected package type
+      roomPrice: room_Price
     };
+    // console.log("Room: ", roomIndex ,"Selected Room: ", selectedRooms[roomIndex]);
     setPackageSelection(false);
     return updatedRooms;
   });
@@ -76,22 +80,30 @@ const handleSelectRoomType = (roomIndex, roomTypePicked) => {
   // }
 };
 
+
 //Handles selecting the package for each selected room once that room is selected
-const handleSelectpackage = (package_type) => 
+const handleSelectpackage = (package_type, packagePrice) => 
   {
-    selectedRooms[activeSelectedRoomIndex].package = package_type;
+    const updatedRooms = [...selectedRooms];
+    updatedRooms[activeSelectedRoomIndex] = 
+    {
+      ...updatedRooms[activeSelectedRoomIndex],
+      package: package_type,
+      package_Price: packagePrice
+    };
+    setSelectedRooms(updatedRooms);
     setPackageSelection(true);
-    console.log("Package selected: ", package_type);
-    console.log("for room: ", activeSelectedRoomIndex);
     
+    updatedRooms.forEach((room, roomIndex) => 
+    {
+      console.log("Total cost: ", totalCostEstimate);
+      console.log("Room: ", roomIndex, "'s price: ", room.roomPrice);
+      console.log("Room: ", roomIndex, "'s Package price: ", room.package_Price, "and ", packagePrice);
+    });
     if(activeSelectedRoomIndex === selectedRooms.length - 1)
       {
-        const params = new URLSearchParams({
-          selectedRooms,
-          checkInDate: selectedDates[0].toISOString().split('T')[0],
-          checkOutDate: selectedDates[1].toISOString().split('T')[0],
-        });
-        router.push(`./CustomerDetails?${params.toString()}`);
+        // setTotalCostEstimate(0);
+        setRoomSelectionComplete(true);
       }else {
         setSelectedActiveRoomIndex(activeSelectedRoomIndex + 1);
         window.scrollTo(0, 0);
@@ -99,6 +111,18 @@ const handleSelectpackage = (package_type) =>
       }
   }
 
+  const handleProceedingToNextPage = () =>
+    {
+      console.log(selectedRooms[0]);
+      const selectedRoomsString = JSON.stringify(selectedRooms);
+      const params = new URLSearchParams({
+          selectedRooms: selectedRoomsString,
+          checkInDate: selectedDates[0].toISOString().split('T')[0],
+          checkOutDate: selectedDates[1].toISOString().split('T')[0],
+          totalCostEstimate
+        });
+        router.push(`./CustomerDetails?${params.toString()}`);
+    }
 
 
   const handleDateRangeChange = (dates) => {
@@ -126,7 +150,7 @@ const handleRoomSelectedChange = (newRooms) => {
         `http://localhost:8080/room/availableRoomTypes?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`
       );
       const data = await response.json();
-      console.log('Fetched room types:', data);
+      // console.log('Fetched room types:', data);
       setRoomType(data); // Set the fetched room types in the state
     } catch (error) {
       console.error('Error fetching room types:', error);
@@ -144,7 +168,7 @@ const handleRoomSelectedChange = (newRooms) => {
         `http://localhost:8080/PackagePlan/GetAvailablePackages`
       );
       const data = await response.json();
-      console.log("Fetched available Package plans: ", data);
+      // console.log("Fetched available Package plans: ", data);
       setAvailablePackages(data);
     }
     catch(error)
@@ -159,45 +183,51 @@ const handleRoomSelectedChange = (newRooms) => {
 
   const handleChangeSelectedRoom = (roomToChangeIndex) => 
     {
+      setRoomSelectionComplete(false);
       setPackageSelection(true);
       const changedRooms = selectedRooms.map((room, index) => 
         {
           if (index > roomToChangeIndex)
           {
-            return { ...room, roomType: null, package: null};
+            return { ...room, roomType: null, package: null, roomPrice: null, package_Price: null};
           }
           return room;
         });
       setSelectedActiveRoomIndex(roomToChangeIndex);
       selectedRooms[roomToChangeIndex].roomType = null;
       selectedRooms[roomToChangeIndex].package = null;
+      selectedRooms[roomToChangeIndex].roomPrice = 0.0;
+      selectedRooms[roomToChangeIndex].package_Price = 0.0;
       setSelectedRooms(changedRooms);
     }
 
   const handleEditRoomPackage = (roomToChangeIndex) => 
     {
+      setRoomSelectionComplete(false);
       setPackageSelection(false);
       const changedRooms = selectedRooms.map((room, index) => 
         {
           if (index > roomToChangeIndex)
           {
-            return { ...room, roomType: null, package: null};
+            return { ...room, roomType: null, package: null, roomPrice: null, package_Price: null};
           }
           return room;
         });
       setSelectedActiveRoomIndex(roomToChangeIndex);
       selectedRooms[roomToChangeIndex].package = null;
+      // selectedRooms[roomToChangeIndex].package_Price = 0;
       setSelectedRooms(changedRooms);
     }
 
   const handleUpdateSearch = () => {
 
+    setRoomSelectionComplete(false);
     setPackageSelection(true);
     setSelectedActiveRoomIndex(0);
     setSelectedRooms(JSON.parse(JSON.stringify(tempSelectedRooms)));
-    tempSelectedRooms.forEach((room, index) => {
-    console.log(`Room ${index + 1}:`, room);  // Logs each room in the array
-  });
+  //   tempSelectedRooms.forEach((room, index) => {
+  //   console.log(`Room ${index + 1}:`, room);  // Logs each room in the array
+  // });
 
     if (selectedDates[0] && selectedDates[1]) {
       const checkIn = selectedDates[0].toISOString().split('T')[0]; // Format as YYYY-MM-DD
@@ -234,20 +264,27 @@ const handleRoomSelectedChange = (newRooms) => {
       setIsMouseOver(false);
     }
 
-    window.addEventListener('scroll', handleScroll);
-    const header = document.querySelector(`.${styles.header}`);
-    header.addEventListener('mouseover', handleMouseOver);
-    header.addEventListener('mouseout', handleMouseOut);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      header.removeEventListener('mouseover', handleMouseOver);
-      header.removeEventListener('mouseout', handleMouseOut);
-    };
   }, []);
 
-  useEffect(() => {}, [isScrolledToMax, isMouseOver]);
+useEffect(() => {
+    // Calculate the total cost when selectedRooms changes
+    const totalCost = selectedRooms.reduce((acc, room) => {
+      const roomPrice = room.roomPrice || 0.0; // Default to 0 if roomPrice is null/undefined
+      const package_Price = room.package_Price || 0.0; // Default to 0 if Package price is null/undefined
+      return acc + roomPrice + package_Price;
+    }, 0.0);
 
+    // Update the total cost state
+    setTotalCostEstimate(totalCost);
+
+  }, [selectedRooms]); // Recalculate total cost whenever selectedRooms changes
+
+
+  useEffect(() => {
+  }, [isScrolledToMax, isMouseOver]);
+
+
+  
 // RoomSearch Component
 // useEffect(() => {
 //   console.log('Updated Selected Rooms:', selectedRooms);
@@ -255,9 +292,7 @@ const handleRoomSelectedChange = (newRooms) => {
 
 
   useEffect(() => {
-    
-    const defaultRoom = { adults: 1, children: 0, roomType: null, package: null};
-    const roomPackage = { roomType: '', package: ''};
+    const defaultRoom = { adults: 1, children: 0, roomType: null, package: null, roomPrice: 0.0, package_Price: 0.0};
     // If `selectedRooms` is empty or not yet set, use the default values
     if (selectedRooms.length === 0) {
       // console.log('Default Room:', defaultRoom);
@@ -289,60 +324,52 @@ const handleRoomSelectedChange = (newRooms) => {
     <div className={RoomSearchModule.main}>
       {/* Header */}
       <header
-        className={`${styles.header} ${
-          isScrolledToMax && !isMouseOver ? styles.gradient : styles.solid
-        }`}
+        className={RoomSearchModule.header}
       >
-        <div className={styles.logoTitleNav}>
-          <img src="logo.png" alt="Al-Batra Hotel Logo" className={styles.logo} />
-          <div className={styles.titleNav}>
-            <h1 className={styles.title}>AL-BATRA HOTEL</h1>
-            <nav className={styles.nav}>
-              <Link href="/">HOME</Link>
-              <a href="#rooms">ROOMS</a>
-              <a href="#dining">DINING</a>
-              <a href="#amenities">AMENITIES</a>
-              <a href="#booking" onClick={toggleBookingSection}>
-                BOOKING
-              </a>
+        <div className={RoomSearchModule.logoTitleNav}>
+          <img src="logo.png" alt="Al-Batra Hotel Logo" className={RoomSearchModule.logo} />
+          <div className={RoomSearchModule.titleNav}>
+            <nav className={RoomSearchModule.nav}>
             </nav>
           </div>
         </div>
       </header>
 
       {/* Booking Section */}
-      <div
-        className={`${styles.bookingBar} ${
-          isBookingVisible ? styles.visible : styles.hidden
-        }`}
-      >
-        <section id="booking" className={styles.bookingSection}>
-          <Box className={styles.bookingContainer}>
-            <div className={styles.datePickerContainer}>
-              <div className={styles.bookingTitle}>CHECK IN - CHECK OUT</div>
-              <CustomDateRangePicker onDateRangeChange={handleDateRangeChange} />
-            </div>
-            <div className={styles.roomTypeContainer}>
-              <div className={styles.bookingTitle}>ROOM SIZE</div>
-              <RoomTypeSelection onRoomTypeChange={handleRoomSelectedChange}/>
-            </div>
-            <button className={styles.searchButton} onClick={handleUpdateSearch}>
-              UPDATE SEARCH
-            </button>
-          </Box>
-        </section>
-      </div>
+          <div
+            className={RoomSearchModule.bookingBar}
+          >
+            <section id="booking" className={RoomSearchModule.bookingSection}>
+              <Box className={RoomSearchModule.bookingContainer}>
+                <div className={RoomSearchModule.datePickerContainer}>
+                  <div className={RoomSearchModule.bookingTitle}>CHECK IN - CHECK OUT</div>
+                  <CustomDateRangePicker onDateRangeChange={handleDateRangeChange} />
+                </div>
+                <div className={styles.roomTypeContainer}>
+                  <div className={styles.bookingTitle}>ROOM SIZE</div>
+                  <RoomTypeSelection onRoomTypeChange={handleRoomSelectedChange}/>
+                </div>
+                <button className={styles.searchButton} onClick={handleUpdateSearch}>
+                  UPDATE SEARCH
+                </button>
+              </Box>
+            </section>
+          </div>
+
 
       {/* Selected Room */}
-      {selectedRooms.length >= 0 && (
           <div className={RoomSearchModule.Container3}>
+      {!isLoading && selectedRooms.length > 1 && (
+        <div>
             <hr className={RoomSearchModule.line} />
             <div className={RoomSearchModule.RoomsRequested}>
-
             {
               selectedRooms.map((rooms, index) => {
                 return (
-                  <div className={index == activeSelectedRoomIndex && RoomSearchModule.selectedRoomContainer}>
+                  
+                  <div 
+                  key={rooms.id || index}
+                  className={index == activeSelectedRoomIndex && RoomSearchModule.selectedRoomContainer}>
                     <div className={index != activeSelectedRoomIndex && RoomSearchModule.unSelectedRoomContainer}>
 
                       
@@ -393,8 +420,12 @@ const handleRoomSelectedChange = (newRooms) => {
 
             </div>
             <hr className={RoomSearchModule.line2} />
-          </div>
+        </div>
+
       )}
+          </div>
+
+      
 
 
 
@@ -432,7 +463,7 @@ const handleRoomSelectedChange = (newRooms) => {
 
                         {room.typeName}
                         <div className={RoomSearchModule.RoomDescription}>
-                          {room.roomDesc}
+                          {room.roomDesc} starting from ${room.minRate}
                           <div className={RoomSearchModule.viewMoreDetails} onClick={()=> {toggleOptions(index)}}>
                             View More details
                           </div>
@@ -440,12 +471,21 @@ const handleRoomSelectedChange = (newRooms) => {
 
                       </div>
                       <div className={RoomSearchModule.reserveButtonContainer}>
-                        <button
-                          className={RoomSearchModule.reserveButton}
-                          onClick={() => handleSelectRoomType(activeSelectedRoomIndex, room.typeName)}
-                        >
-                          SELECT ROOM
-                        </button>
+                        {isRoomSelectionComplete != true && (
+                        <div>
+                          <button
+                            className={RoomSearchModule.reserveButton}
+                            onClick={() => handleSelectRoomType(activeSelectedRoomIndex, room.typeName, room.minRate)}
+                          >
+                            SELECT ROOM
+                          </button>
+                          <div className={RoomSearchModule.optionPricingDesc}>
+                          <div>from</div>
+                          <div className={RoomSearchModule.optionPricing}> ${room.minRate}</div>
+                          <div> a night</div>
+                        </div>
+                        </div>
+                        )}
                       </div>
 
                     </div>
@@ -462,11 +502,7 @@ const handleRoomSelectedChange = (newRooms) => {
                   >
                     <div className={RoomSearchModule.option}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div className={RoomSearchModule.optionTitle}>Bed & Breakfast Package</div>
-                        <div className={RoomSearchModule.optionPricingDesc}>
-                          <div>Avg Price per Night:</div>
-                          <div className={RoomSearchModule.optionPricing}> ${room.minRate} per night</div>
-                        </div>
+                        <div className={RoomSearchModule.optionTitle}>Our rooms offer comfort and convenience with modern décor, plush bedding, flat-screen TV, Wi-Fi, and spacious work desk. Private bathrooms feature rainfall showers and premium toiletries for a relaxing stay.</div>
                       </div>
                     </div>
                   </div>
@@ -493,22 +529,38 @@ const handleRoomSelectedChange = (newRooms) => {
                             />
                     </div>
                     <div className={RoomSearchModule.RoomCardContainerRightside}>
-                      <div className={RoomSearchModule.RoomTitleAndDesc}>
-                        <div className={RoomSearchModule.packageTitle}>
-                          {pkg.package_Type}
-                          <div className={RoomSearchModule.PackageDescriptionEN}>
-                            {pkg.package_desc_EN}
+
+                      <div className={RoomSearchModule.RoomCardContainerLeftsideRightHalf}>
+                        <div className={RoomSearchModule.RoomTitleAndDesc}>
+                          <div className={RoomSearchModule.packageTitle}>
+                            <div>
+                              {pkg.package_Type}
+                            </div>
+                            <div className={RoomSearchModule.PackageDescriptionEN}>
+                              <div>
+                                {pkg.package_desc_EN}
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <div className={RoomSearchModule.reserveButtonContainer}>
-                      <button 
-                      className={RoomSearchModule.reserveButton}
-                      onClick={()=> handleSelectpackage(pkg.package_Type)}
-                      >
-                        SELECT PACKAGE
-                      </button>
+
+                      <div className={RoomSearchModule.RoomCardContainerRightsideRightHalf}>
+                        <div className={RoomSearchModule.PackageCost}>
+                          <div className={RoomSearchModule.packageCostlabel}>Plan cost</div>  ${(pkg.package_Price + selectedRooms[activeSelectedRoomIndex].roomPrice).toFixed(2)}
+                        </div>
+                        <div className={RoomSearchModule.reserveButtonContainer}>
+                        <button 
+                        className={RoomSearchModule.reserveButton}
+                        onClick={()=> handleSelectpackage(pkg.package_Type, pkg.package_Price)}
+                        >
+                          SELECT PACKAGE
+                        </button>
+                        </div>
                       </div>
+
+
+
                     </div>
                   </div>
                 </div>
@@ -547,6 +599,25 @@ const handleRoomSelectedChange = (newRooms) => {
           <p>&copy; 2024 Al-Batra Hotel. All rights reserved.</p>
         </footer>
       </div>
+
+      {/* Proceed to the next page box */}
+      {/* {`${styles.bookingBar} ${isBookingVisible ? styles.visible : styles.hidden}`} */}
+      {/* {`${RoomSearchModule.proceedBox} ${isRoomSelectionComplete ? roomSearchModule.visible : roomSearchModule.hidden}`} */}
+      <div className={`${RoomSearchModule.proceedBox} ${isRoomSelectionComplete ? RoomSearchModule.visible : RoomSearchModule.hidden}`}>
+          <div className={RoomSearchModule.proceedBoxDescCost}>
+            <div className={RoomSearchModule.proceedBoxDesc}>
+              Estimate cost
+            </div>
+            ${totalCostEstimate.toFixed(2)}
+          </div>
+          <div className={RoomSearchModule.proceedBoxButtonContainer}>
+            <button className={RoomSearchModule.proceedBoxButton} onClick={()=>((handleProceedingToNextPage()))}>
+                Continue
+            </button>
+          </div>
+
+      </div>
+
     </div>
   );
 };

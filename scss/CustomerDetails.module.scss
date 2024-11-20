@@ -144,16 +144,16 @@
     width: 17rem;
     margin: auto;
     margin-top: 2rem;
-    height: 12rem;
+    // height: 12rem;
 }
 
 .desc2 
 {
     text-align: left;
-    margin-left: 1.5rem;
+    margin-left: 1rem;
     margin-top: 0.5rem;
     color: #000000;
-    font-size: large;
+    font-size: medium;
     letter-spacing: 0.05em;
     font-weight: 300;
 }
@@ -296,12 +296,18 @@
 .bookingBar
 {
     background-color: #000000;
-    height: 5rem;
+    height: 75px;
 }
 
-.logo
-{
-    width: 7rem;
+.logo {
+    height: 70px;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.logoTitleNav {
+    display: flex;
+    align-items: center;
 }
 
 .inputError {

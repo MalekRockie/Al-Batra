@@ -5,16 +5,22 @@ import CustomDateRangePicker from '../CustomDateRangePicker';
 import { Box } from '@mui/material';
 import Link from 'next/link';
 import CustomerDetailsModule from '../../scss/CustomerDetails.module.scss';
+import RoomSearchModule from '../../scss/RoomSearch.module.scss';
 import countriesData from '../../public/countries_codes.JSON';
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css'
 
 
-
+const LoadingSpinner = () => (
+  <div className={RoomSearchModule.spinnerContainer}>
+    <div className={RoomSearchModule.spinner}></div> {/* Add spinner CSS */}
+    <p>Loading room types...</p>
+  </div>
+);
 
 const CustomerDetails = () => {
   const router = useRouter();
-  const [roomType, setRoomType] = useState('');
+  const [selectedRooms, setSelectedRooms] = useState([[]]);
   const [checkInDate, setCheckInDate] = useState('');
   const [checkOutDate, setCheckOutDate] = useState('');
   const [isBookingVisible, setIsBookingVisible] = useState(true);
@@ -24,6 +30,7 @@ const CustomerDetails = () => {
   const [isReservationSuccessful, setIsReservationSuccessful] = useState(false);
   const [countries, setCountries] = useState([]);
   const [selectedDialCode, setSelectedDialCode] = useState('');
+  const [totalCostEstimate, setTotalCostEstimate]= useState(0.00);
 
 
 
@@ -64,18 +71,36 @@ const CustomerDetails = () => {
   // Use URLSearchParams to extract the query parameters
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
-    const roomTypeParam = searchParams.get('roomType');
+    const selectedRoomsParams = searchParams.get('selectedRooms');
     const checkInDateParam = searchParams.get('checkInDate');
     const checkOutDateParam = searchParams.get('checkOutDate');
+    const totalCost = searchParams.get('totalCostEstimate');
 
-    setRoomType(roomTypeParam || '');
+    setSelectedRooms(selectedRoomsParams || '');
     setCheckInDate(checkInDateParam || '');
     setCheckOutDate(checkOutDateParam || '');
 
-    console.log("CheckInDate: ", checkInDateParam);
+    if (selectedRoomsParams) {
+      try {
+        setSelectedRooms(JSON.parse(selectedRoomsParams)); // Parse the JSON string back to array
+      } catch (e) {
+        console.error('Error parsing selectedRooms:', e);
+        setSelectedRooms([]); // Default to an empty array if parsing fails
+      }
+    }
+
+    // Set the other state values directly
+    setCheckInDate(checkInDateParam || '');
+    setCheckOutDate(checkOutDateParam || '');
+    setTotalCostEstimate(totalCost || '');
   }, []);
 
-
+useEffect(() => {
+    console.log('Selected Rooms:', selectedRooms); // Logs array of selected rooms
+    console.log('Check-In Date:', checkInDate);
+    console.log('Check-Out Date:', checkOutDate);
+    console.log('Total Cost Estimate:', totalCostEstimate);
+  }, [selectedRooms, checkInDate, checkOutDate, totalCostEstimate]);
 
 const toggleBookingSection = () => {
     setIsBookingVisible(!isBookingVisible);
@@ -185,9 +210,8 @@ const toggleBookingSection = () => {
               <div>
                 <div>
                   Room(s): 
-                   
                 </div>
-                <img src={`room1.jpg`} className={CustomerDetailsModule.img}/>{roomType} <br/> <br/> 
+                <img src={`room1.jpg`} className={CustomerDetailsModule.img}/> <br/> <br/> 
               </div>
                 <div>
                   <div className={CustomerDetailsModule.ReservationSectionBoxTitle}>
@@ -211,12 +235,21 @@ const toggleBookingSection = () => {
         <div className={CustomerDetailsModule.main}>
 
       {/* Booking Section */}
-      <div className={CustomerDetailsModule.bookingBar}>
-          <Box className={CustomerDetailsModule.bookingContainer}>
 
+                {/* Header */}
+        <header
+          className={CustomerDetailsModule.bookingBar}
+        >
+          <div className={CustomerDetailsModule.logoTitleNav}>
+            <a href="/">
               <img src="logo.png" alt="Al-Batra Hotel Logo" className={CustomerDetailsModule.logo} />
-          </Box>
-      </div>
+            </a>
+            <div className={RoomSearchModule.titleNav}>
+              <nav className={RoomSearchModule.nav}>
+              </nav>
+            </div>
+          </div>
+        </header>
 
       <div className={CustomerDetailsModule.divider}>
 
@@ -226,33 +259,49 @@ const toggleBookingSection = () => {
             YOUR RESERVATION
           </div>
           <div className={CustomerDetailsModule.desc1}>
-            2 Adults - 1 Child
+           {selectedRooms.length} Room - 2 Adults, 1 Child
           <br/>
             {checkInDate} - {checkOutDate}
+          <br/>
+
           </div>
         <div className={CustomerDetailsModule.horizantalLine}/>
           <div className={CustomerDetailsModule.leftContainer1}>
-            <div className={CustomerDetailsModule.desc2}>
-              {roomType} <br/> Average rate per night:
-            </div>
-            <div className={CustomerDetailsModule.priceText}>
-              $150.00
-            </div>
-            <div className={CustomerDetailsModule.desc2}>
-              Lauch and Dinner:
-            </div>
-            <div className={CustomerDetailsModule.priceText}>
-              $50.00
-            </div>
+
+                    {selectedRooms.map((rooms, index) => {
+                return (
+                  <div>
+                    <div className={CustomerDetailsModule.desc2}>
+                      {rooms.roomType}<br/> Average rate per night:
+                    </div>
+                    <div className={CustomerDetailsModule.priceText}>
+                      ${Number(rooms.roomPrice).toFixed(2)}
+                    </div>                    
+                    {rooms.package_Price != 0 && 
+                    ( <div>
+                        <div className={CustomerDetailsModule.desc2}>
+                          Package:
+                        </div>
+                        <div className={CustomerDetailsModule.priceText}>
+                          ${Number(rooms.package_Price).toFixed(2)}
+                        </div>
+                      </div>
+                    )
+                    }
+                  </div>
+                    )})}
+
           </div>
           <div className={CustomerDetailsModule.leftContainer2}>
             <div className={CustomerDetailsModule.desc2}>
               Estimated Total:
             </div>
             <div className={CustomerDetailsModule.priceText}>
-              $200.00
+              ${Number(totalCostEstimate)?.toFixed(2)}
             </div>
           </div>
+
+
         </div>  
 
         {/* Right Side */}

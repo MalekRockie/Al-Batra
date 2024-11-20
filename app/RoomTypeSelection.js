@@ -5,7 +5,7 @@ const RoomTypeSelection = ({onRoomTypeChange}) => {
 // const [selectedRoomType, setSelectedRoomType] = useState('');
 
   const [isOpen, setIsOpen] = useState(false);
-  const [rooms, setRooms] = useState([{ adults: 1, children: 0, roomType: null, package: null }]);
+  const [rooms, setRooms] = useState([{ adults: 1, children: 0, roomType: null, package: null, roomPrice: null, package_Price: null }]);
   const popupRef = useRef(null);
 
 
@@ -32,7 +32,7 @@ const RoomTypeSelection = ({onRoomTypeChange}) => {
   }, [popupRef]);
 
   const addRoom = () => {
-    const newRooms = [...rooms, { adults: 1, children: 0, roomType: null, package: null }];
+    const newRooms = [...rooms, { adults: 1, children: 0, roomType: null, package: null, roomPrice: 0, package_Price: 0}];
     setRooms(newRooms);
     handleRoomUpdate(newRooms);
   };
