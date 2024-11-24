@@ -6,6 +6,7 @@ import RoomTypeSelection from '../RoomTypeSelection';
 import { Box } from '@mui/material';
 import Link from 'next/link';
 import styles from '../../scss/Home.module.scss';
+import Head from 'next/head';
 import RoomSearchModule from '../../scss/RoomSearch.module.scss';
 import { useRouter } from 'next/navigation';
 
@@ -268,14 +269,18 @@ const handleRoomSelectedChange = (newRooms) => {
 
 useEffect(() => {
     // Calculate the total cost when selectedRooms changes
-    const totalCost = selectedRooms.reduce((acc, room) => {
-      const roomPrice = room.roomPrice || 0.0; // Default to 0 if roomPrice is null/undefined
-      const package_Price = room.package_Price || 0.0; // Default to 0 if Package price is null/undefined
-      return acc + roomPrice + package_Price;
-    }, 0.0);
-
-    // Update the total cost state
-    setTotalCostEstimate(totalCost);
+    if (selectedRooms == null) return;
+    if(selectedRooms != null)
+      {
+        const totalCost = selectedRooms.reduce((acc, room) => {
+        const roomPrice = room.roomPrice || 0.0; // Default to 0 if roomPrice is null/undefined
+        const package_Price = room.package_Price || 0.0; // Default to 0 if Package price is null/undefined
+        return acc + roomPrice + package_Price;
+      }, 0.0);
+  
+      // Update the total cost state
+      setTotalCostEstimate(totalCost);
+      }
 
   }, [selectedRooms]); // Recalculate total cost whenever selectedRooms changes
 
@@ -291,13 +296,57 @@ useEffect(() => {
 // }, [selectedRooms]);
 
 
-  useEffect(() => {
+useEffect(() => {
+    //Here we should set the selectedRooms if it was already passed by the used in a previous page that directed them here
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const selectedRoomsParams = searchParams.get('rooms');
+    const checkInDateParam = searchParams.get('checkIn');
+    const checkOutDateParam = searchParams.get('checkOut');
+
+    
+    
     const defaultRoom = { adults: 1, children: 0, roomType: null, package: null, roomPrice: 0.0, package_Price: 0.0};
+    
+    setSelectedRooms(prevState => {
+      // Check if prevState is null or empty
+      if (prevState == null || prevState.length === 0) {
+        if (selectedRoomsParams) {
+          try {
+            // Try to parse the selectedRoomsParams if available
+            const parsedRooms = JSON.parse(selectedRoomsParams);
+            return parsedRooms; // Return the parsed rooms if successful
+          } catch (e) {
+            // If parsing fails, log the error and use the default room
+            console.error('Error parsing selectedRooms:', e);
+          }
+        }
+
+        // If no valid `selectedRoomsParams`, fallback to the default room
+        console.log("Selected rooms are empty or null");
+        console.log(selectedRoomsParams); // Log the param
+        console.log(defaultRoom); // Log the default room
+
+        const updatedRooms = [...prevState];  // Make a copy of the previous state
+        updatedRooms[0] = defaultRoom;       // Update the first element with the default room
+        return updatedRooms;                 // Return the updated state
+      }
+
+      // If `selectedRooms` is not empty, return the current state
+      return prevState;
+    });
+    
     // If `selectedRooms` is empty or not yet set, use the default values
-    if (selectedRooms.length === 0) {
-      // console.log('Default Room:', defaultRoom);
-      selectedRooms[0] = defaultRoom
-    } 
+    // if (selectedRooms.length === 0) {
+    //   // console.log('Default Room:', defaultRoom);
+    //   // selectedRooms[0] = defaultRoom
+    //   // setSelectedRooms(defaultRoom);
+    // } 
+    // if(selectedRoomsParams != null)
+    //   {
+    //     console.log(selectedRoomsParams);
+    //     console.log(defaultRoom);
+    //   }
     // else {
     //   // Otherwise, log the selected rooms and their details
     //   selectedRooms.forEach((room, index) => {
@@ -323,11 +372,19 @@ useEffect(() => {
   return (
     <div className={RoomSearchModule.main}>
       {/* Header */}
+              <Head>
+            <title>Book your stay - Al Batra Hotel</title>
+            <link rel="icon" href="/favicon.ico" />
+            <meta name="description" content="Experience the finest luxury at our hotel" />
+            <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
+        </Head>
       <header
         className={RoomSearchModule.header}
       >
         <div className={RoomSearchModule.logoTitleNav}>
-          <img src="logo.png" alt="Al-Batra Hotel Logo" className={RoomSearchModule.logo} />
+          <a href='/'>
+            <img src="logo.png" alt="Al-Batra Hotel Logo" className={RoomSearchModule.logo} />
+          </a>
           <div className={RoomSearchModule.titleNav}>
             <nav className={RoomSearchModule.nav}>
             </nav>
@@ -473,17 +530,17 @@ useEffect(() => {
                       <div className={RoomSearchModule.reserveButtonContainer}>
                         {isRoomSelectionComplete != true && (
                         <div>
+                          <div className={RoomSearchModule.optionPricingDesc}>
+                            <div>from</div>
+                            <div className={RoomSearchModule.optionPricing}> ${room.minRate}</div>
+                            <div> a night</div>
+                          </div>
                           <button
                             className={RoomSearchModule.reserveButton}
                             onClick={() => handleSelectRoomType(activeSelectedRoomIndex, room.typeName, room.minRate)}
                           >
                             SELECT ROOM
                           </button>
-                          <div className={RoomSearchModule.optionPricingDesc}>
-                          <div>from</div>
-                          <div className={RoomSearchModule.optionPricing}> ${room.minRate}</div>
-                          <div> a night</div>
-                        </div>
                         </div>
                         )}
                       </div>

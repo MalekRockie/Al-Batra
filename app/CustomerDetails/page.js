@@ -8,6 +8,7 @@ import CustomerDetailsModule from '../../scss/CustomerDetails.module.scss';
 import RoomSearchModule from '../../scss/RoomSearch.module.scss';
 import countriesData from '../../public/countries_codes.JSON';
 import PhoneInput from "react-phone-input-2";
+import Select from 'react-select';
 import 'react-phone-input-2/lib/style.css'
 
 
@@ -41,14 +42,14 @@ const CustomerDetails = () => {
     email_address: '',
     confirmEmailAddress: '',
     phone_number: '6782947183',
-    date_of_Birth: "1978-10-08",
+    date_of_Birth: "1900-01-01",
     nationality: ''
   },
   reservations: [
     {
       reservation: {
-        checkInDate: '2024-12-23',
-        checkOutDate: '2024-12-25',
+        checkInDate: "2025-10-10",
+        checkOutDate: "2025-11-11",
         status: 'Pending',
         payment_Status: 'Pending',
         special_Requests: ''
@@ -122,7 +123,10 @@ const toggleBookingSection = () => {
       }));
     };
 
-
+useEffect(() =>
+{
+console.log("Countries 1:", allowedCountries[1]);
+},[]);
 
 {/* Submission starts here */}
   const handleSubmit = async (event) => {
@@ -161,13 +165,19 @@ const toggleBookingSection = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
       const data = await response.json();
-      if (data && data.reservationID)
+
+
+      if (data && data.referenceCode)
         {
-          setReservationID(data.reservationID);
+          setReservationID(data.referenceCode);
           setIsReservationSuccessful(true);
           console.log('Customer info:', formData);
+          console.log('reference code: ', data.referenceCode);
+        }
+        else
+        {
+          console.error("No reference code found in the response", data);
         }
 
     } catch (error) {
@@ -179,9 +189,13 @@ const toggleBookingSection = () => {
 
 
 
-  const allowedCountries = countriesData.countries.map(country => country.code.toLowerCase());
+const allowedCountries = countriesData.countries.map(country => ({
+  code: country.code.toLowerCase(),
+  name: country.name,  // Assuming the country name is in the 'name' property
+  image: country.image  // Assuming the image URL is in the 'image' property
+}));
 
-
+const allowedCountriesNumbers = countriesData.countries.map(country => country.code.toLowerCase());
 
 
 
@@ -359,6 +373,7 @@ const toggleBookingSection = () => {
                   <input
                     name="first_name"
                     type="text"
+                    autoComplete='first_name'
                     value={formData.first_name}
                     onChange={handleInputChange}
                     className={`${CustomerDetailsModule.inputBox} ${formErrors.first_name ? CustomerDetailsModule.inputError : ''}`}
@@ -389,7 +404,7 @@ const toggleBookingSection = () => {
                       autoFocus: true
                     }}
                     onChange={phone => setPhone(phone)} // Handle the change event
-                    onlyCountries={allowedCountries}
+                    onlyCountries={allowedCountriesNumbers}
                   />
 
 
@@ -418,14 +433,21 @@ const toggleBookingSection = () => {
                 </div>
 
                 <div className={CustomerDetailsModule.Individual_InputBox}>
-                  <input
-                    type="text"
-                    name="nationality"
-                    value={formData.nationality}
-                    onChange={handleInputChange}
-                    className={`${CustomerDetailsModule.inputBox} ${formErrors.nationality ? CustomerDetailsModule.inputError : ''}`}
-                    required
-                  />
+                <select
+                  name="nationality"
+                  value={formData.nationality}
+                  onChange={handleInputChange}
+                  className={`${CustomerDetailsModule.inputBox} ${formErrors.nationality ? CustomerDetailsModule.inputError : ''}`}
+                  required
+                >
+                  <option value="">Select Nationality</option>  {/* Default option */}
+                  {allowedCountries.map((country) => (
+                    <option key={country.code} value={country.name}>
+                      <img src={country.image}/> {country.name}
+                    </option>
+                  ))}
+                </select>
+
                 </div>
               </div>
 
@@ -480,6 +502,7 @@ const toggleBookingSection = () => {
                   <input
                   type="text"
                   name="cardNumber"
+                  autoComplete='numberOnCard'
                   onChange={handleInputChange}
                   className={CustomerDetailsModule.inputBox}
                   required

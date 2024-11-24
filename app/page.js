@@ -20,7 +20,7 @@ export default function Home() {
 
   const router = useRouter();
   // const {t} = useTranslation("common")
-  const [roomType, setRoomType] = useState([{adults: 1, children: 0}]);
+  const [selectedRooms, setSelectedRooms] = useState([[]]);
   const [selectedDates, setSelectedDates] = useState([from, to]);
   const [isBookingVisible, setIsBookingVisible] = useState(true);
   const [isScrolledToMax, setIsScrolledToMax] = useState(false);
@@ -32,13 +32,13 @@ export default function Home() {
 
 const handleSearch = () => {
   console.log("Selected Dates: ", selectedDates);
-  console.log("Room Types length: ", roomType.length);
-  if (selectedDates[0] && selectedDates[1] && roomType.length > 0) {
+  console.log("Room: ", selectedRooms);
+  if (selectedDates[0] && selectedDates[1] && selectedRooms.length > 0) {
 
     const pathname = '/RoomSearch';
     const checkIn = selectedDates[0]?.toISOString();
     const checkOut = selectedDates[1]?.toISOString();
-    const rooms = JSON.stringify(roomType);
+    const rooms = JSON.stringify(selectedRooms);
 
     console.log({ checkIn, checkOut, rooms });
 
@@ -101,11 +101,11 @@ const handleSearch = () => {
     
   return (
     <div className={styles.pageContainer}>
-      <div className={styles.uConstruction}>
+      {/* <div className={styles.uConstruction}>
         <p>
           Website still Under construction!
         </p>
-      </div>
+      </div> */}
       <div className={styles.container}>
         <Head>
           <title>Al Batra Hotel</title>
@@ -142,7 +142,7 @@ const handleSearch = () => {
               </div>
               <div className={styles.roomTypeContainer}>
                 <div className={styles.bookingTitle}>ROOM SIZE</div>
-                <RoomTypeSelection onRoomTypeChange={setRoomType}/>
+                <RoomTypeSelection onRoomTypeChange={setSelectedRooms}/>
               </div>
               <button className={styles.searchButton} onClick={handleSearch}>
                 CHECK RATES

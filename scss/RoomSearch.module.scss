@@ -21,6 +21,7 @@
 .logoTitleNav {
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .logo {
@@ -421,8 +422,9 @@
     // background-color: #ff0000;
     margin-top: 10rem;
     margin-left: auto;
-    margin-right: 5rem;
-    margin-bottom: 5rem;
+    margin-right: 3.5rem;
+    margin-bottom: 4.5rem;
+
 }
 
 .reserveButton {
@@ -567,6 +569,7 @@
     display: flex;
     align-items: baseline;
     margin-left: 5rem;
+    font-weight: 300;
     // background-color: red;
     width: 7rem;
 }
@@ -574,9 +577,6 @@
 .optionPricing
 {
     font-size: x-large;
-    font-weight: 600;
-    // background-color: blue;
-
 }
 
 .optionTitle
