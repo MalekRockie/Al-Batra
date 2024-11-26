@@ -85,3 +85,54 @@
 .button:hover {
     background-color: #ac9868;
 }
+
+.MyReservationContainer
+{
+    color: #000;
+    border: 1px solid #ceb780;
+    width: 60rem;
+    height: 10rem;
+    background-color: rgb(212, 212, 212);
+    margin: auto;
+    margin-top: 2rem;
+    margin-bottom: 5rem;
+    display: flex;
+}
+
+.MyReservationContainerLeftHalf
+{
+    // background-color: #ff0000;
+    width: 14rem;
+    display:grid;
+}
+.MyReservationContainerLeftHalfImg
+{
+    margin: auto;
+    width: 10rem;
+}
+
+.MyReservationContainerRightHalf {
+    // background-color: #0d00ff;
+    width: 25rem;
+}
+
+.MyReservationContainerRightHalfMinorLabel {
+    // background-color: #eaff00;
+    margin-top: 1rem;
+    font-weight: 400;
+    font-size: small;
+}
+
+.MyReservationContainerRightHalfLabel {
+    // background-color: #eaff00;
+    // height: 2rem;
+}
+
+.MyReservationContainerRightHalfDetails
+{
+    display: flex;
+    justify-content: space-between;
+    font-size: small;
+    margin-top: 0.5rem;
+}
+

@@ -45,18 +45,7 @@ const CustomerDetails = () => {
     date_of_Birth: "1900-01-01",
     nationality: ''
   },
-  reservations: [
-    {
-      reservation: {
-        checkInDate: "2025-10-10",
-        checkOutDate: "2025-11-11",
-        status: 'Pending',
-        payment_Status: 'Pending',
-        special_Requests: ''
-      },
-      roomTypeID: 'DDR'
-    }
-  ]
+  reservations: []
 });
 
 
@@ -68,6 +57,36 @@ const CustomerDetails = () => {
     confirmEmailAddress: false,
     nationality: false
   });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      customer: {
+        ...prev.customer,
+        [name]: value,
+      },
+    }));
+        setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: value.trim() === '' || (name === 'confirmEmailAddress' && value !== formData.customer.email_address),
+      }));
+  };
+
+  const calculateNights = (checkInDate, checkOutDate) => {
+    const checkIn = new Date(checkInDate);
+    const checkOut = new Date(checkOutDate);
+
+    // Calculate the difference in time (milliseconds)
+    const timeDiff = checkOut - checkIn;
+
+    // Convert the time difference from milliseconds to days
+    const oneDay = 1000 * 60 * 60 * 24; // Number of milliseconds in one day
+    const nights = timeDiff / oneDay;
+
+    return isNaN(nights) ? "Invalid dates" : Math.floor(nights);
+  };
 
   // Use URLSearchParams to extract the query parameters
   useEffect(() => {
@@ -96,37 +115,39 @@ const CustomerDetails = () => {
     setTotalCostEstimate(totalCost || '');
   }, []);
 
-useEffect(() => {
+  useEffect(() => {
     console.log('Selected Rooms:', selectedRooms); // Logs array of selected rooms
     console.log('Check-In Date:', checkInDate);
     console.log('Check-Out Date:', checkOutDate);
     console.log('Total Cost Estimate:', totalCostEstimate);
+
+  const reservations = selectedRooms.map((roomData, index) => ({
+      reservation: {
+        checkInDate: checkInDate,
+        checkOutDate: checkOutDate,
+        Package_ID: null,
+        status: 'Pending',
+        payment_Status: 'Pending',
+        special_Requests: ''
+      },
+      roomTypeID: roomData.roomType, // You can customize this if needed
+      selectedRoomData: roomData // Assign room data to each reservation
+    }));
+
+    // Update formData with dynamically generated reservations
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      reservations: reservations
+    }));
+
   }, [selectedRooms, checkInDate, checkOutDate, totalCostEstimate]);
 
-const toggleBookingSection = () => {
-    setIsBookingVisible(!isBookingVisible);
-  };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
 
-    setFormData((prev) => ({
-      ...prev,
-      customer: {
-        ...prev.customer,
-        [name]: value,
-      },
-    }));
-        setFormErrors((prevErrors) => ({
-        ...prevErrors,
-        [name]: value.trim() === '' || (name === 'confirmEmailAddress' && value !== formData.customer.email_address),
-      }));
-    };
-
-useEffect(() =>
-{
-console.log("Countries 1:", allowedCountries[1]);
-},[]);
+  useEffect(() =>
+  {
+  console.log("Countries 1:", allowedCountries[1]);
+  },[]);
 
 {/* Submission starts here */}
   const handleSubmit = async (event) => {
@@ -206,51 +227,62 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
           <Box className={CustomerDetailsModule.bookingContainer}>
               <img src="logo.png" alt="Al-Batra Hotel Logo" className={CustomerDetailsModule.logo} />
           </Box>
-        <div className={CustomerDetailsModule.successMessage}>
-          <div className={CustomerDetailsModule.ThankContainer}>
-          <p>Thank you!</p>
-            <div className={CustomerDetailsModule.ThankDetails}>
-                <p>Your reservation has been confirmed.<br/> We look forward to your stay! Please check your emails for more details</p>
-              <p>Your reservation ID is:<br/></p>
-              <div className={CustomerDetailsModule.ResID}>{reservationID} </div>
-            </div>
-          </div>
-
-          <div className={CustomerDetailsModule.ReservationSection}>
-            <div className={CustomerDetailsModule.ReservationSectionTitle}>
-              Reservation Details:
-            </div>
-            <div className={CustomerDetailsModule.ReservationSectionBox}>
-              <div>
-                <div>
-                  Room(s): 
-                </div>
-                <img src={`room1.jpg`} className={CustomerDetailsModule.img}/> <br/> <br/> 
+          <div className={CustomerDetailsModule.successMessage}>
+            <div className={CustomerDetailsModule.ThankContainer}>
+            <p>Thank you!</p>
+              <div className={CustomerDetailsModule.ThankDetails}>
+                  <p>Your reservation has been confirmed.<br/> We look forward to your stay! Please check your emails for more details</p>
+                <p>Your reservation ID is:<br/></p>
+                <div className={CustomerDetailsModule.ResID}>{reservationID} </div>
               </div>
-                <div>
-                  <div className={CustomerDetailsModule.ReservationSectionBoxTitle}>
-                    Check In Date:
-                  </div>
-                  <div>
-                    {checkInDate}
-                  </div>
-                </div>
-                <div className={CustomerDetailsModule.ReservationSectionBoxTitle}>
-                  Check In Date: <br/> {checkOutDate}
-                </div>
-                <div className={CustomerDetailsModule.ReservationSectionBoxTitle}>
-                  Nights: <br/> 5
-                </div>
             </div>
+
+                <div className={CustomerDetailsModule.ReservationSection}>
+                  <div className={CustomerDetailsModule.ReservationSectionTitle}>
+                    Reservation Details:
+                  </div>
+
+                  
+                  {/* Reservation card */}
+                  {selectedRooms.map((room, index) => {
+                    return(
+                    <div className={CustomerDetailsModule.ReservationSectionBox}>
+                      <div>
+                        <div>
+                          Room: {room.roomType}
+                        </div>
+                        <img src={`room1.jpg`} className={CustomerDetailsModule.img}/> <br/> <br/> 
+                      </div>
+                        <div>
+                          <div className={CustomerDetailsModule.ReservationSectionBoxTitle}>
+                            Check In Date:
+                          </div>
+                          <div>
+                            {checkInDate}
+                          </div>
+                        </div>
+                        <div className={CustomerDetailsModule.ReservationSectionBoxTitle}>
+                          Check In Date: <br/> {checkOutDate}
+                        </div>
+                        <div className={CustomerDetailsModule.ReservationSectionBoxTitle}>
+                          Nights: <br/> {calculateNights(CheckInDate, CheckOutDate)}
+                          {/* calculateNights(CheckInDate, CheckOutDate) */}
+                        </div>
+                    </div>
+                  )
+                  })}
+
+                </div>
+
+
           </div>
-        </div>
         </div>
       ) : (
         <div className={CustomerDetailsModule.main}>
 
       {/* Booking Section */}
 
-                {/* Header */}
+        {/* Header */}
         <header
           className={CustomerDetailsModule.bookingBar}
         >
@@ -266,7 +298,6 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
         </header>
 
       <div className={CustomerDetailsModule.divider}>
-
         {/* Left Side */}
         <div className={CustomerDetailsModule.left}>
           <div className={CustomerDetailsModule.title}>

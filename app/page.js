@@ -106,6 +106,7 @@ const handleSearch = () => {
           Website still Under construction!
         </p>
       </div> */}
+      
       <div className={styles.container}>
         <Head>
           <title>Al Batra Hotel</title>
@@ -121,13 +122,14 @@ const handleSearch = () => {
               <h1 className={styles.title}>AL-BATRA HOTEL</h1>
               <nav className={styles.nav}>
                 <Link href="/">HOME</Link>
-                <a href="#rooms">ROOMS</a>
-                <a href="#dining">DINING</a>
-                <a href="#amenities">AMENITIES</a>
-                <a href="#booking" onClick={(e) => {
+                <a href="">ROOMS</a>
+                <a href="">DINING</a>
+                <a href="">AMENITIES</a>
+                <a href="" onClick={(e) => {
                   toggleBookingSection();
                   e.preventDefault();
                   }}>BOOKING</a>
+                <a href="/ReservationRetrieval">MY RESERVATION</a>
               </nav>
             </div>
           </div>

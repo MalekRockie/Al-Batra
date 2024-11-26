@@ -49,41 +49,41 @@ const RoomSearch = () => {
 
 
   //handles selecting the room before prompting the used to select the package for each room
-const handleSelectRoomType = (roomIndex, roomTypePicked, room_Price) => {
-  setSelectedRooms(prevSelectedRooms => {
-    const updatedRooms = [...prevSelectedRooms];
-    updatedRooms[roomIndex] = {
-      ...updatedRooms[roomIndex],
-      roomType: roomTypePicked, // Set the selected package type
-      roomPrice: room_Price
-    };
-    // console.log("Room: ", roomIndex ,"Selected Room: ", selectedRooms[roomIndex]);
-    setPackageSelection(false);
-    return updatedRooms;
-  });
+  const handleSelectRoomType = (roomIndex, roomTypePicked, room_Price) => {
+    setSelectedRooms(prevSelectedRooms => {
+      const updatedRooms = [...prevSelectedRooms];
+      updatedRooms[roomIndex] = {
+        ...updatedRooms[roomIndex],
+        roomType: roomTypePicked, // Set the selected package type
+        roomPrice: room_Price
+      };
+      // console.log("Room: ", roomIndex ,"Selected Room: ", selectedRooms[roomIndex]);
+      setPackageSelection(false);
+      return updatedRooms;
+    });
 
-  // If last room is configured, proceed to CustomerDetails
-  // if (roomIndex === selectedRooms.length - 1) {
-  //   console.log("Room Index: ", roomIndex);
-  //   console.log("selectedRooms length: ", selectedRooms.length);
-  //   const params = new URLSearchParams({
-  //     roomType: selectedRooms[roomIndex].roomType,
-  //     checkInDate: selectedDates[0].toISOString().split('T')[0],
-  //     checkOutDate: selectedDates[1].toISOString().split('T')[0],
-  //   });
-  //   router.push(`./CustomerDetails?${params.toString()}`);
-  // } else {
-  //   // Move to the next room for selection
-  //   setSelectedActiveRoomIndex(roomIndex + 1);
-  //   //Move to the top of the screen
-  //   window.scrollTo(0, 0);
-  //   setActiveRoomIndex(null);
-  // }
-};
+    // If last room is configured, proceed to CustomerDetails
+    // if (roomIndex === selectedRooms.length - 1) {
+    //   console.log("Room Index: ", roomIndex);
+    //   console.log("selectedRooms length: ", selectedRooms.length);
+    //   const params = new URLSearchParams({
+    //     roomType: selectedRooms[roomIndex].roomType,
+    //     checkInDate: selectedDates[0].toISOString().split('T')[0],
+    //     checkOutDate: selectedDates[1].toISOString().split('T')[0],
+    //   });
+    //   router.push(`./CustomerDetails?${params.toString()}`);
+    // } else {
+    //   // Move to the next room for selection
+    //   setSelectedActiveRoomIndex(roomIndex + 1);
+    //   //Move to the top of the screen
+    //   window.scrollTo(0, 0);
+    //   setActiveRoomIndex(null);
+    // }
+  };
 
 
 //Handles selecting the package for each selected room once that room is selected
-const handleSelectpackage = (package_type, packagePrice) => 
+  const handleSelectpackage = (package_type, packagePrice) => 
   {
     const updatedRooms = [...selectedRooms];
     updatedRooms[activeSelectedRoomIndex] = 
@@ -123,7 +123,7 @@ const handleSelectpackage = (package_type, packagePrice) =>
           totalCostEstimate
         });
         router.push(`./CustomerDetails?${params.toString()}`);
-    }
+  }
 
 
   const handleDateRangeChange = (dates) => {
@@ -132,11 +132,11 @@ const handleSelectpackage = (package_type, packagePrice) =>
   };
 
 
-//Handles change of selected rooms from the RoomTypeSelection
-const handleRoomSelectedChange = (newRooms) => {
-  console.log("Room data received:", newRooms); // Debugging log
-  setTempSelectedRooms(newRooms);
-};
+  //Handles change of selected rooms from the RoomTypeSelection
+  const handleRoomSelectedChange = (newRooms) => {
+    console.log("Room data received:", newRooms); // Debugging log
+    setTempSelectedRooms(newRooms);
+  };
 
 
   // const handleRoomTypeChange = (roomType) => {
@@ -146,6 +146,7 @@ const handleRoomSelectedChange = (newRooms) => {
 
   const fetchRoomTypes = async (checkInDate, checkOutDate) => {
     try {
+
       setIsLoading(true);
       const response = await fetch(
         `http://localhost:8080/room/availableRoomTypes?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`
@@ -153,6 +154,7 @@ const handleRoomSelectedChange = (newRooms) => {
       const data = await response.json();
       // console.log('Fetched room types:', data);
       setRoomType(data); // Set the fetched room types in the state
+      console.log("Room Types: ", data)
     } catch (error) {
       console.error('Error fetching room types:', error);
     } finally 
@@ -222,6 +224,7 @@ const handleRoomSelectedChange = (newRooms) => {
 
   const handleUpdateSearch = () => {
 
+    window.scrollTo(0, 0);
     setRoomSelectionComplete(false);
     setPackageSelection(true);
     setSelectedActiveRoomIndex(0);
@@ -240,6 +243,20 @@ const handleRoomSelectedChange = (newRooms) => {
     } else {
       alert('Please select a check-in/check-out date and room size!');
     }
+  };
+
+  const calculateNights = (checkInDate, checkOutDate) => {
+    const checkIn = new Date(checkInDate);
+    const checkOut = new Date(checkOutDate);
+
+    // Calculate the difference in time (milliseconds)
+    const timeDiff = checkOut - checkIn;
+
+    // Convert the time difference from milliseconds to days
+    const oneDay = 1000 * 60 * 60 * 24; // Number of milliseconds in one day
+    const nights = timeDiff / oneDay;
+
+    return isNaN(nights) ? "Invalid dates" : Math.floor(nights);
   };
 
   const toggleBookingSection = () => {
@@ -267,7 +284,7 @@ const handleRoomSelectedChange = (newRooms) => {
 
   }, []);
 
-useEffect(() => {
+  useEffect(() => {
     // Calculate the total cost when selectedRooms changes
     if (selectedRooms == null) return;
     if(selectedRooms != null)
@@ -275,14 +292,16 @@ useEffect(() => {
         const totalCost = selectedRooms.reduce((acc, room) => {
         const roomPrice = room.roomPrice || 0.0; // Default to 0 if roomPrice is null/undefined
         const package_Price = room.package_Price || 0.0; // Default to 0 if Package price is null/undefined
-        return acc + roomPrice + package_Price;
+        const nights = calculateNights(selectedDates[0], selectedDates[1]);
+        console.log("Nights: ",nights);
+        return acc + (roomPrice + package_Price) *nights;
       }, 0.0);
   
       // Update the total cost state
       setTotalCostEstimate(totalCost);
       }
 
-  }, [selectedRooms]); // Recalculate total cost whenever selectedRooms changes
+  }, [selectedRooms, selectedDates]); // Recalculate total cost whenever selectedRooms changes
 
 
   useEffect(() => {
@@ -372,15 +391,13 @@ useEffect(() => {
   return (
     <div className={RoomSearchModule.main}>
       {/* Header */}
-              <Head>
-            <title>Book your stay - Al Batra Hotel</title>
-            <link rel="icon" href="/favicon.ico" />
-            <meta name="description" content="Experience the finest luxury at our hotel" />
-            <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
-        </Head>
-      <header
-        className={RoomSearchModule.header}
-      >
+      <Head>
+        <title>Book your stay - Al Batra Hotel</title>
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="description" content="Experience the finest luxury at our hotel" />
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
+      </Head>
+      <header className={RoomSearchModule.header}>
         <div className={RoomSearchModule.logoTitleNav}>
           <a href='/'>
             <img src="logo.png" alt="Al-Batra Hotel Logo" className={RoomSearchModule.logo} />
@@ -491,8 +508,6 @@ useEffect(() => {
         <div className={RoomSearchModule.Container2}>OUR ACCOMMODATIONS</div>
       </div>
 
-      
-      
       {/* Room List */}
       {/* Loading spinner */}
       {isLoading ? (
@@ -537,7 +552,7 @@ useEffect(() => {
                           </div>
                           <button
                             className={RoomSearchModule.reserveButton}
-                            onClick={() => handleSelectRoomType(activeSelectedRoomIndex, room.typeName, room.minRate)}
+                            onClick={() => handleSelectRoomType(activeSelectedRoomIndex, room.roomTypeID, room.minRate)}
                           >
                             SELECT ROOM
                           </button>
@@ -658,8 +673,6 @@ useEffect(() => {
       </div>
 
       {/* Proceed to the next page box */}
-      {/* {`${styles.bookingBar} ${isBookingVisible ? styles.visible : styles.hidden}`} */}
-      {/* {`${RoomSearchModule.proceedBox} ${isRoomSelectionComplete ? roomSearchModule.visible : roomSearchModule.hidden}`} */}
       <div className={`${RoomSearchModule.proceedBox} ${isRoomSelectionComplete ? RoomSearchModule.visible : RoomSearchModule.hidden}`}>
           <div className={RoomSearchModule.proceedBoxDescCost}>
             <div className={RoomSearchModule.proceedBoxDesc}>
