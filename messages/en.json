@@ -1,0 +1,67 @@
+{
+  "HomePage": {
+    "title": "AL-BATRA HOTEL",
+    "about": "Go to the about page"
+  },
+  "NavigationBar": {
+    "Home": "HOME",
+    "Rooms": "ROOMS",
+    "Dinning": "DINNING",
+    "Amenties": "AMENTIES",
+    "Booking": "BOOKING",
+    "MyReservation": "MY RESERVATION",
+    "CheckButton": "CHECK RATES",
+    "RoomSize": "ROOM SIZE",
+    "Dates": "CHECK IN - CHECK OUT"
+  },
+  "MainDescription": 
+  {
+    "title": "ELEGANT LUXURY INFUSED WITH LIBYAN HOSPITALITY",
+    "description": "Welcome to Al Batra Hotel, where Libyan heritage meets modern sophistication. Located in the heart of Tripoli, our hotel offers an unparalleled experience in a city rich with history and vibrant culture. Explore iconic landmarks like the Red Castle Museum and the ancient Roman arch of Marcus Aurelius, or stroll through the bustling markets and scenic Mediterranean coastlines. Start your day with a lavish breakfast at Al Batra Bistro, unwind at our luxurious spa, and end your evening with exquisite cuisine and refreshing drinks at our Rooftop Lounge, all while overlooking the picturesque cityscape of Tripoli."
+  },
+  "address":
+  {
+    "Title":"AL-BATRA HOTEL",
+    "City": "TRIPOLI",
+    "Street": "Ahmed Shawky St. -Tripoli, Libya",
+    "Email": "info.albatrahotel.net",
+    "PhoneNumber": "+218 21-3345509"
+  },
+  "Gallery": 
+  {
+    "Welcome": "Welcome to Al Batra Hotel",
+    "WelcomeDesc": "Experience luxury and comfort in the heart of Libya.",
+
+    "BusinessCenter": "Business Center",
+    "BusinessDesc": "Fully equipped with modern amenities for your business needs.",
+
+    "LobbyLounge": "Lobby Lounge",
+    "LobbyDesc": "Our rooms offer a perfect blend of comfort and style.",
+
+    "DeluxeRooms": "Deluxe Rooms",
+    "DeluxeDesc": "Spacious and elegantly designed, featuring modern amenities for a comfortable and relaxing stay. Perfect for those seeking luxury and convenience.",
+
+    "ExecutiveSuites": "Executive Suites",
+    "ExecutiveDesc": "Spacious and luxurious, ideal for business and leisure."
+  },  
+  "mainCards":{
+    "RestruantTitle": "Gourmet Restaurant",
+    "RestruantDesc": "Indulge in culinary excellence at our Gourmet Restaurant, where each dish is a masterpiece crafted with precision and passion. From local delicacies to international flavors, savor an exquisite dining experience amidst an ambiance of refined elegance.",
+    "CafeTitle": "Luxury Cafe",
+    "CafeDesc": "Escape into a world of indulgence at our Luxury Cafe, where every sip of coffee and bite of pastry is a moment of pure bliss. Relax in elegant surroundings and savor the rich aroma of freshly brewed coffee and decadent pastries crafted by skilled artisans."
+  },
+  
+  "footer":
+  {
+    "Home": "Home",
+    "Rooms": "Rooms",
+    "Booking": "Booking",
+    "contactUs": "Contact us",
+    "About": "About",
+    "copyRight": "© 2024 Al-Batra Hotel. All rights reserved."
+  },
+  "lang":
+  {
+    "en": "en"
+  }
+}

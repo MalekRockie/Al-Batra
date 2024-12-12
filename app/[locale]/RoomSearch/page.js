@@ -1,14 +1,16 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import CustomDateRangePicker from '../CustomDateRangePicker';
-import RoomTypeSelection from '../RoomTypeSelection';
+import CustomDateRangePicker from '../../CustomDateRangePicker';
+import RoomTypeSelection from '../../RoomTypeSelection';
 import { Box } from '@mui/material';
 import Link from 'next/link';
-import styles from '../../scss/Home.module.scss';
+import styles from '../../../scss/Home.module.scss';
 import Head from 'next/head';
-import RoomSearchModule from '../../scss/RoomSearch.module.scss';
+import RoomSearchModule from '../../../scss/RoomSearch.module.scss';
 import { useRouter } from 'next/navigation';
+import {useLocale, useTranslations} from 'next-intl';
+
 
 
 const LoadingSpinner = () => (
@@ -46,7 +48,7 @@ const RoomSearch = () => {
   const [totalCostEstimate, setTotalCostEstimate] = useState(0);
   //should be true only when the used is about to proceed to the next page
   const [isRoomSelectionComplete, setRoomSelectionComplete] = useState(false);
-
+  const locale = useLocale();
 
   //handles selecting the room before prompting the used to select the package for each room
   const handleSelectRoomType = (roomIndex, roomTypePicked, room_Price) => {
@@ -399,8 +401,8 @@ useEffect(() => {
       </Head>
       <header className={RoomSearchModule.header}>
         <div className={RoomSearchModule.logoTitleNav}>
-          <a href='/'>
-            <img src="logo.png" alt="Al-Batra Hotel Logo" className={RoomSearchModule.logo} />
+          <a href={`/${locale}`}>
+            <img src='../logo.png' alt="Al-Batra Hotel Logo" className={RoomSearchModule.logo} />
           </a>
           <div className={RoomSearchModule.titleNav}>
             <nav className={RoomSearchModule.nav}>
@@ -525,7 +527,7 @@ useEffect(() => {
                   <div className={RoomSearchModule.RoomContainer}>
                     <div className={RoomSearchModule.roomImageContainer}>
                       <img
-                        src={`room1.jpg`}
+                        src={'../room1.jpg'}
                         alt={room.typeName}
                         className={RoomSearchModule.roomImage}
                       />
@@ -596,7 +598,7 @@ useEffect(() => {
                 <div className={RoomSearchModule.PkgContainer}>
                     <div className={RoomSearchModule.roomImageContainer}>
                       <img
-                              src={`room3.jpg`}
+                              src={`./room3.jpg`}
                               className={RoomSearchModule.roomImage}
                             />
                     </div>
@@ -621,7 +623,7 @@ useEffect(() => {
                         <div className={RoomSearchModule.PackageCost}>
                           <div className={RoomSearchModule.packageCostlabel}>Plan cost</div>  ${(pkg.package_Price + selectedRooms[activeSelectedRoomIndex].roomPrice).toFixed(2)}
                         </div>
-                        <div className={RoomSearchModule.reserveButtonContainer}>
+                        <div className={RoomSearchModule.selectPackageButtonContainer}>
                         <button 
                         className={RoomSearchModule.reserveButton}
                         onClick={()=> handleSelectpackage(pkg.package_Type, pkg.package_Price)}
@@ -655,16 +657,16 @@ useEffect(() => {
             </div>
             <div className={styles.footerNavCol}>
               <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">
-                <img src="TikTokLogo.png" alt="TikTok" className={styles.socialIcon} />
+                <img src="../TikTokLogo.png" alt="TikTok" className={styles.socialIcon} />
               </a>
               <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-                <img src="FacebookLogo.png" alt="Facebook" className={styles.socialIcon} />
+                <img src="../FacebookLogo.png" alt="Facebook" className={styles.socialIcon} />
               </a>
               <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
-                <img src="X_Logo.png" alt="Twitter" className={styles.socialIcon} />
+                <img src="../X_Logo.png" alt="Twitter" className={styles.socialIcon} />
               </a>
               <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-                <img src="InstagramLogo.png" alt="Instagram" className={styles.socialIcon} />
+                <img src="../InstagramLogo.png" alt="Instagram" className={styles.socialIcon} />
               </a>
             </div>
           </div>

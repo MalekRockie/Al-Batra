@@ -80,14 +80,91 @@
     background: rgba(0, 0, 0, 1);
 }
 
+.header-ar {
+    color: #ffffff;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+    transition: background-color 1.5s;
+    height: 130px;
+    background: rgba(0, 0, 0, 1);
+    flex-direction: row-reverse;
+}
+
+.langSwitcherContainer
+{
+    margin: auto;
+    margin-bottom: 4rem;
+    margin-left: 20rem;
+    margin-right: 10rem;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+}
+
+.langSwitcherContainer-ar {
+    margin: auto;
+    margin-bottom: 4rem;
+    margin-left: 5rem;
+    margin-right: 2rem;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+
+}
+
+.langSwitcher {
+    display: flex;
+    flex-direction: row-reverse;
+    cursor: pointer;
+    transition: filter 0.3s ease;
+}
+
+.langSwitcher:hover {
+    filter: brightness(0.6);
+}
+
+.langSwitcher-ar {
+    display: flex;
+    cursor: pointer;
+    transition: filter 0.3s ease;
+}
+
+.langSwitcher-ar:hover {
+    filter: brightness(0.6);
+}
+
+.globalIcon {
+    width: 1.3rem;
+    height: 1.3rem;
+    margin: auto;
+    margin-right: 0.3rem;
+    margin-left: 0.3rem;
+}
+
 .logoTitleNav {
     display: flex;
     align-items: center;
 }
 
+.logoTitleNav-ar {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    // margin-left: 60rem;
+}
+
 .logo {
     height: 100px;
     margin-right: 1rem;
+}
+
+.logo-ar {
+    height: 100px;
+    margin-left: 1rem;
 }
 
 .titleNav {
@@ -96,7 +173,20 @@
     justify-content: center;
     align-items: flex-start;
     padding-left: 2rem;
+    // background-color: rebeccapurple;
+    width: 70rem;
     border-left: 1px solid #ffffff;
+    cursor: default;
+}
+
+.titleNav-ar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-right: 2rem;
+    border-right: 1px solid #ffffff;
+    cursor:default;
 }
 
 .title {
@@ -108,15 +198,40 @@
     letter-spacing: 0.20em;
 }
 
+.title-ar {
+    margin: 0;
+    color: #ceb780;
+    font-size: 2rem;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 300;
+    width: auto;
+    direction:rtl;
+    margin-left: auto;
+}
+
 .bookingTitle {
     font-family: 'Courier New', Courier, monospace;
     font-weight: 700;
     font-size: medium;
 }
 
+.bookingTitle-ar {
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 400;
+    font-size: medium;
+    text-align: right;
+}
+
 .nav {
     display: flex;
     margin-top: 0.5rem;
+}
+
+.nav-ar {
+    flex-direction: row-reverse;
+    display: flex;
+    margin-top: 0.5rem;
+    margin-left: auto;
 }
 
 .nav a {
@@ -127,6 +242,17 @@
     font-family: 'Segoe UI', sans-serif;
     letter-spacing: 0.30em;
 }
+
+.nav-ar a {
+    color: #ceb780;
+    margin-left: 2rem;
+    text-decoration: none;
+    position: relative;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: large;
+}
+
+
 
 .nav a::after {
     content: '';
@@ -139,7 +265,22 @@
     transition: width 0.3s ease;
 }
 
+.nav-ar a::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    background-color: #ceb780;
+    bottom: -2px;
+    right: 0;
+    transition: width 0.3s ease;
+}
+
 .nav a:hover::after {
+    width: 100%;
+}
+
+.nav-ar a:hover::after {
     width: 100%;
 }
 
@@ -158,7 +299,11 @@ body.scrolled .header {
     background: #000000;
 }
 
-.hero {
+body.scrolled .header-ar {
+    background: #000000;
+}
+
+.hotelDetails {
     background: url('/hero.png') no-repeat center bottom;
     background-size: 100% auto;
     height: 100vh;
@@ -168,7 +313,6 @@ body.scrolled .header {
     display: flex;
     align-items: flex-end;
     justify-content: flex-start;
-    padding: 2rem 7rem 4rem;
     animation: slideAnimation 50s infinite linear;
 }
 
@@ -182,26 +326,39 @@ body.scrolled .header {
     }
 }
 
-.heroText {
+.hotelDetailsText {
     text-align: left;
     z-index: 3;
     font-weight: 200;
     letter-spacing: 0.40em;
+    margin-right: auto;
+    margin-left: 7rem;
+    margin-bottom: 7rem;
 }
 
-.heroSmall {
+.hotelDetailsText-ar {
+    text-align: right;
+    z-index: 3;
+    font-weight: 200;
+    // background-color: #000;
+    margin-left: auto;
+    margin-right: 7rem;
+    margin-bottom: 7rem;
+}
+
+.hotelDetailsSmall {
     font-family: 'Segoe UI', sans-serif;
     font-size: 1rem;
     margin: 0;
 }
 
-.heroLarge {
+.hotelDetailsLarge {
     font-family: 'Segoe UI', sans-serif;
     font-size: 3rem;
     margin: 0.5rem 0;
 }
 
-.hero::after {
+.hotelDetails::after {
     content: "";
     position: absolute;
     bottom: 0;
@@ -268,6 +425,8 @@ body.scrolled .header {
     text-align: left;
     margin-top: 20px;
     margin-bottom: 200px;
+    margin-right: 5rem;
+    margin-left: 5rem;
 }
 
 .restaurant {

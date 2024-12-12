@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import CustomDateRangePicker from '../CustomDateRangePicker';
+import CustomDateRangePicker from '../../CustomDateRangePicker';
 import { Box } from '@mui/material';
 import Link from 'next/link';
 import CustomerDetailsModule from '../../scss/CustomerDetails.module.scss';
@@ -265,7 +265,8 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
                           Check In Date: <br/> {checkOutDate}
                         </div>
                         <div className={CustomerDetailsModule.ReservationSectionBoxTitle}>
-                          Nights: <br/> {calculateNights(CheckInDate, CheckOutDate)}
+                          Nights: <br/> 5
+                           {/* {calculateNights(CheckInDate, CheckOutDate)} */}
                           {/* calculateNights(CheckInDate, CheckOutDate) */}
                         </div>
                     </div>

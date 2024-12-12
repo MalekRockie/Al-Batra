@@ -26,7 +26,6 @@ $carousel-height: 600px;
     top: 0;
     left: -1000px;
     gap: 100px;
-    
 }
 
 .slide {
@@ -52,11 +51,19 @@ $carousel-height: 600px;
     height: 70%;
     margin-bottom: 20px;
     object-fit: cover;
+    
 }
 
 .caption {
     width: 100%;
-    text-align: center;
+    letter-spacing: 0.05em;
+}
+
+.caption-ar {
+    width: 100%;
+    text-align: right;
+    margin-right: 2rem;
+    letter-spacing: 0;
 }
 
 
@@ -96,8 +103,6 @@ $carousel-height: 600px;
     font-family: 'Segoe UI', sans-serif;
     font-weight: 300;    
     font-size: xx-large;
-    text-align: left;
-    letter-spacing: 0.05em;
     margin-left: 20px;
     color: #ceb780;
 }
@@ -105,11 +110,8 @@ $carousel-height: 600px;
 .cardDesc
 {
     font-size: medium;
-    text-align: left;
-    text-align: left;
     font-family: 'Segoe UI', sans-serif;
     font-weight: 300;
-    letter-spacing: 0.1em;
     margin-left: 20px;
     color: #ceb780;
 }

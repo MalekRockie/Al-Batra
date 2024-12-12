@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import Head from 'next/head';
 import { Box } from '@mui/material';
 import Link from 'next/link';
-import styles from '../../scss/Home.module.scss';
-import CustomDateRangePicker from "../CustomDateRangePicker";
-import RoomTypeSelection from "../RoomTypeSelection";
-import ReservationRetrievalModule from '../../scss/ReservationRetrieval.module.scss'
+import styles from '../../../scss/Home.module.scss';
+import CustomDateRangePicker from "../../CustomDateRangePicker";
+import RoomTypeSelection from "../../RoomTypeSelection";
+import ReservationRetrievalModule from '../../../scss/ReservationRetrieval.module.scss'
+import {useLocale, useTranslations} from 'next-intl';
 
 
 
@@ -29,6 +30,7 @@ const [noResults, setNoResults] = useState(false);
 const [isLoading, setIsLoading] = useState(false);
 const [error, setError] = useState(null);
 
+  const locale = useLocale();
 
 const handleDateRangeChange = (dates) => {
     setSelectedDates(dates);
@@ -137,11 +139,11 @@ return (
         {/* Nav bar */}
         <header className={`${styles.header} ${isScrolledToMax && !isMouseOver ? styles.gradient : styles.solid}`}>
         <div className={styles.logoTitleNav}>
-            <img src="logo.png" alt="Al-Batra Hotel Logo" className={styles.logo} />
+            <img src="../logo.png" alt="Al-Batra Hotel Logo" className={styles.logo} />
             <div className={styles.titleNav}>
             <h1 className={styles.title}>AL-BATRA HOTEL</h1>
             <nav className={styles.nav}>
-                <Link href="/">HOME</Link>
+                <Link href={`/${locale}`}>Home</Link>
                 <a href="">ROOMS</a>
                 <a href="">DINING</a>
                 <a href="">AMENITIES</a>
@@ -218,7 +220,7 @@ return (
                 <div className={ReservationRetrievalModule.MyReservationContainer} key={index}>
 
                     <div className={ReservationRetrievalModule.MyReservationContainerLeftHalf}>
-                        <img src='room1.jpg' alt="Room" className={ReservationRetrievalModule.MyReservationContainerLeftHalfImg}/>
+                        <img src='../room1.jpg' alt="Room" className={ReservationRetrievalModule.MyReservationContainerLeftHalfImg}/>
                     </div>
 
                     <div className={ReservationRetrievalModule.MyReservationContainerRightHalf}>
@@ -260,16 +262,16 @@ return (
             </div>
             <div className={styles.footerNavCol}>
             <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">
-                <img src="TikTokLogo.png" alt="TikTok" className={styles.socialIcon}/>
+                <img src="../TikTokLogo.png" alt="TikTok" className={styles.socialIcon}/>
             </a>
             <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-                <img src="FacebookLogo.png" alt="Facebook" className={styles.socialIcon}/>
+                <img src="../FacebookLogo.png" alt="Facebook" className={styles.socialIcon}/>
             </a>
             <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
-                <img src="X_Logo.png" alt="Twitter" className={styles.socialIcon}/>
+                <img src="../X_Logo.png" alt="Twitter" className={styles.socialIcon}/>
             </a>
             <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-                <img src="InstagramLogo.png" alt="Instagram" className={styles.socialIcon}/>
+                <img src="../InstagramLogo.png" alt="Instagram" className={styles.socialIcon}/>
             </a>
             </div>
         </div>
