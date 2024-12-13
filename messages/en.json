@@ -12,7 +12,8 @@
     "MyReservation": "MY RESERVATION",
     "CheckButton": "CHECK RATES",
     "RoomSize": "ROOM SIZE",
-    "Dates": "CHECK IN - CHECK OUT"
+    "Dates": "CHECK IN - CHECK OUT",
+    "updateSearch": "UPDATE SEARCH"
   },
   "MainDescription": 
   {

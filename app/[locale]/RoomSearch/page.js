@@ -28,6 +28,7 @@ const RoomSearch = () => {
   const tomorrow = new Date();
   tomorrow.setDate(today.getDate() + 1);
   const CurrentBill = 0;
+  const t = useTranslations();
 
   //Testing Here
   const [tempSelectedRooms, setTempSelectedRooms] = useState([]);
@@ -49,6 +50,8 @@ const RoomSearch = () => {
   //should be true only when the used is about to proceed to the next page
   const [isRoomSelectionComplete, setRoomSelectionComplete] = useState(false);
   const locale = useLocale();
+  const bookingTitleClass = locale === "ar" ? RoomSearchModule['bookingTitle-ar'] : RoomSearchModule.bookingTitle;
+
 
   //handles selecting the room before prompting the used to select the package for each room
   const handleSelectRoomType = (roomIndex, roomTypePicked, room_Price) => {
@@ -418,15 +421,15 @@ useEffect(() => {
             <section id="booking" className={RoomSearchModule.bookingSection}>
               <Box className={RoomSearchModule.bookingContainer}>
                 <div className={RoomSearchModule.datePickerContainer}>
-                  <div className={RoomSearchModule.bookingTitle}>CHECK IN - CHECK OUT</div>
+                  <div className={bookingTitleClass}>{t("NavigationBar.Dates")}</div>
                   <CustomDateRangePicker onDateRangeChange={handleDateRangeChange} />
                 </div>
                 <div className={styles.roomTypeContainer}>
-                  <div className={styles.bookingTitle}>ROOM SIZE</div>
+                  <div className={bookingTitleClass}>{t("NavigationBar.RoomSize")}</div>
                   <RoomTypeSelection onRoomTypeChange={handleRoomSelectedChange}/>
                 </div>
                 <button className={styles.searchButton} onClick={handleUpdateSearch}>
-                  UPDATE SEARCH
+                  {t("NavigationBar.updateSearch")}
                 </button>
               </Box>
             </section>
@@ -445,8 +448,7 @@ useEffect(() => {
                   
                   <div 
                   key={rooms.id || index}
-                  className={index == activeSelectedRoomIndex && RoomSearchModule.selectedRoomContainer}>
-                    <div className={index != activeSelectedRoomIndex && RoomSearchModule.unSelectedRoomContainer}>
+                  className={index === activeSelectedRoomIndex ? RoomSearchModule.selectedRoomContainer : RoomSearchModule.unSelectedRoomContainer}>
 
                       
                       <div className={RoomSearchModule.RoomsRequestedBoldFont}>
@@ -487,8 +489,6 @@ useEffect(() => {
                       )} 
                       <br/>
                       </div>
-
-                    </div>
                   </div>
                 )
                 })
@@ -598,7 +598,7 @@ useEffect(() => {
                 <div className={RoomSearchModule.PkgContainer}>
                     <div className={RoomSearchModule.roomImageContainer}>
                       <img
-                              src={`./room3.jpg`}
+                              src={`../room3.jpg`}
                               className={RoomSearchModule.roomImage}
                             />
                     </div>
@@ -676,17 +676,19 @@ useEffect(() => {
 
       {/* Proceed to the next page box */}
       <div className={`${RoomSearchModule.proceedBox} ${isRoomSelectionComplete ? RoomSearchModule.visible : RoomSearchModule.hidden}`}>
-          <div className={RoomSearchModule.proceedBoxDescCost}>
-            <div className={RoomSearchModule.proceedBoxDesc}>
-              Estimate cost
+        <div className={RoomSearchModule.proceedInfoContainer}>
+            <div className={RoomSearchModule.proceedBoxDescCost}>
+              <div className={RoomSearchModule.proceedBoxDesc}>
+                Estimate cost
+              </div>
+              ${totalCostEstimate.toFixed(2)}
             </div>
-            ${totalCostEstimate.toFixed(2)}
-          </div>
-          <div className={RoomSearchModule.proceedBoxButtonContainer}>
-            <button className={RoomSearchModule.proceedBoxButton} onClick={()=>((handleProceedingToNextPage()))}>
-                Continue
-            </button>
-          </div>
+            <div className={RoomSearchModule.proceedBoxButtonContainer}>
+              <button className={RoomSearchModule.proceedBoxButton} onClick={()=>((handleProceedingToNextPage()))}>
+                  Continue
+              </button>
+            </div>
+        </div>
 
       </div>
 

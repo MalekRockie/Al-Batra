@@ -100,6 +100,12 @@
     font-size: medium;
 }
 
+.bookingTitle-ar {
+    font-family: 'Segoe UI', sans-serif;
+        font-weight: 400;
+        font-size: medium;
+        text-align: right;
+}
 .bookingContainer {
     display: flex;
     justify-content: center;
@@ -151,7 +157,7 @@
     min-width: 10rem;
     height: 4rem;
     margin-top: 1.5rem;
-    margin-left: 72rem;
+    margin-left: auto;
     text-align: right;
 }
 
@@ -167,8 +173,16 @@
 {
     min-width: 16rem;
     max-width: 16rem;
-    margin-right: 20rem;
+    margin: auto;
     margin-top: 1.5rem;
+    margin-right: 3rem;
+    margin-left: 1rem;
+}
+
+.proceedInfoContainer
+{
+    width: 100%;
+    display: flex;
 }
 
 .proceedBoxButton
