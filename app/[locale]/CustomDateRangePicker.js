@@ -4,7 +4,8 @@ import {
   startOfMonth, endOfMonth, isSameDay, isWithinInterval,
   isBefore
 } from 'date-fns';
-import styles from '../scss/CustomDateRangePicker.module.scss';
+import styles from '../../scss/CustomDateRangePicker.module.scss';
+import { useLocale, useTranslations } from 'next-intl';
 
 const CustomDateRangePicker = ({ onDateRangeChange }) => {
   const today = new Date();
@@ -13,6 +14,10 @@ const CustomDateRangePicker = ({ onDateRangeChange }) => {
   const [selectedDates, setSelectedDates] = useState([today, tomorrow]);
   const [isOpen, setIsOpen] = useState(false);
   const calendarRef = useRef(null);
+  const t = useTranslations();
+  const locale = useLocale();
+
+  const isRTL = locale === 'ar'; // Check if the locale is Arabic (RTL)
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -20,53 +25,54 @@ const CustomDateRangePicker = ({ onDateRangeChange }) => {
         setIsOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [calendarRef]);
 
-const handleDateClick = (date) => {
-  const [start, end] = selectedDates;
+  const handleDateClick = (date) => {
+    const [start, end] = selectedDates;
 
-  if (!start || (start && end)) {
-    setSelectedDates([date, null]);
-  } else if (isBefore(date, start)) {
-    setSelectedDates([date, start]);
-  } else {
-    setSelectedDates([start, date]);
-  }
-
-  const updatedDates = [start, date]; // Update the dates here
-  if (onDateRangeChange) {
-    onDateRangeChange(updatedDates); // Call the onDateRangeChange with updatedDates
-  }
-};
-
-const openCalenderBox = () => 
-  {
-    if(isOpen)
-      {
-        setIsOpen(false);
-      }
-    if(!isOpen)
-    {
-      setIsOpen(true);
+    if (!start || (start && end)) {
+      setSelectedDates([date, null]);
+    } else if (isBefore(date, start)) {
+      setSelectedDates([date, start]);
+    } else {
+      setSelectedDates([start, date]);
     }
-  }
+
+    const updatedDates = [start, date]; // Update the dates here
+    if (onDateRangeChange) {
+      onDateRangeChange(updatedDates); // Call the onDateRangeChange with updatedDates
+    }
+  };
+
+  const openCalenderBox = () => {
+    setIsOpen(!isOpen);
+  };
 
   const renderCalendar = (month) => {
     const start = startOfMonth(month);
     const end = endOfMonth(month);
     const days = eachDayOfInterval({ start, end });
 
+    const weekdays = [
+      t('Calender.sunday'), t('Calender.monday'), t('Calender.tuesday'),
+      t('Calender.wednesday'), t('Calender.thursday'), t('Calender.friday'),
+      t('Calender.saturday')
+    ];
+
+    // Reverse the weekdays for RTL layout
+    const reversedWeekdays = isRTL ? weekdays.reverse() : weekdays;
+
     return (
-      <div className={styles.calendar}>
+      <div className={styles.calendar} style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
         <div className={styles.monthHeader}>
           <span>{format(month, 'MMMM yyyy')}</span>
         </div>
         <div className={styles.weekDays}>
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+          {reversedWeekdays.map((day) => (
             <div key={day} className={styles.weekDay}>{day}</div>
           ))}
         </div>
@@ -92,12 +98,13 @@ const openCalenderBox = () =>
       </div>
       {isOpen && (
         <div ref={calendarRef} className={styles.calendarPopup}>
-          <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>{"<"}</button>
+          {/* Reversing the buttons for RTL */}
+          <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>{isRTL ? '>' : '<'}</button>
           <div className={styles.calendarsContainer}>
             {renderCalendar(currentMonth)}
             {renderCalendar(addMonths(currentMonth, 1))}
           </div>
-          <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>{">"}</button>
+          <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>{isRTL ? '<' : '>'}</button>
         </div>
       )}
     </div>

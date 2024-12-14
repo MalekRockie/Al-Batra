@@ -49,10 +49,41 @@
     position: absolute;
     top: 0;
     right: 0;
-    padding-right: 8px;
+    margin-right: 8px;
     cursor: pointer;
 }
 
+.removeRoomButton-ar {
+    background: none;
+    border: none;
+    color: rgb(109, 45, 5);
+    font-size: 1.5rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: auto;
+    margin-right: 400px;
+    cursor: pointer;
+}
+
+.removeRoomButton:hover {
+    filter: brightness(0.2);
+}
+
+.removeRoomButton-ar:hover
+{
+    filter: brightness(0.2);
+}
+
+.roomSelectedLabel
+{
+    margin: auto;
+}
+
+.roomSelectedLabel-ar {
+    margin: auto;
+    text-align: right;
+}
 
 .guestsContainer {
     display: flex;
@@ -60,12 +91,28 @@
     margin-top: 0.5rem;
 }
 
+.guestsContainer-ar {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    flex-direction: row-reverse
+}
+
 .guestsContainer div {
     display: flex;
     align-items: center;
 }
 
+.guestsContainer-ar div {
+    display: flex;
+    align-items: center;
+}
+
 .guestsContainer span {
+    margin-right: 0.5rem;
+}
+
+.guestsContainer-ar span {
     margin-right: 0.5rem;
 }
 
@@ -77,6 +124,14 @@
     margin: 0 0.5rem;
 }
 
+
+.guestsContainer-ar button {
+    padding: 0.25rem 0.5rem;
+    border: none;
+    background-color: #f4f4f4;
+    cursor: pointer;
+    margin: 0 0.5rem;
+}
 
 
 .Button {

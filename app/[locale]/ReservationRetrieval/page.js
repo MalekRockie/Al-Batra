@@ -5,8 +5,8 @@ import Head from 'next/head';
 import { Box } from '@mui/material';
 import Link from 'next/link';
 import styles from '../../../scss/Home.module.scss';
-import CustomDateRangePicker from "../../CustomDateRangePicker";
-import RoomTypeSelection from "../../RoomTypeSelection";
+import CustomDateRangePicker from "../CustomDateRangePicker";
+import RoomTypeSelection from "../RoomTypeSelection";
 import ReservationRetrievalModule from '../../../scss/ReservationRetrieval.module.scss'
 import {useLocale, useTranslations} from 'next-intl';
 
@@ -208,7 +208,7 @@ return (
                     </div>
                     <div className={ReservationRetrievalModule.ButtonContainer}>
                         <button className={ReservationRetrievalModule.button} onClick={HandleReservationLookUp}>
-                            CONTINUE
+                            SEARCH
                         </button>
                     </div>
                 </div>

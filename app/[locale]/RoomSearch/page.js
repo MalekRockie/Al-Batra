@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import CustomDateRangePicker from '../../CustomDateRangePicker';
-import RoomTypeSelection from '../../RoomTypeSelection';
+import CustomDateRangePicker from '../CustomDateRangePicker';
+import RoomTypeSelection from '../RoomTypeSelection';
 import { Box } from '@mui/material';
 import Link from 'next/link';
 import styles from '../../../scss/Home.module.scss';
@@ -29,6 +29,7 @@ const RoomSearch = () => {
   tomorrow.setDate(today.getDate() + 1);
   const CurrentBill = 0;
   const t = useTranslations();
+  const locale = useLocale();
 
   //Testing Here
   const [tempSelectedRooms, setTempSelectedRooms] = useState([]);
@@ -49,9 +50,13 @@ const RoomSearch = () => {
   const [totalCostEstimate, setTotalCostEstimate] = useState(0);
   //should be true only when the used is about to proceed to the next page
   const [isRoomSelectionComplete, setRoomSelectionComplete] = useState(false);
-  const locale = useLocale();
   const bookingTitleClass = locale === "ar" ? RoomSearchModule['bookingTitle-ar'] : RoomSearchModule.bookingTitle;
-
+  const selectedRoomContainerClass = locale === "ar" ? RoomSearchModule['selectedRoomContainer-ar'] : RoomSearchModule.selectedRoomContainer;
+  const unSelectedRoomContainerClass = locale === "ar" ? RoomSearchModule['unSelectedRoomContainer-ar'] : RoomSearchModule.unSelectedRoomContainer;
+  const RoomsRequestedBoldFontClass = locale === "ar" ? RoomSearchModule['RoomsRequestedBoldFont-ar'] : RoomSearchModule.RoomsRequestedBoldFont;
+  const RoomsRequestedNonBoldFontClass = locale === "ar" ? RoomSearchModule['RoomsRequestedNonBoldFont-ar'] : RoomSearchModule.RoomsRequestedNonBoldFont;
+   const RoomsRequestedClass = locale === "ar" ? RoomSearchModule['RoomsRequested-ar'] : RoomSearchModule.RoomsRequested;
+//RoomsRequested
 
   //handles selecting the room before prompting the used to select the package for each room
   const handleSelectRoomType = (roomIndex, roomTypePicked, room_Price) => {
@@ -159,7 +164,6 @@ const RoomSearch = () => {
       const data = await response.json();
       // console.log('Fetched room types:', data);
       setRoomType(data); // Set the fetched room types in the state
-      console.log("Room Types: ", data)
     } catch (error) {
       console.error('Error fetching room types:', error);
     } finally 
@@ -298,11 +302,10 @@ const RoomSearch = () => {
         const roomPrice = room.roomPrice || 0.0; // Default to 0 if roomPrice is null/undefined
         const package_Price = room.package_Price || 0.0; // Default to 0 if Package price is null/undefined
         const nights = calculateNights(selectedDates[0], selectedDates[1]);
-        console.log("Nights: ",nights);
         return acc + (roomPrice + package_Price) *nights;
       }, 0.0);
   
-      // Update the total cost state
+      // update the total cost state
       setTotalCostEstimate(totalCost);
       }
 
@@ -312,12 +315,6 @@ const RoomSearch = () => {
   useEffect(() => {
   }, [isScrolledToMax, isMouseOver]);
 
-
-  
-// RoomSearch Component
-// useEffect(() => {
-//   console.log('Updated Selected Rooms:', selectedRooms);
-// }, [selectedRooms]);
 
 
 useEffect(() => {
@@ -331,6 +328,7 @@ useEffect(() => {
     
     
     const defaultRoom = { adults: 1, children: 0, roomType: null, package: null, roomPrice: 0.0, package_Price: 0.0};
+    // console.log("Default: ", defaultRoom);
     
     setSelectedRooms(prevState => {
       // Check if prevState is null or empty
@@ -349,7 +347,7 @@ useEffect(() => {
         // If no valid `selectedRoomsParams`, fallback to the default room
         console.log("Selected rooms are empty or null");
         console.log(selectedRoomsParams); // Log the param
-        console.log(defaultRoom); // Log the default room
+        // console.log("default: ",defaultRoom); // Log the default room
 
         const updatedRooms = [...prevState];  // Make a copy of the previous state
         updatedRooms[0] = defaultRoom;       // Update the first element with the default room
@@ -359,25 +357,6 @@ useEffect(() => {
       // If `selectedRooms` is not empty, return the current state
       return prevState;
     });
-    
-    // If `selectedRooms` is empty or not yet set, use the default values
-    // if (selectedRooms.length === 0) {
-    //   // console.log('Default Room:', defaultRoom);
-    //   // selectedRooms[0] = defaultRoom
-    //   // setSelectedRooms(defaultRoom);
-    // } 
-    // if(selectedRoomsParams != null)
-    //   {
-    //     console.log(selectedRoomsParams);
-    //     console.log(defaultRoom);
-    //   }
-    // else {
-    //   // Otherwise, log the selected rooms and their details
-    //   selectedRooms.forEach((room, index) => {
-    //     console.log(`Room ${index + 1}:`, room);
-    //   });
-    // }
-    // console.log('Rooms: ', selectedRooms[1]);
 
     if (selectedDates[0] && selectedDates[1]) {
       const checkIn = selectedDates[0].toISOString().split('T')[0]; // Format as YYYY-MM-DD
@@ -396,13 +375,10 @@ useEffect(() => {
   return (
     <div className={RoomSearchModule.main}>
       {/* Header */}
-      <Head>
-        <title>Book your stay - Al Batra Hotel</title>
-        <link rel="icon" href="/favicon.ico" />
-        <meta name="description" content="Experience the finest luxury at our hotel" />
-        <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
-      </Head>
       <header className={RoomSearchModule.header}>
+          <title>{t("HomePage.roomSearchTitle")}</title>
+          <meta name="description" content="Experience the finest luxury at our hotel" />
+          <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
         <div className={RoomSearchModule.logoTitleNav}>
           <a href={`/${locale}`}>
             <img src='../logo.png' alt="Al-Batra Hotel Logo" className={RoomSearchModule.logo} />
@@ -415,91 +391,91 @@ useEffect(() => {
       </header>
 
       {/* Booking Section */}
-          <div
-            className={RoomSearchModule.bookingBar}
-          >
-            <section id="booking" className={RoomSearchModule.bookingSection}>
-              <Box className={RoomSearchModule.bookingContainer}>
-                <div className={RoomSearchModule.datePickerContainer}>
-                  <div className={bookingTitleClass}>{t("NavigationBar.Dates")}</div>
-                  <CustomDateRangePicker onDateRangeChange={handleDateRangeChange} />
-                </div>
-                <div className={styles.roomTypeContainer}>
-                  <div className={bookingTitleClass}>{t("NavigationBar.RoomSize")}</div>
-                  <RoomTypeSelection onRoomTypeChange={handleRoomSelectedChange}/>
-                </div>
-                <button className={styles.searchButton} onClick={handleUpdateSearch}>
-                  {t("NavigationBar.updateSearch")}
-                </button>
-              </Box>
-            </section>
-          </div>
+      <div
+        className={RoomSearchModule.bookingBar}
+      >
+        <section id="booking" className={RoomSearchModule.bookingSection}>
+          <Box className={RoomSearchModule.bookingContainer}>
+            <div className={RoomSearchModule.datePickerContainer}>
+              <div className={bookingTitleClass}>{t("NavigationBar.Dates")}</div>
+              <CustomDateRangePicker onDateRangeChange={handleDateRangeChange} />
+            </div>
+            <div className={styles.roomTypeContainer}>
+              <div className={bookingTitleClass}>{t("NavigationBar.RoomSize")}</div>
+              <RoomTypeSelection onRoomTypeChange={handleRoomSelectedChange}/>
+            </div>
+            <button className={styles.searchButton} onClick={handleUpdateSearch}>
+              {t("NavigationBar.updateSearch")}
+            </button>
+          </Box>
+        </section>
+      </div>
 
 
       {/* Selected Room */}
-          <div className={RoomSearchModule.Container3}>
-      {!isLoading && selectedRooms.length > 1 && (
-        <div>
-            <hr className={RoomSearchModule.line} />
-            <div className={RoomSearchModule.RoomsRequested}>
-            {
-              selectedRooms.map((rooms, index) => {
-                return (
-                  
-                  <div 
-                  key={rooms.id || index}
-                  className={index === activeSelectedRoomIndex ? RoomSearchModule.selectedRoomContainer : RoomSearchModule.unSelectedRoomContainer}>
+      <div className={RoomSearchModule.Container3}>
+        {!isLoading && selectedRooms.length > 0 && (
+          <div>
+              <hr className={RoomSearchModule.line} />
+              <div className={RoomsRequestedClass}>
+              {
+                selectedRooms.map((rooms, index) => {
+                  return (
+                    
+                    <div 
+                    key={rooms.id || index}
+                    className={index === activeSelectedRoomIndex ? selectedRoomContainerClass : unSelectedRoomContainerClass}>
 
-                      
-                      <div className={RoomSearchModule.RoomsRequestedBoldFont}>
-                      Room {index + 1} | {rooms.adults == 1 && `${rooms.adults} Adult`} 
-                      {rooms.adults > 1 && `${rooms.adults} Adults`}
-                      {rooms.children == 1 && ` | ${rooms.children} Child`} 
-                      {rooms.children > 1 && ` | ${rooms.children} Children`}
-                      <br/>
-                      {rooms.roomType == null && index == activeSelectedRoomIndex && `CHOOSE ROOM`}
-
-
-                    <div className={RoomSearchModule.RoomsRequestedNonBoldFont}>
-                      {rooms.roomType == null && index != activeSelectedRoomIndex && `CHOOSE ROOM`}
-                      {rooms.roomType != null && (
-                        <div>
-                        {rooms.roomType}<span> | </span>
-                        <a className={RoomSearchModule.underlinedClick} onClick={() => handleChangeSelectedRoom(index)}>Edit</a>
-                        </div>
-                      )}
-                      </div>
-                    </div>
-
-
-
-                      <div className={RoomSearchModule.RoomsRequestedBoldFont}>
-                        {rooms.package == null && !PackageSelection && index === activeSelectedRoomIndex && (<div>CHOOSE PACKAGE</div>)}
-                      </div>
-
-                      
-                      <div className={RoomSearchModule.RoomsRequestedNonBoldFont}>
-                        {rooms.package == null && PackageSelection && (<div>CHOOSE PACKAGE</div>)}
-                        {rooms.package == null && index != activeSelectedRoomIndex && !PackageSelection && (<div>CHOOSE PACKAGE</div>)}
-                        {rooms.package != null &&  (
-                          <div>{rooms.package}<span> | </span>
-                          <a className={RoomSearchModule.underlinedClick} onClick={() => handleEditRoomPackage(index)}>Edit</a>
                         
+                        <div className={RoomsRequestedBoldFontClass}>
+                        {t("RoomSelection.Room")} {index + 1} | {rooms.adults == 1 && `${rooms.adults} ${t("RoomSelection.Adult")}`} 
+                        {rooms.adults > 1 && `${rooms.adults} ${t("RoomSelection.Adults")}`}
+                        {rooms.children == 1 && ` | ${rooms.children} ${t("RoomSelection.Child")}`} 
+                        {rooms.children > 1 && ` | ${rooms.children} ${t("RoomSelection.Children")}`}
+                        <br/>
+                        {rooms.roomType == null && index == activeSelectedRoomIndex && `${t("RoomSelection.ChooseRoom")}`}
+
+
+                      <div className={RoomsRequestedNonBoldFontClass}>
+                        {rooms.roomType == null && index != activeSelectedRoomIndex && `${t("RoomSelection.ChooseRoom")}`}
+                        {rooms.roomType != null && (
+                          <div>
+                          {rooms.roomType}<span> | </span>
+                          <a className={RoomSearchModule.underlinedClick} onClick={() => handleChangeSelectedRoom(index)}>{t("RoomSelection.Edit")}</a>
+                          </div>
+                        )}
                         </div>
-                      )} 
-                      <br/>
                       </div>
-                  </div>
-                )
-                })
-            }
 
-            </div>
-            <hr className={RoomSearchModule.line2} />
-        </div>
 
-      )}
+
+                        <div className={RoomsRequestedBoldFontClass}>
+                          {rooms.package == null && !PackageSelection && index === activeSelectedRoomIndex && (<div>{t("RoomSelection.ChoosePackage")}</div>)}
+                        </div>
+
+                        
+                        <div className={RoomsRequestedNonBoldFontClass}>
+                          {rooms.package == null && PackageSelection && (<div>{t("RoomSelection.ChoosePackage")}</div>)}
+                          {rooms.package == null && index != activeSelectedRoomIndex && !PackageSelection && (<div>{t("RoomSelection.ChoosePackage")}</div>)}
+                          {rooms.package != null &&  (
+                            <div>{rooms.package}<span> | </span>
+                            <a className={RoomSearchModule.underlinedClick} onClick={() => handleEditRoomPackage(index)}>{t("RoomSelection.Edit")}</a>
+                          
+                          </div>
+                        )} 
+                        <br/>
+                        </div>
+                    </div>
+                  )
+                  })
+              }
+
+              </div>
+              <hr className={RoomSearchModule.line2} />
           </div>
+
+        )}
+      </div>
 
       
 
@@ -556,7 +532,7 @@ useEffect(() => {
                             className={RoomSearchModule.reserveButton}
                             onClick={() => handleSelectRoomType(activeSelectedRoomIndex, room.roomTypeID, room.minRate)}
                           >
-                            SELECT ROOM
+                            {t("RoomSelection.SELECTROOM")}
                           </button>
                         </div>
                         )}
@@ -628,7 +604,7 @@ useEffect(() => {
                         className={RoomSearchModule.reserveButton}
                         onClick={()=> handleSelectpackage(pkg.package_Type, pkg.package_Price)}
                         >
-                          SELECT PACKAGE
+                          {t("RoomSelection.SELECTPACKAGE")}
                         </button>
                         </div>
                       </div>

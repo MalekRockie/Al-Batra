@@ -1,7 +1,9 @@
 {
   "HomePage": {
     "title": "AL-BATRA HOTEL",
-    "about": "Go to the about page"
+    "about": "Go to the about page",
+    "roomSearchTitle": "Book your Stay - Al Batra Hotel",
+    "roomSearchDesc": "Experience the finest luxury at our hotel - Al Batra Hotel"
   },
   "NavigationBar": {
     "Home": "HOME",
@@ -64,5 +66,31 @@
   "lang":
   {
     "en": "en"
+  },
+  "Calender":
+  {
+    "sunday": "Sun",
+    "monday": "Mon",
+    "tuesday": "Tue",
+    "wednesday": "Wed",
+    "thursday": "Thu",
+    "friday": "Fri",
+    "saturday": "Sat"
+  },
+  "RoomSelection":
+  {
+    "Room": "Room",
+    "Rooms": "Rooms",
+    "ChooseRoom": "CHOOSE ROOM",
+    "ChoosePackage": "CHOOSE PACKAGE",
+    "Adult": "Adult",
+    "Adults": "Adults",
+    "Child": "Child",
+    "Children": "Children",
+    "AddRoom": "ADD ROOM",
+    "Update": "UPDATE",
+    "Edit": "Edit",
+    "SELECTPACKAGE": "SELECT PACKAGE",
+    "SELECTROOM": "SELECT ROOM"
   }
 }

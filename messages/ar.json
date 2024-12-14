@@ -1,7 +1,9 @@
 {
   "HomePage": {
     "title": "فـــنـــدق الــبـــتـــراء",
-    "about": "انتقل إلى صفحة حول"
+    "about": "انتقل إلى صفحة حول",
+    "roomSearchTitle": "احجز إقامتك - فندق البتراء | Al Batra Hotel",
+    "roomSearchDesc": "استمتع بأفضل الرفاهية في فندقنا - فندق البتراء | Al Batra Hotel"
   },
   "NavigationBar": {
     "Home": "الرئــــيـــسـيـــة",
@@ -64,5 +66,33 @@
   "lang":
   {
     "en": "ar"
+  },
+  "Calender":
+{
+  "sunday": "الأحد",
+  "monday": "الاثنين",
+  "tuesday": "الثلاثاء",
+  "wednesday": "الأربعاء",
+  "thursday": "الخميس",
+  "friday": "الجمعة",
+  "saturday": "السبت"
+},
+  "RoomSelection":
+  {
+    "Room": "غـرفـة",
+    "Rooms": "غـرف",
+    "ChooseRoom": "اخـتـر الـغـرفـة",
+    "ChoosePackage": "اخـتـر الـبـاقـة",
+    "Adult": "بـالـغ",
+    "Adults": "بـالـغـون",
+    "Child": "طـفـل",
+    "Children": "أطـفـال",
+    "AddRoom": "إضـافـة غـرفـة",
+    "Update": "تـحـديـث",
+    "Edit": "عـدل",
+    "SELECTPACKAGE": "اختار الباقة",
+    "SELECTROOM": "اختار الغرفة"
   }
+
+
 }

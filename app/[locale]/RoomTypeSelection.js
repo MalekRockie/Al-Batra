@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styles from '../scss/RoomTypeSelection.module.scss';
+import styles from '../../scss/RoomTypeSelection.module.scss';
+import {useLocale, useTranslations} from 'next-intl';
 
 const RoomTypeSelection = ({onRoomTypeChange}) => {
 // const [selectedRoomType, setSelectedRoomType] = useState('');
@@ -7,6 +8,15 @@ const RoomTypeSelection = ({onRoomTypeChange}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [rooms, setRooms] = useState([{ adults: 1, children: 0, roomType: null, package: null, roomPrice: null, package_Price: null }]);
   const popupRef = useRef(null);
+  const locale = useLocale();
+  const t = useTranslations();
+
+
+
+
+  const guestsContainerClass = locale === "ar" ? styles['guestsContainer-ar'] : styles.guestsContainer;
+  const roomSelectedLabelClass = locale === "ar" ? styles['roomSelectedLabel-ar'] : styles.roomSelectedLabel;
+  const removeRoomButtonClass = locale === "ar" ? styles['removeRoomButton-ar'] : styles.removeRoomButton;
 
 
   const handleRoomUpdate = (newRooms) => {
@@ -63,7 +73,7 @@ const removeRoom = (index) => {
   return (
     <div className={styles.roomTypeSelection}>
       <div className={styles.roomTypeInput} onClick={() => setIsOpen(!isOpen)}>
-        {`${rooms.length} Room${rooms.length > 1 ? 's' : ''}`}
+        {`${rooms.length} ${rooms.length > 1 ? t("RoomSelection.Rooms") : t("RoomSelection.Room")}`}
       </div>
       {isOpen && (
         <div ref={popupRef} className={styles.roomTypePopup}>
@@ -71,16 +81,16 @@ const removeRoom = (index) => {
             <div key={index} className={styles.roomContainer}>
               {rooms.length > 1 && (
                 <button
-                  className={styles.removeRoomButton}
+                  className={removeRoomButtonClass}
                   onClick={() => removeRoom(index)}
                 >
                   &times;
                 </button>
               )}
-              <h4>Room {index + 1}</h4>
-              <div className={styles.guestsContainer}>
+              <div className={roomSelectedLabelClass}>{t('RoomSelection.Room')} {index + 1}</div>
+              <div className={guestsContainerClass}>
                 <div>
-                  <span>ADULTS (18+):</span>
+                  <span>{t("RoomSelection.Adults")} (18+):</span>
                   <button
                     className={styles.adjustButton}
                     onClick={() => handleAdultChange(index, room.adults - 1)}
@@ -98,7 +108,7 @@ const removeRoom = (index) => {
                   </button>
                 </div>
                 <div>
-                  <span>CHILDREN:</span>
+                  <span>{t("RoomSelection.Children")}:</span>
                   <button
                     className={styles.adjustButton}
                     onClick={() => handleChildChange(index, room.children - 1)}
@@ -120,12 +130,12 @@ const removeRoom = (index) => {
           ))}
           {rooms.length < 4 && (
             <button className={styles.Button} onClick={addRoom}>
-              ADD ROOM
+              {t("RoomSelection.AddRoom")}
             </button>
           )}
 
             <button className={styles.Button} onClick={() => setIsOpen(false)}>
-                UPDATE
+                {t("RoomSelection.Update")}
             </button>
         </div>
       )}

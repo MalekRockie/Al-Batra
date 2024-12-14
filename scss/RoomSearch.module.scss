@@ -233,7 +233,6 @@
     align-items: center;
     height: auto;
     width: 70rem;
-    // padding-bottom: 20px;
 }
 
 .RoomsRequested
@@ -245,14 +244,35 @@
     width: 100%;
     align-items: center;
     justify-content: start;
-    margin-bottom: 0%;    
+    margin-bottom: 0%;   
+    margin-left: 5rem; 
     // font-size: medium;
 }
+
+
+.RoomsRequested-ar {
+    // margin: auto;
+    margin-top: 1rem;
+    // border: 1px solid #ceb780;
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100%;
+    align-items: center;
+    justify-content: end;
+    margin-bottom: 0%;
+    // font-size: medium;
+}
+
 .RoomsRequestedBoldFont
 {
     font-size: x-small;
     font-weight: 500;
     letter-spacing:0.1em;
+}
+
+.RoomsRequestedBoldFont-ar {
+    font-size: small;
+    font-weight: 500;
 }
 
 
@@ -261,6 +281,13 @@
     font-weight: 200;
     font-size: x-small;
     letter-spacing: 0.1em;
+    // padding-bottom: 0.8rem;
+}
+
+.RoomsRequestedNonBoldFont-ar {
+    // background-color: red;
+    font-weight: 200;
+    font-size: x-small;
     // padding-bottom: 0.8rem;
 }
 
@@ -273,11 +300,27 @@
     width: 200px;
 }
 
+.selectedRoomContainer-ar {
+    border-bottom: 3px solid #ffffff;
+    // background-color:#555;
+    margin-right: 5rem;
+    width: 200px;
+    text-align: right;
+}
+
 .unSelectedRoomContainer {
     // background-color:#555;
     margin-right: 5rem;
     font-size: small;
     width: 200px;
+}
+
+.unSelectedRoomContainer-ar {
+    // background-color:#555;
+    margin-right: 5rem;
+    font-size: small;
+    width: 200px;
+    text-align: right;
 }
 
 .underlinedClick

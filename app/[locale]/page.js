@@ -6,8 +6,8 @@ import { useRouter, usePathname } from 'next/navigation';
 import {defineRouting} from 'next-intl/routing';
 import { Box } from '@mui/material';
 import Link from 'next/link';
-import RoomTypeSelection from '../RoomTypeSelection';
-import CustomDateRangePicker from '../CustomDateRangePicker';
+import RoomTypeSelection from './RoomTypeSelection';
+import CustomDateRangePicker from './CustomDateRangePicker';
 import Carousel from './Carousel';
 import homeStyle from '../../scss/Home.module.scss';
 import {useLocale, useTranslations} from 'next-intl';
@@ -51,9 +51,18 @@ export default function Home() {
 
   const handleSearch = () => {
     console.log("Selected Dates: ", selectedDates);
-    console.log("Room: ", selectedRooms);
+    // console.log("Room: ", selectedRooms);
+      if(selectedRooms[0].adults == null)
+        {
+          const defaultRoom = { adults: 1, children: 0, roomType: null, package: null, roomPrice: 0.0, package_Price: 0.0};
+          const updatedRooms = [[]]; 
+          updatedRooms[0] = defaultRoom; 
+          setSelectedRooms(updatedRooms);
+          console.log(updatedRooms);
+        }
     if (selectedDates[0] && selectedDates[1] && selectedRooms.length > 0) {
 
+      console.log(selectedRooms);
       const pathname = `/${locale}/RoomSearch`;
       const checkIn = selectedDates[0]?.toISOString();
       const checkOut = selectedDates[1]?.toISOString();
