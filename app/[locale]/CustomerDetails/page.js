@@ -1,26 +1,26 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import CustomDateRangePicker from '../../CustomDateRangePicker';
+// import { useRouter, usePathname } from 'next/navigation';
 import { Box } from '@mui/material';
-import Link from 'next/link';
-import CustomerDetailsModule from '../../scss/CustomerDetails.module.scss';
-import RoomSearchModule from '../../scss/RoomSearch.module.scss';
-import countriesData from '../../public/countries_codes.JSON';
+import CustomerDetailsModule from '../../../scss/CustomerDetails.module.scss';
+import RoomSearchModule from '../../../scss/RoomSearch.module.scss';
+import countriesData from '../../../public/countries_codes.JSON';
 import PhoneInput from "react-phone-input-2";
-import Select from 'react-select';
-import 'react-phone-input-2/lib/style.css'
+import 'react-phone-input-2/lib/style.css';
+import {useLocale, useTranslations} from 'next-intl';
 
 
+
+
+{/*spinner animation for when data is still loading*/}
 const LoadingSpinner = () => (
   <div className={RoomSearchModule.spinnerContainer}>
-    <div className={RoomSearchModule.spinner}></div> {/* Add spinner CSS */}
-    <p>Loading room types...</p>
+    <div className={RoomSearchModule.spinner}></div> 
+    <p>{t("CustomerPage.LoadingRoomTypes")}</p>
   </div>
 );
 
 const CustomerDetails = () => {
-  const router = useRouter();
   const [selectedRooms, setSelectedRooms] = useState([[]]);
   const [checkInDate, setCheckInDate] = useState('');
   const [checkOutDate, setCheckOutDate] = useState('');
@@ -28,11 +28,30 @@ const CustomerDetails = () => {
   const [isScrolledToMax, setIsScrolledToMax] = useState(false);
   const [phone, setPhone] = useState('');
   const [reservationID, setReservationID] = useState('');
-  const [isReservationSuccessful, setIsReservationSuccessful] = useState(false);
+  const [isReservationSuccessful, setIsReservationSuccessful] = useState(true);
   const [countries, setCountries] = useState([]);
   const [selectedDialCode, setSelectedDialCode] = useState('');
   const [totalCostEstimate, setTotalCostEstimate]= useState(0.00);
 
+
+  // const router = useRouter();
+  const t = useTranslations();
+  const locale = useLocale();
+  // const pathname = usePathname();
+
+  //Styling classes
+  const dividerClass = locale === "ar" ? CustomerDetailsModule['divider-ar'] : CustomerDetailsModule.divider;
+  const InfoInputContainerClass = locale === "ar" ? CustomerDetailsModule['InfoInputContainer-ar'] : CustomerDetailsModule.InfoInputContainer;
+  const rightClass = locale === "ar" ? CustomerDetailsModule['right-ar'] : CustomerDetailsModule.right;
+  const inputBoxClass = locale === "ar" ? CustomerDetailsModule['inputBox-ar'] : CustomerDetailsModule.inputBox;
+  const AcceptedCardClass = locale === "ar" ? CustomerDetailsModule['AcceptedCardLabel-ar'] : CustomerDetailsModule.AcceptedCardLabel;
+  const LabelTextClass = locale === "ar" ? CustomerDetailsModule['LabelText-ar'] : CustomerDetailsModule.LabelText;
+  const desc2Class = locale === "ar" ? CustomerDetailsModule['desc2-ar'] : CustomerDetailsModule.desc2;
+  const priceTextClass = locale === "ar" ? CustomerDetailsModule['priceText-ar'] : CustomerDetailsModule.priceText;
+  const ReservationSectionBoxtClass = locale === "ar" ? CustomerDetailsModule['ReservationSectionBox-ar'] : CustomerDetailsModule.ReservationSectionBox;
+  const ReservationSectionTitletClass = locale === "ar" ? CustomerDetailsModule['ReservationSectionTitle-ar'] : CustomerDetailsModule.ReservationSectionTitle;
+//ReservationSectionTitle
+ const ReservationSectionTitleClass = locale === "ar" ? CustomerDetailsModule['ReservationSectionTitle-ar'] : CustomerDetailsModule.ReservationSectionTitle;
 
 
   const [formData, setFormData] = useState({
@@ -46,7 +65,7 @@ const CustomerDetails = () => {
     nationality: ''
   },
   reservations: []
-});
+  });
 
 
   const [formErrors, setFormErrors] = useState({
@@ -104,7 +123,7 @@ const CustomerDetails = () => {
       try {
         setSelectedRooms(JSON.parse(selectedRoomsParams)); // Parse the JSON string back to array
       } catch (e) {
-        console.error('Error parsing selectedRooms:', e);
+        // console.error('Error parsing selectedRooms:', e);
         setSelectedRooms([]); // Default to an empty array if parsing fails
       }
     }
@@ -116,10 +135,10 @@ const CustomerDetails = () => {
   }, []);
 
   useEffect(() => {
-    console.log('Selected Rooms:', selectedRooms); // Logs array of selected rooms
-    console.log('Check-In Date:', checkInDate);
-    console.log('Check-Out Date:', checkOutDate);
-    console.log('Total Cost Estimate:', totalCostEstimate);
+    // console.log('Selected Rooms:', selectedRooms); // Logs array of selected rooms
+    // console.log('Check-In Date:', checkInDate);
+    // console.log('Check-Out Date:', checkOutDate);
+    // console.log('Total Cost Estimate:', totalCostEstimate);
 
   const reservations = selectedRooms.map((roomData, index) => ({
       reservation: {
@@ -146,7 +165,7 @@ const CustomerDetails = () => {
 
   useEffect(() =>
   {
-  console.log("Countries 1:", allowedCountries[1]);
+  // console.log("Countries 1:", allowedCountries[1]);
   },[]);
 
 {/* Submission starts here */}
@@ -168,7 +187,7 @@ const CustomerDetails = () => {
 
     // Stop submission if there are errors
     if (Object.keys(errors).length > 0) {
-      alert("Please fill in all required fields correctly.");
+      alert(t("CustomerPage.IncompleteDataAlert"));
       return;
     }
 
@@ -193,16 +212,16 @@ const CustomerDetails = () => {
         {
           setReservationID(data.referenceCode);
           setIsReservationSuccessful(true);
-          console.log('Customer info:', formData);
-          console.log('reference code: ', data.referenceCode);
+          // console.log('Customer info:', formData);
+          // console.log('reference code: ', data.referenceCode);
         }
         else
         {
-          console.error("No reference code found in the response", data);
+          // console.error("No reference code found in the response", data);
         }
 
     } catch (error) {
-      console.error("Error creating customer:", error);
+      // console.error("Error creating customer:", error);
     }
   };
 {/* Submission ends here */}
@@ -222,36 +241,45 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
 
   return (
   <div className={CustomerDetailsModule.page}>
+    <div>
+      <title>{t("CustomerPage.PaymentPageTitle")}</title>
+      <link rel="icon" href="/favicon.ico" />
+      <meta name="description" content="Experience the finest luxury at our hotel" />
+      <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="homeStyleheet" />
+    </div>
       {isReservationSuccessful ? (
         <div>
           <Box className={CustomerDetailsModule.bookingContainer}>
-              <img src="logo.png" alt="Al-Batra Hotel Logo" className={CustomerDetailsModule.logo} />
+              <img src="../logo.png" alt="Al-Batra Hotel Logo" className={CustomerDetailsModule.logo} />
           </Box>
           <div className={CustomerDetailsModule.successMessage}>
             <div className={CustomerDetailsModule.ThankContainer}>
-            <p>Thank you!</p>
+            <p>{t("paymentSuccessfull.thankYou")}</p>
               <div className={CustomerDetailsModule.ThankDetails}>
-                  <p>Your reservation has been confirmed.<br/> We look forward to your stay! Please check your emails for more details</p>
-                <p>Your reservation ID is:<br/></p>
+                  <p>{t("paymentSuccessfull.reservationConfirmed")}<br/>{t("paymentSuccessfull.lookForward")}</p>
+                <p>{t("paymentSuccessfull.reservationId")}<br/></p>
                 <div className={CustomerDetailsModule.ResID}>{reservationID} </div>
               </div>
             </div>
 
                 <div className={CustomerDetailsModule.ReservationSection}>
-                  <div className={CustomerDetailsModule.ReservationSectionTitle}>
-                    Reservation Details:
+                  <div className={ReservationSectionTitleClass}>
+                    {t("paymentSuccessfull.reservationDetails")}
                   </div>
 
                   
                   {/* Reservation card */}
                   {selectedRooms.map((room, index) => {
+                    
                     return(
-                    <div className={CustomerDetailsModule.ReservationSectionBox}>
+                    <div 
+                    key={room.id || index}
+                    className={ReservationSectionBoxtClass}>
                       <div>
                         <div>
                           Room: {room.roomType}
                         </div>
-                        <img src={`room1.jpg`} className={CustomerDetailsModule.img}/> <br/> <br/> 
+                        <img src={`../room1.jpg`} className={CustomerDetailsModule.img}/> <br/> <br/> 
                       </div>
                         <div>
                           <div className={CustomerDetailsModule.ReservationSectionBoxTitle}>
@@ -289,7 +317,7 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
         >
           <div className={CustomerDetailsModule.logoTitleNav}>
             <a href="/">
-              <img src="logo.png" alt="Al-Batra Hotel Logo" className={CustomerDetailsModule.logo} />
+              <img src="../logo.png" alt="Al-Batra Hotel Logo" className={CustomerDetailsModule.logo} />
             </a>
             <div className={RoomSearchModule.titleNav}>
               <nav className={RoomSearchModule.nav}>
@@ -298,11 +326,11 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
           </div>
         </header>
 
-      <div className={CustomerDetailsModule.divider}>
+      <div className={dividerClass}>
         {/* Left Side */}
         <div className={CustomerDetailsModule.left}>
           <div className={CustomerDetailsModule.title}>
-            YOUR RESERVATION
+            {t("CustomerPage.YOUR RESERVATION")}
           </div>
           <div className={CustomerDetailsModule.desc1}>
            {selectedRooms.length} Room - 2 Adults, 1 Child
@@ -316,19 +344,19 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
 
                     {selectedRooms.map((rooms, index) => {
                 return (
-                  <div>
-                    <div className={CustomerDetailsModule.desc2}>
-                      {rooms.roomType}<br/> Average rate per night:
+                  <div key={rooms.id || index}>
+                    <div className={desc2Class}>
+                      {rooms.roomType}<br/> {t("CustomerPage.AverageRatePerNight")}
                     </div>
-                    <div className={CustomerDetailsModule.priceText}>
+                    <div className={priceTextClass}>
                       ${Number(rooms.roomPrice).toFixed(2)}
                     </div>                    
                     {rooms.package_Price != 0 && 
                     ( <div>
-                        <div className={CustomerDetailsModule.desc2}>
+                        <div className={desc2Class}>
                           Package:
                         </div>
-                        <div className={CustomerDetailsModule.priceText}>
+                        <div className={priceTextClass}>
                           ${Number(rooms.package_Price).toFixed(2)}
                         </div>
                       </div>
@@ -339,10 +367,10 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
 
           </div>
           <div className={CustomerDetailsModule.leftContainer2}>
-            <div className={CustomerDetailsModule.desc2}>
-              Estimated Total:
+            <div className={desc2Class}>
+              {t("CustomerPage.Estimated Total")}
             </div>
-            <div className={CustomerDetailsModule.priceText}>
+            <div className={priceTextClass}>
               ${Number(totalCostEstimate)?.toFixed(2)}
             </div>
           </div>
@@ -350,66 +378,68 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
 
         </div>  
 
-        {/* Right Side */}
-        <div className={CustomerDetailsModule.right}>
+        {/* Customer input Side */}
+        <div className={rightClass}>
 
           <div className={CustomerDetailsModule.title}>
-            BOOKING INFORMATION
+            {t("CustomerPage.BOOKING INFORMATION")}
           </div>
 
           <div className={CustomerDetailsModule.CustomerContainer1}>
             <div className={CustomerDetailsModule.CustomerContainerLabel}>
-              YOUR INFORMATION
+              {t("CustomerPage.YourInformation")}
             </div>
 
-            <div className={CustomerDetailsModule.InfoInputContainer}>
+            <div className={InfoInputContainerClass}>
 
               {/* Left side of the box */}
               <div className={CustomerDetailsModule.InputContainer}>
                   <div className={CustomerDetailsModule.InputLabel}>
-                    <div className={CustomerDetailsModule.LabelText}>
-                      First Name*
+                    <div className={LabelTextClass}>
+                      {t("CustomerPage.First Name")}
                     </div>
                   </div>
                   <div className={CustomerDetailsModule.InputLabel}>
-                    <div className={CustomerDetailsModule.LabelText}>
-                      Last Name*
+                    <div className={LabelTextClass}>
+                      {t("CustomerPage.Last Name")}
                     </div>
                   </div>
                   <div className={CustomerDetailsModule.InputLabel}>
 
-                    <div className={CustomerDetailsModule.LabelText}>
-                      Mobile Phone Number*
+                    <div className={LabelTextClass}>
+                      {t("CustomerPage.Mobile Phone Number")}
                     </div>
                   </div>
                   <div className={CustomerDetailsModule.InputLabel}>
-                    <div className={CustomerDetailsModule.LabelText}>
-                      Email Address*
+                    <div className={LabelTextClass}>
+                      {t("CustomerPage.Email Address")}
                     </div>
                   </div>
                   <div className={CustomerDetailsModule.InputLabel}>
-                    <div className={CustomerDetailsModule.LabelText}>
-                      Confirm Email Address*
+                    <div className={LabelTextClass}>
+                      {t("CustomerPage.Confirm Email Address")}
                     </div>
                   </div>
                   <div className={CustomerDetailsModule.InputLabel}>
-                    <div className={CustomerDetailsModule.LabelText}>
-                      Country/Region*
+                    <div className={LabelTextClass}>
+                      {t("CustomerPage.Country/Region")}
                     </div>
                   </div>
               </div>
 
               {/* input box side aka right side */}
-              <div className={CustomerDetailsModule.inputBox}>
+              <div className={inputBoxClass}>
                 <div className={CustomerDetailsModule.Individual_InputBox}>
                   <input
-                    name="first_name"
-                    type="text"
-                    autoComplete='first_name'
-                    value={formData.first_name}
-                    onChange={handleInputChange}
-                    className={`${CustomerDetailsModule.inputBox} ${formErrors.first_name ? CustomerDetailsModule.inputError : ''}`}
-                  />
+                  name="first_name"
+                  type="text"
+                  autoComplete="first_name"
+                  value={formData.first_name}
+                  onChange={handleInputChange}
+                  className={`${inputBoxClass} ${formErrors.first_name ? CustomerDetailsModule.inputError : ''}`}
+                  dir={locale === 'ar' ? 'rtl' : 'ltr'}  // Set the direction based on the locale
+                />
+
                 </div>
 
                 <div className={CustomerDetailsModule.Individual_InputBox}>
@@ -418,7 +448,7 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
                     name="last_name"
                     value={formData.last_name}
                     onChange={handleInputChange}
-                    className={`${CustomerDetailsModule.inputBox} ${formErrors.last_name ? CustomerDetailsModule.inputError : ''}`}
+                    className={`${inputBoxClass} ${formErrors.last_name ? CustomerDetailsModule.inputError : ''}`}
                   />
                 </div>
 
@@ -449,7 +479,7 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
                     name="email_address"
                     value={formData.email_address}
                     onChange={handleInputChange}
-                    className={`${CustomerDetailsModule.inputBox} ${formErrors.email_address ? CustomerDetailsModule.inputError : ''}`}
+                    className={`${inputBoxClass} ${formErrors.email_address ? CustomerDetailsModule.inputError : ''}`}
                   />
                 </div>
 
@@ -459,7 +489,7 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
                     name="confirmEmailAddress"
                     value={formData.confirmEmailAddress}
                     onChange={handleInputChange}
-                    className={`${CustomerDetailsModule.inputBox} ${formErrors.confirmEmailAddress ? CustomerDetailsModule.inputError : ''}`}
+                    className={`${inputBoxClass} ${formErrors.confirmEmailAddress ? CustomerDetailsModule.inputError : ''}`}
                     required
                   />
                 </div>
@@ -469,17 +499,17 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
                   name="nationality"
                   value={formData.nationality}
                   onChange={handleInputChange}
-                  className={`${CustomerDetailsModule.inputBox} ${formErrors.nationality ? CustomerDetailsModule.inputError : ''}`}
+                  className={`${inputBoxClass} ${formErrors.nationality ? CustomerDetailsModule.inputError : ''}`}
                   required
                 >
-                  <option value="">Select Nationality</option>  {/* Default option */}
+                  <option value="">{t("CustomerPage.Select Nationality")}</option>
+                  {/* Default option */}
                   {allowedCountries.map((country) => (
                     <option key={country.code} value={country.name}>
-                      <img src={country.image}/> {country.name}
+                      {country.name}
                     </option>
                   ))}
                 </select>
-
                 </div>
               </div>
 
@@ -493,39 +523,39 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
 
           <div className={CustomerDetailsModule.CustomerContainer2}>
             <div className={CustomerDetailsModule.CustomerContainerLabel}>
-              CARD DETAILS
+              {t("CustomerPage.CARD DETAILS")}
             </div>
 
-            <div className={CustomerDetailsModule.InfoInputContainer}>
+            <div className={InfoInputContainerClass}>
 
               {/* Left side of the box */}
               <div className={CustomerDetailsModule.InputContainer}>
                   <div className={CustomerDetailsModule.InputLabel}>
-                    <div className={CustomerDetailsModule.LabelText}>
-                      Name on card*
+                    <div className={LabelTextClass}>
+                      {t("CustomerPage.Name on card")}
                     </div>
                   </div>
                   <div className={CustomerDetailsModule.InputLabel}>
-                    <div className={CustomerDetailsModule.LabelText}>
-                      Card number*
+                    <div className={LabelTextClass}>
+                      {t("CustomerPage.Card number")}
                     </div>
                   </div>
                   <div className={CustomerDetailsModule.InputLabel}>
-                    <div className={CustomerDetailsModule.LabelText}>
-                      Card expiry date*
+                    <div className={LabelTextClass}>
+                      {t("CustomerPage.Card expiry date")}
                     </div>
                   </div>
               </div>
 
               {/* input box side aka right side */}
-              <div className={CustomerDetailsModule.inputBox}>
+              <div className={inputBoxClass}>
 
                 <div className={CustomerDetailsModule.Individual_InputBox}>
                   <input
                   type="text"
                   name="nameOnCard"
                   onChange={handleInputChange}
-                  className={CustomerDetailsModule.inputBox}
+                  className={inputBoxClass}
                   required
                 />
                 </div>
@@ -536,7 +566,7 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
                   name="cardNumber"
                   autoComplete='numberOnCard'
                   onChange={handleInputChange}
-                  className={CustomerDetailsModule.inputBox}
+                  className={inputBoxClass}
                   required
                 />
                 </div>
@@ -546,7 +576,7 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
                   type="text"
                   value={formData.firstName}
                   onChange={handleInputChange}
-                  className={CustomerDetailsModule.inputBox}
+                  className={inputBoxClass}
                   required
                 />
                 </div>
@@ -555,13 +585,13 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
           </div>
 
           <div className={CustomerDetailsModule.CustomerContainer3}>
-            <div className={CustomerDetailsModule.LabelText}>
-                Accepted cards: 
+            <div className={AcceptedCardClass}>
+                {t("CustomerPage.AcceptedCards")}
               </div>
           </div>
 
             <button className={CustomerDetailsModule.searchButton} onClick={handleSubmit}>
-              BOOK
+              {t("CustomerPage.BOOK")}
             </button>
         </div>
       </div>

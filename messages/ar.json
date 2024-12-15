@@ -92,7 +92,42 @@
     "Edit": "عـدل",
     "SELECTPACKAGE": "اختار الباقة",
     "SELECTROOM": "اختار الغرفة"
+  },
+  "CustomerPage":
+  {
+    "PaymentPageTitle": "صفحة الدفع - فندق البتراء",
+    "YOUR RESERVATION":"حجزك",
+    "BOOKING INFORMATION": "معلومات الحجز",
+    "YourInformation": "معلوماتك",
+    "First Name": "الاسم الأول*",
+    "Last Name": "الاسم الأخير*",
+    "Mobile Phone Number": "رقم الهاتف المحمول*",
+    "Email Address": "عنوان البريد الإلكتروني*",
+    "Confirm Email Address": "تأكيد عنوان البريد الإلكتروني*",
+    "Country/Region": "البلد/المنطقة*",
+    "Select Nationality": "اختر الجنسية",
+    "CARD DETAILS": "تفاصيل البطاقة",
+    "Name on card": "الاسم على البطاقة*",
+    "Card number": "رقم البطاقة*",
+    "Card expiry date": "تاريخ انتهاء البطاقة*",
+    "AverageRatePerNight": ":معدل السعر لكل ليلة",
+    "EstimatedTotal": ":الإجمالي المقدر",
+    "BOOK": "احجز",
+    "AcceptedCards": ":البطاقات المقبولة",
+    "Estimated Total": ":الإجمالي المقدر",
+    "LoadingRoomTypes": "...جاري تحميل أنواع الغرف",
+    "IncompleteDataAlert": "يرجى ملء جميع الحقول المطلوبة بشكل صحيح."
+},
+  "paymentSuccessfull":
+  {
+    "thankYou": "!شكراً لك",
+    "reservationConfirmed": "تم تأكيد حجزك.",
+    "lookForward": "نتطلع إلى إقامتك! يرجى التحقق من بريدك الإلكتروني للحصول على مزيد من التفاصيل.",
+    "reservationId": "رقم تعريف الحجز الخاص بك هو: ",
+    "reservationDetails": ":تفاصيل الحجز"
   }
+
+
 
 
 }

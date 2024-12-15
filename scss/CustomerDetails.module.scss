@@ -99,6 +99,16 @@
     margin-bottom: 5rem;
 }
 
+.divider-ar
+{
+    justify-content: center;
+    display: flex;
+    height: 100rem;
+    margin-top: 10rem;
+    margin-bottom: 5rem;
+    flex-direction: row-reverse;
+}
+
 .left
 {
     background-color: #f3f3f3;
@@ -112,6 +122,13 @@
     width: 50rem;
     border: 1px solid #c9c9c9;
     border-left: 0px solid #c9c9c9;
+}
+
+.right-ar {
+    background-color: #f3f3f3;
+    width: 50rem;
+    border: 1px solid #c9c9c9;
+    border-right: 0px solid #c9c9c9;
 }
 .title
 {
@@ -157,6 +174,16 @@
     letter-spacing: 0.05em;
     font-weight: 300;
 }
+
+.desc2-ar {
+    text-align: right;
+    margin-right: 1rem;
+    margin-top: 0.5rem;
+    color: #000000;
+    font-size: medium;
+    // letter-spacing: 0.05em;
+    font-weight: 300;
+}
 .priceText
 {
     text-align: right;
@@ -164,6 +191,14 @@
     font-weight: 600;
     color: #000000;
     margin-right: 1rem;
+}
+
+.priceText-ar {
+    text-align: left;
+    font-size: larger;
+    font-weight: 600;
+    color: #000000;
+    margin-left: 1rem;
 }
 
 .leftContainer2 {
@@ -216,12 +251,33 @@
     display: flex;
     width: 100%;
     background-color: #ffffff;
-    
 }
-.LabelText
+
+.InfoInputContainer-ar {
+    display: flex;
+    width: 100%;
+    background-color: #ffffff;
+    flex-direction: row-reverse;
+}
+.AcceptedCardLabel
 {
     padding-top: 0.25rem;
     margin-left: 1rem;
+}
+.AcceptedCardLabel-ar {
+    padding-top: 0.25rem;
+    margin-right: 1rem;
+    text-align: right;
+}
+
+.LabelText {
+    padding-top: 0.25rem;
+    margin-left: 1rem;
+}
+
+.LabelText-ar {
+    padding-top: 0.25rem;
+    text-align: right;
 }
 .inputBox
 {
@@ -229,6 +285,14 @@
     text-align: left;
     height: 2.44rem;
     width: 100%;
+}
+
+.inputBox-ar {
+    color: #000000;
+    text-align: left;
+    height: 2.44rem;
+    width: 100%;
+    text-align: right;
 }
 
 .Individual_InputBox {
@@ -402,6 +466,21 @@
     text-align: left;
     font-size: medium;
 }
+
+.ReservationSectionBox-ar {
+    background-color: #cfcfcf;
+    height: 100%;
+    border: #cacaca solid 1px;
+    display: flex;
+    justify-content: space-around;
+    padding-top: 0.5rem;
+    margin: auto;
+    margin-bottom: 2rem;
+    font-weight: 350;
+    text-align: right;
+    font-size: medium;
+    flex-direction: row-reverse;
+}
 .ReservationSectionBoxCol
 {
     // margin: auto;
@@ -414,6 +493,11 @@
 .ReservationSectionTitle
 {
     text-align: left;
+    text-decoration: underline;
+    font-weight: 500;
+}
+.ReservationSectionTitle-ar {
+    text-align: right;
     text-decoration: underline;
     font-weight: 500;
 }

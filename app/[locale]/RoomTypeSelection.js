@@ -134,9 +134,9 @@ const removeRoom = (index) => {
             </button>
           )}
 
-            <button className={styles.Button} onClick={() => setIsOpen(false)}>
+            {/* <button className={styles.Button} onClick={() => setIsOpen(false)}>
                 {t("RoomSelection.Update")}
-            </button>
+            </button> */}
         </div>
       )}
     </div>

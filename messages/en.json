@@ -92,5 +92,40 @@
     "Edit": "Edit",
     "SELECTPACKAGE": "SELECT PACKAGE",
     "SELECTROOM": "SELECT ROOM"
+  },
+  "CustomerPage":
+  {
+    "PaymentPageTitle": "Payment Page - Al Batra Hotel",
+    "YOUR RESERVATION":"YOUR RESERVATION",
+    "BOOKING INFORMATION": "BOOKING INFORMATION",
+    "YourInformation": "YOUR INFORMATION",
+    "First Name": "First Name*",
+    "Last Name": "Last Name*",
+    "Mobile Phone Number": "Mobile Phone Number*",
+    "Email Address": "Email Address*",
+    "Confirm Email Address": "Confirm Email Address*",
+    "Country/Region": "Country/Region*",
+    "Select Nationality": "Select Nationality",
+    "CARD DETAILS": "CARD DETAILS",
+    "Name on card": "Name on card*",
+    "Card number": "Card number*",
+    "Card expiry date": "Card expiry date*",
+    "AverageRatePerNight": "Average rate per night:",
+    "EstimatedTotal": "Estimated Total:",
+    "BOOK": "BOOK",
+    "AcceptedCards": "Accepted cards :",
+    "Estimated Total": "Estimated Total:",
+    "LoadingRoomTypes": "Loading room types...",
+    "IncompleteDataAlert": "Please fill in all required fields correctly."
+  },
+  "paymentSuccessfull":
+  {
+    "thankYou": "Thank you!",
+    "reservationConfirmed": "Your reservation has been confirmed.",
+    "lookForward": "We look forward to your stay! Please check your emails for more details",
+    "reservationId": "Your reservation ID is: ",
+    "reservationDetails": "Reservation Details:"
   }
+
+
 }

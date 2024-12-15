@@ -4,9 +4,7 @@ import { useState, useEffect } from 'react';
 import CustomDateRangePicker from '../CustomDateRangePicker';
 import RoomTypeSelection from '../RoomTypeSelection';
 import { Box } from '@mui/material';
-import Link from 'next/link';
 import styles from '../../../scss/Home.module.scss';
-import Head from 'next/head';
 import RoomSearchModule from '../../../scss/RoomSearch.module.scss';
 import { useRouter } from 'next/navigation';
 import {useLocale, useTranslations} from 'next-intl';
@@ -55,7 +53,7 @@ const RoomSearch = () => {
   const unSelectedRoomContainerClass = locale === "ar" ? RoomSearchModule['unSelectedRoomContainer-ar'] : RoomSearchModule.unSelectedRoomContainer;
   const RoomsRequestedBoldFontClass = locale === "ar" ? RoomSearchModule['RoomsRequestedBoldFont-ar'] : RoomSearchModule.RoomsRequestedBoldFont;
   const RoomsRequestedNonBoldFontClass = locale === "ar" ? RoomSearchModule['RoomsRequestedNonBoldFont-ar'] : RoomSearchModule.RoomsRequestedNonBoldFont;
-   const RoomsRequestedClass = locale === "ar" ? RoomSearchModule['RoomsRequested-ar'] : RoomSearchModule.RoomsRequested;
+  const RoomsRequestedClass = locale === "ar" ? RoomSearchModule['RoomsRequested-ar'] : RoomSearchModule.RoomsRequested;
 //RoomsRequested
 
   //handles selecting the room before prompting the used to select the package for each room

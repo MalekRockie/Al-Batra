@@ -30,6 +30,7 @@ export default function Home() {
   const [isMouseOver, setIsMouseOver] = useState(false);
   const [lang, setLang] = useState();
   const [currentLocale, setCurrentLocale] = useState();
+  const pathname = usePathname();
 
   //Major stlying classes
   const navClass = locale === "ar" ? homeStyle['nav-ar'] : homeStyle.nav;
@@ -41,7 +42,6 @@ export default function Home() {
   const langSwitcherClass = locale === "ar" ? homeStyle['langSwitcherContainer-ar'] : homeStyle.langSwitcherContainer;
   const bookingTitle = locale === "ar" ? homeStyle['bookingTitle-ar'] : homeStyle.bookingTitle;
   const hotelDetailsText = locale === "ar" ? homeStyle['hotelDetailsText-ar'] : homeStyle.hotelDetailsText;
-  const pathname = usePathname();
   // const langSwitcher = LocaleSwitcher();
 
 
@@ -84,9 +84,6 @@ export default function Home() {
     }
   };
 
-
-
-
   const toggleBookingSection = () => {
     setIsBookingVisible(!isBookingVisible);
   };
@@ -106,6 +103,13 @@ export default function Home() {
             // console.log('Mouse Out of Header');
             setIsMouseOver(false);
         }
+        if(selectedRooms[0].adults == null)
+        {
+          const defaultRoom = { adults: 1, children: 0, roomType: null, package: null, roomPrice: 0.0, package_Price: 0.0};
+          const updatedRooms = [[]]; 
+          updatedRooms[0] = defaultRoom; 
+          setSelectedRooms(updatedRooms);
+        }
 
         // window.addEventListener('scroll', handleScroll);
         // const header = document.querySelector(`.${headerClass}`);
@@ -122,7 +126,7 @@ export default function Home() {
     useEffect(() => {
         // console.log('isScrolledToMax:', isScrolledToMax);
         // console.log('isMouseOver:', isMouseOver);
-    }, [isScrolledToMax, isMouseOver]);
+    }, [isScrolledToMax, isMouseOver, selectedRooms]);
 
 
 
