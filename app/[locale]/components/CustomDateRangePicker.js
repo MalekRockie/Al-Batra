@@ -4,7 +4,7 @@ import {
   startOfMonth, endOfMonth, isSameDay, isWithinInterval,
   isBefore
 } from 'date-fns';
-import styles from '../../scss/CustomDateRangePicker.module.scss';
+import styles from  '../../../scss/CustomDateRangePicker.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
 
 const CustomDateRangePicker = ({ onDateRangeChange }) => {

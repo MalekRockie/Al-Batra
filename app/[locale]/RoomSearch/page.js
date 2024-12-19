@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import CustomDateRangePicker from '../CustomDateRangePicker';
-import RoomTypeSelection from '../RoomTypeSelection';
+import CustomDateRangePicker from '../components/CustomDateRangePicker';
+import RoomTypeSelection from '../components/RoomTypeSelection';
 import { Box } from '@mui/material';
 import styles from '../../../scss/Home.module.scss';
 import RoomSearchModule from '../../../scss/RoomSearch.module.scss';

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styles from '../../scss/RoomTypeSelection.module.scss';
+import styles from '../../../scss/RoomTypeSelection.module.scss';
 import {useLocale, useTranslations} from 'next-intl';
 
 const RoomTypeSelection = ({onRoomTypeChange}) => {

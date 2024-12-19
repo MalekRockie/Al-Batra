@@ -115,3 +115,89 @@ $carousel-height: 600px;
     margin-left: 20px;
     color: #ceb780;
 }
+
+
+@media (max-width: 768px) {
+
+    /* Adjust the wrap container */
+    .wrap {
+        width: 100%;
+        /* Ensure it takes up the full width of the screen */
+        height: 400px;
+        /* Reduce the height on mobile */
+        box-shadow: none;
+        /* Optional: Remove box-shadow on mobile */
+    }
+
+    /* Adjust the window size */
+    .window {
+        padding-top: 50px;
+        /* Reduce top padding */
+    }
+
+    /* Adjust carousel track to ensure proper layout */
+    .carouselTrack {
+        width: 120rem;
+        /* Adjust width to auto to prevent overflow */
+        // left: 3rem;
+        justify-content: center;
+        /* Remove left positioning */
+        gap: 1;
+        margin-left: 15rem;
+        margin-right: 21rem;
+        /* Reduce gap between slides on mobile */
+    }
+
+    /* Adjust each slide's width and height */
+    .slide {
+        width: 50rem;
+        /* Set slide width to 100% to fit the screen */
+        height: 280px;
+        /* Adjust height to be more mobile-friendly */
+        margin-bottom: 10px;
+    }
+
+    /* Adjust the image within the slide */
+    .slide img {
+        height: 100px;
+        // width: 100px;
+        /* Make the image fill the available height */
+        object-fit: cover;
+        /* Ensure it covers the container */
+    }
+
+    /* Adjust caption font size and alignment */
+    .caption {
+        font-size: 18px;
+        /* Reduce font size for better readability */
+        letter-spacing: 0.02em;
+    }
+
+    .caption-ar {
+        margin-right: 1rem;
+        font-size: 10px;
+        /* Adjust margin for better alignment */
+    }
+
+    /* Adjust buttons */
+    .prevButton,
+    .nextButton {
+        padding: 10px;
+        font-size: 10px;
+        /* Smaller buttons on mobile */
+    }
+
+    /* Adjust title and description */
+    .title {
+        font-size: 1.5rem;
+        /* Smaller title font on mobile */
+        margin-left: 10px;
+        /* Adjust margin for mobile */
+    }
+
+    .cardDesc {
+        font-size: 14px;
+        /* Smaller description text on mobile */
+        margin-left: 10px;
+    }
+}

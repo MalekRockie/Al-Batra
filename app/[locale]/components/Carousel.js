@@ -1,14 +1,14 @@
 import React, { useEffect, useRef } from 'react';
-import carouselStyles from '../../scss/Carousel.module.scss';
+import carouselStyles from '../../../scss/Carousel.module.scss';
 import {useLocale, useTranslations} from 'next-intl';
-import {Link} from '../../src/i18n/routing';
+import {Link} from '../../../src/i18n/routing';
 
 const Carousel = () => {
   const trackRef = useRef(null);
   const dragStart = useRef(0);
   const dragEnd = useRef(0);
   const threshold = 150;
-  const slideWidth = 800;
+  const slideWidth = 403;
   const locale = useLocale();
   const t = useTranslations();
   const captionCards = locale === "ar" ? carouselStyles['caption-ar'] : carouselStyles.caption;

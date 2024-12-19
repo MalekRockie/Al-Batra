@@ -6,13 +6,15 @@ import { useRouter, usePathname } from 'next/navigation';
 import {defineRouting} from 'next-intl/routing';
 import { Box } from '@mui/material';
 import Link from 'next/link';
-import RoomTypeSelection from './RoomTypeSelection';
-import CustomDateRangePicker from './CustomDateRangePicker';
-import Carousel from './Carousel';
+import RoomTypeSelection from './components/RoomTypeSelection';
+import CustomDateRangePicker from './components/CustomDateRangePicker';
+import Carousel from './components/Carousel';
 import homeStyle from '../../scss/Home.module.scss';
 import {useLocale, useTranslations} from 'next-intl';
 import CustomerLocaleSwitcher from '../../components/customerLocaleSwitcher.tsx'
-
+import EmblaCarousel from './components/EmblaCarousel.jsx';
+import '../../scss/embla.module.scss';
+import { Noto_Sans_JP } from 'next/font/google';
 
 
 export default function Home() {
@@ -29,8 +31,9 @@ export default function Home() {
   const [isScrolledToMax, setIsScrolledToMax] = useState(false);
   const [isMouseOver, setIsMouseOver] = useState(false);
   const [lang, setLang] = useState();
-  const [currentLocale, setCurrentLocale] = useState();
   const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
 
   //Major stlying classes
   const navClass = locale === "ar" ? homeStyle['nav-ar'] : homeStyle.nav;
@@ -42,8 +45,16 @@ export default function Home() {
   const langSwitcherClass = locale === "ar" ? homeStyle['langSwitcherContainer-ar'] : homeStyle.langSwitcherContainer;
   const bookingTitle = locale === "ar" ? homeStyle['bookingTitle-ar'] : homeStyle.bookingTitle;
   const hotelDetailsText = locale === "ar" ? homeStyle['hotelDetailsText-ar'] : homeStyle.hotelDetailsText;
+  const closeIconClass = locale === "ar" ? homeStyle['close-icon-ar'] : homeStyle['close-icon'];
+//.hamburger
+const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['hamburger'];
+
+
   // const langSwitcher = LocaleSwitcher();
 
+  const OPTIONS = { loop: true};
+  const SLIDE_COUNT = 8;
+  const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
   const handleDateRangeChange = (dates) => {
     setSelectedDates(dates);
@@ -123,11 +134,15 @@ export default function Home() {
         // };
     }, []);
 
-    useEffect(() => {
+  useEffect(() => {
         // console.log('isScrolledToMax:', isScrolledToMax);
         // console.log('isMouseOver:', isMouseOver);
     }, [isScrolledToMax, isMouseOver, selectedRooms]);
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+    console.log("clicked");
+  }
 
 
     
@@ -140,36 +155,57 @@ export default function Home() {
       </div> */}
       
       <div className={homeStyle.container}>
-        <Head>
+
           <title>Al Batra Hotel</title>
           <link rel="icon" href="/favicon.ico" />
           <meta name="description" content="Experience the finest luxury at our hotel" />
           <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="homeStyleheet" />
-        </Head>
 
-        <header className={`${headerClass} ${isScrolledToMax && !isMouseOver ? homeStyle.gradient : homeStyle.solid}`}>
-          <div className={navLogoTitleClass}>
+        {/* Hamburger Icon */}
+
+        <header className={`${headerClass} ${isMenuOpen ? homeStyle.active : ''}${isScrolledToMax && !isMouseOver ? homeStyle.gradient : homeStyle.solid}`}>
+
+          <div className={hamburgerClass} onClick={toggleMenu}>
+            <div className={homeStyle.lines}></div>
+            <div className={homeStyle.lines}></div>
+            <div className={homeStyle.lines}></div>
+          </div>
+
+          <div className={`${navLogoTitleClass} ${isMenuOpen ? homeStyle.active : ''}`}>
+
+            
+            <div className={closeIconClass} onClick={toggleMenu}>
+                <div className={homeStyle.line1}></div>
+                <div className={homeStyle.line2}></div>
+            </div>
+
             <img src="logo.png" alt="Al-Batra Hotel Logo" className={logoClass} />
+            {/* Hamburger Icon */}
+
             <div className={titleNavClass}>
               <h1 className={titleClass}>{t('HomePage.title')}</h1>
-              <nav className={navClass}>
+
+              {/* Navigation Links */}
+              <nav className={`${navClass}`}>
                 <Link href={`/${locale}`}>{t('NavigationBar.Home')}</Link>
                 <a href="">{t('NavigationBar.Rooms')}</a>
                 <a href="">{t('NavigationBar.Dinning')}</a>
                 <a href="" onClick={(e) => {
                   toggleBookingSection();
                   e.preventDefault();
-                  }}>{t('NavigationBar.Booking')}</a>
+                }}>{t('NavigationBar.Booking')}</a>
                 <a href={`/${locale}/ReservationRetrieval`}>{t('NavigationBar.MyReservation')}</a>
               </nav>
             </div>
-
-          </div>
+            {/* Language Switcher */}
             <div className={langSwitcherClass}>
               <CustomerLocaleSwitcher />
             </div>
+          </div>
+
         </header>
 
+{/* 
         <div className={`${homeStyle.bookingBar} ${isBookingVisible ? homeStyle.visible : homeStyle.hidden}`}>
           <section id="booking" className={homeStyle.bookingSection}>
             <Box className={homeStyle.bookingContainer}>
@@ -186,22 +222,27 @@ export default function Home() {
               </button>
             </Box>
           </section>
-        </div>
+        </div> */}
 
-        <main className={homeStyle.main}>
-          <section className={homeStyle.hotelDetails}>
-            <div className={hotelDetailsText}>
-              <h2 className={homeStyle.hotelDetailsSmall}>{t("address.Title")}</h2>
-              <h1 className={homeStyle.hotelDetailsLarge}>{t("address.City")}</h1>
-              <p className={homeStyle.hotelDetailsSmall}>
-                {t("address.Street")}
-              </p>
-              <div className={homeStyle.contactInfoHeader}>
-                <p>info@albatrahotel.net</p>
-                <p>+218 21-3345509</p>
+        {/* <main> */}
+        <div className={homeStyle.main}>
+          <div className={homeStyle.hotelDetailsContainer}>
+            <section className={homeStyle.hotelDetails}>
+              <div className={hotelDetailsText}>
+                <h2 className={homeStyle.hotelDetailsSmall}>{t("address.Title")}</h2>
+                <h1 className={homeStyle.hotelDetailsLarge}>{t("address.City")}</h1>
+                <p className={homeStyle.hotelDetailsSmall}>
+                  {t("address.Street")}
+                </p>
+                <div className={homeStyle.contactInfoHeader}>
+                  <p>info@albatrahotel.net</p>
+                  <p>+218 21-3345509</p>
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
+
+          
           <div className={homeStyle.descImg}>
             <img src="logo.png" alt="Al-Batra Hotel Logo" className={homeStyle.descImg}/>
           </div>
@@ -214,7 +255,11 @@ export default function Home() {
               {t('MainDescription.description')}
             </div>
           </div>
-          <Carousel />
+          {/* <Carousel /> */}
+
+          <div className={homeStyle.carouselContainer}>
+            <EmblaCarousel slides={SLIDES} options={OPTIONS} />
+          </div>
 
           <section id="rooms" className={homeStyle.section}>
             {/* <div className={homeStyle.descTitle}>Our Rooms</div> */}
@@ -243,7 +288,7 @@ export default function Home() {
             </div> */}
           </section>
 
-          <section id="dining" className={homeStyle.section}>
+          <section id="dining" className={homeStyle.sectionDinner}>
             {/* <div className={homeStyle.descTitle}>Dining</div> */}
             <div className={homeStyle.dining}>
               <div className={homeStyle.restaurant}>
@@ -265,7 +310,7 @@ export default function Home() {
               </div>
             </div>
           </section>
-        </main>
+        </div>
 
         <footer className={homeStyle.footer}>
           <div className={homeStyle.footerNav}>
