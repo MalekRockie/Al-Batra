@@ -22,7 +22,7 @@ export default async function BaseLayout({children, locale}: Props) {
     <html className="h-full" lang={locale}>
       <body className={clsx(inter.className, 'flex h-full flex-col')}>
         <NextIntlClientProvider messages={messages}>
-          <Navigation />
+          {/* <Navigation /> */}
           {children}
         </NextIntlClientProvider>
       </body>
