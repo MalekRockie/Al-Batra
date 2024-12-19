@@ -1,9 +1,9 @@
-import NotFound from './not-found';
+import NotFound from '../[locale]/not-found';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
 import {ReactNode} from 'react';
 import BaseLayout from '../../components/BaseLayout';
 import {routing} from '../../src/i18n/routing';
-import "../globals.css";
+import '../globals.css'
 import React from 'react';
 
 type Props = {

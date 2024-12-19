@@ -1,7 +1,7 @@
 "use client";
 
 import Head from 'next/head';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import {defineRouting} from 'next-intl/routing';
 import { Box } from '@mui/material';
@@ -33,6 +33,7 @@ export default function Home() {
   const [lang, setLang] = useState();
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
 
 
   //Major stlying classes
@@ -55,6 +56,8 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
   const OPTIONS = { loop: true};
   const SLIDE_COUNT = 8;
   const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
+  
+
 
   const handleDateRangeChange = (dates) => {
     setSelectedDates(dates);
@@ -139,6 +142,7 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
         // console.log('isMouseOver:', isMouseOver);
     }, [isScrolledToMax, isMouseOver, selectedRooms]);
 
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
     console.log("clicked");
@@ -171,7 +175,9 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
             <div className={homeStyle.lines}></div>
           </div>
 
-          <div className={`${navLogoTitleClass} ${isMenuOpen ? homeStyle.active : ''}`}>
+          <div
+          
+          className={`${navLogoTitleClass} ${isMenuOpen ? homeStyle.active : ''}`}>
 
             
             <div className={closeIconClass} onClick={toggleMenu}>

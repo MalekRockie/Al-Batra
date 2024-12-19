@@ -118,10 +118,11 @@
 {
     margin: auto;
     margin-bottom: 4rem;
-    margin-left: 20rem;
-    margin-right: 2%;
+    // margin-left: 20rem;
+    margin-right: 10%;
+    right: 0;
     font-family: 'Segoe UI', sans-serif;
-    position: relative;
+    position: absolute;
     display: flex;
     // background-color: rebeccapurple;
 }
@@ -966,7 +967,7 @@ body.scrolled .header-ar {
         }
     
         .header-ar .logoTitleNav-ar.active {
-            transform: translateX(-25%);
+            transform: translateX(-26%);
         }
     
         .header-ar .nav-ar {
@@ -1178,6 +1179,7 @@ body.scrolled .header-ar {
     }
 
     .pageContainer .header .langSwitcherContainer {
+        position: relative;
         margin: auto;
         margin-top: 0rem;
         margin-left: 0rem;
