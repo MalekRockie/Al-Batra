@@ -33,7 +33,7 @@ export default function Home() {
   const [lang, setLang] = useState();
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
+  const [clickedOutsideNavBar, setClickedOutsideNavBar] = useState(false);
 
 
   //Major stlying classes
@@ -56,7 +56,7 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
   const OPTIONS = { loop: true};
   const SLIDE_COUNT = 8;
   const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
-  
+  const containerRef = useRef(null);
 
 
   const handleDateRangeChange = (dates) => {
@@ -142,13 +142,24 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
         // console.log('isMouseOver:', isMouseOver);
     }, [isScrolledToMax, isMouseOver, selectedRooms]);
 
+  useEffect (() => 
+    {
+      document.addEventListener("mousedown", handleClickOutSideNavBar);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutSideNavBar);
+      };
+    }, []);
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-    console.log("clicked");
+    // setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen((prevState) => !prevState);
   }
 
-
+  const handleClickOutSideNavBar = (event) => {
+    if (containerRef.current && !containerRef.current.contains(event.target)) {
+      setIsMenuOpen(false); // Close the menu
+    }
+  };
     
   return (
     <div className={homeStyle.pageContainer}>
@@ -176,7 +187,7 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
           </div>
 
           <div
-          
+          ref={containerRef}
           className={`${navLogoTitleClass} ${isMenuOpen ? homeStyle.active : ''}`}>
 
             
