@@ -130,6 +130,7 @@
 .langSwitcherContainer-ar {
     margin: auto;
     margin-bottom: 4rem;
+    position: absolute;
     margin-left: 5%;
     margin-right: 20rem;
     font-family: 'Segoe UI', sans-serif;
@@ -1228,7 +1229,8 @@ body.scrolled .header-ar {
         height: auto;
         font-family: 'Segoe UI', sans-serif;
         display: flex;
-
+        right: 0%;
+        top: 0;
     }
 
 
