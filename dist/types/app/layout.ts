@@ -1,8 +1,8 @@
 // File: H:\Test Projects\Hotel\Hotel UI\hotel-booking-site\app\layout.js
-import * as entry from '../../../app/layout.jsx'
+import * as entry from '../../../app/[locale]/layout'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
-type TEntry = typeof import('../../../app/layout.jsx')
+type TEntry = typeof import('../../../app/[locale]/layout')
 
 // Check that the entry is a valid entry
 checkFields<Diff<{
