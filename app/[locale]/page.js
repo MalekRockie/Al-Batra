@@ -34,7 +34,8 @@ export default function Home() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [clickedOutsideNavBar, setClickedOutsideNavBar] = useState(false);
-
+  const [currentStep, setCurrentStep] = useState('dateSelection');
+  const [isMobile, setIsMobile] = useState(false);
 
   //Major stlying classes
   const navClass = locale === "ar" ? homeStyle['nav-ar'] : homeStyle.nav;
@@ -102,6 +103,15 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
     setIsBookingVisible(!isBookingVisible);
   };
 
+useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768); // Mobile if width <= 768px
+        };
+        handleResize(); // Initial check
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
   useEffect(() => {
         function handleScroll() {
             const scrollPosition = window.scrollY;
@@ -161,6 +171,15 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
     }
   };
     
+  //This is for the mobile phone version
+  const handleContinue = () => {
+        setCurrentStep('roomSelection'); // Move to room selection on continue
+    };
+  const handleBack = () => {
+          setCurrentStep('dateSelection'); // Go back to date selection
+      };
+
+
   return (
     <div className={homeStyle.pageContainer}>
       {/* <div className={homeStyle.uConstruction}>
@@ -222,24 +241,50 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
 
         </header>
 
-{/* 
-        <div className={`${homeStyle.bookingBar} ${isBookingVisible ? homeStyle.visible : homeStyle.hidden}`}>
-          <section id="booking" className={homeStyle.bookingSection}>
-            <Box className={homeStyle.bookingContainer}>
-              <div className={homeStyle.datePickerContainer}>
-                <div className={bookingTitle}>{t("NavigationBar.Dates")}</div>
-                <CustomDateRangePicker onDateRangeChange={handleDateRangeChange} />
-              </div>
-              <div className={homeStyle.roomTypeContainer}>
-                <div className={bookingTitle}>{t("NavigationBar.RoomSize")}</div>
-                <RoomTypeSelection onRoomTypeChange={setSelectedRooms}/>
-              </div>
-              <button className={homeStyle.searchButton} onClick={handleSearch}>
-                {t("NavigationBar.CheckButton")}
-              </button>
-            </Box>
-          </section>
-        </div> */}
+
+        <div className={`${homeStyle.bookingBar} ${isBookingVisible ? homeStyle.visible : homeStyle.hidden} ${isMobile && currentStep === 'dateSelection' ? homeStyle.dateActive : ''} ${
+                isMobile && currentStep === 'roomSelection' ? homeStyle.roomActive : ''}`}>
+                {/* Render differently based on screen size */}
+                {isMobile && currentStep === 'dateSelection' && (
+                    <div className={homeStyle.bookingContainer}>
+                        <div className={homeStyle.datePickerContainer}>
+                            <div className={homeStyle.bookingTitle}>SELECT YOUR DATES</div>
+                            <div onClick={(e) => {
+                  toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
+                            <CustomDateRangePicker />
+                        </div>
+                        <button className={homeStyle.continueButton} onClick={handleContinue}>
+                            Continue
+                        </button>
+                    </div>
+                )}
+                {isMobile && currentStep === 'roomSelection' && (
+                    <div className={homeStyle.bookingContainer}>
+                        <div className={homeStyle.roomTypeContainer}>
+                            <div className={homeStyle.bookingTitle}>Select Room Type</div>
+                            <RoomTypeSelection />
+                        </div>
+                        <button className={homeStyle.BookingButton} onClick={handleBack}>
+                            ← Back
+                        </button>
+                        <button className={homeStyle.BookingButton}>Search</button>
+                    </div>
+                )}
+                {!isMobile && (
+                    <div className={homeStyle.bookingContainer}>
+                        {/* Default desktop layout */}
+                        <div className={homeStyle.datePickerContainer}>
+                            <div className={homeStyle.bookingTitle}>Select Dates</div>
+                            <CustomDateRangePicker />
+                        </div>
+                        <div className={homeStyle.roomTypeContainer}>
+                            <div className={homeStyle.bookingTitle}>Select Room Type</div>
+                            <RoomTypeSelection />
+                        </div>
+                        <button className={homeStyle.searchButton}>Search</button>
+                    </div>
+                )}
+        </div>
 
         {/* <main> */}
         <div className={homeStyle.main}>

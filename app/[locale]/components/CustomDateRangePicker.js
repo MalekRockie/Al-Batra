@@ -13,15 +13,22 @@ const CustomDateRangePicker = ({ onDateRangeChange }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDates, setSelectedDates] = useState([today, tomorrow]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const calendarRef = useRef(null);
+
+  const calendar = [];
   const t = useTranslations();
   const locale = useLocale();
 
-  const isRTL = locale === 'ar'; // Check if the locale is Arabic (RTL)
+  const isRTL = locale === 'ar';
+  
+
+
+
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+      if (calendarRef.current && !calendarRef.current.contains(event.target) && isMobile) {
         setIsOpen(false);
       }
     }
@@ -30,6 +37,17 @@ const CustomDateRangePicker = ({ onDateRangeChange }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [calendarRef]);
+
+  useEffect(() => {
+      const handleResize = () => {
+          setIsMobile(window.innerWidth <= 768); 
+          setIsOpen(true);
+      };
+      handleResize(); // Initial check
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
 
   const handleDateClick = (date) => {
     const [start, end] = selectedDates;
@@ -51,6 +69,17 @@ const CustomDateRangePicker = ({ onDateRangeChange }) => {
   const openCalenderBox = () => {
     setIsOpen(!isOpen);
   };
+
+  const renderCalendars = () => {
+  const monthsToRender = isMobile ? 10 : 2; // 5 months for mobile, 2 months otherwise
+  const calendars = [];
+  
+  for (let i = 0; i < monthsToRender; i++) {
+    calendars.push(renderCalendar(addMonths(currentMonth, i)));
+  }
+
+  return calendars;
+};
 
   const renderCalendar = (month) => {
     const start = startOfMonth(month);
@@ -93,18 +122,25 @@ const CustomDateRangePicker = ({ onDateRangeChange }) => {
 
   return (
     <div className={styles.dateRangePicker}>
-      <div className={styles.dateRangeInput} onClick={() => openCalenderBox()}>
-        {`${format(selectedDates[0], 'MMM d, yyyy')} - ${selectedDates[1] ? format(selectedDates[1], 'MMM d, yyyy') : ''}`}
-      </div>
+      {!isMobile && (
+        <div className={styles.dateRangeInput} onClick={() => openCalenderBox()}>
+          {`${format(selectedDates[0], 'MMM d, yyyy')} - ${selectedDates[1] ? format(selectedDates[1], 'MMM d, yyyy') : ''}`}
+        </div>
+      )
+      
+      }
       {isOpen && (
         <div ref={calendarRef} className={styles.calendarPopup}>
+          {!isMobile && (
+            <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>{isRTL ? '>' : '<'}</button>
+          )}
           {/* Reversing the buttons for RTL */}
-          <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>{isRTL ? '>' : '<'}</button>
           <div className={styles.calendarsContainer}>
-            {renderCalendar(currentMonth)}
-            {renderCalendar(addMonths(currentMonth, 1))}
+              {renderCalendars()}
           </div>
-          <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>{isRTL ? '<' : '>'}</button>
+          {!isMobile && (
+            <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>{isRTL ? '<' : '>'}</button>
+          )}
         </div>
       )}
     </div>

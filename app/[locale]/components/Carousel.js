@@ -12,6 +12,8 @@ const Carousel = () => {
   const locale = useLocale();
   const t = useTranslations();
   const captionCards = locale === "ar" ? carouselStyles['caption-ar'] : carouselStyles.caption;
+//carouselStyles.cardDesc
+//const cardDescClass = locale === "ar" ? carouselStyles['cardDesc-ar'] : carouselStyles.cardDesc;
 
   const dragPos = () => dragEnd.current - dragStart.current;
 

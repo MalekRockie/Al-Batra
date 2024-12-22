@@ -153,8 +153,96 @@
     background-color: #ceb780;
     color: #1a1a1a;
 }
-
 .Button:focus {
     outline: none;
     box-shadow: 0 0 0 2px #ceb780;
+}
+
+
+@media (max-width: 768px) 
+{
+.roomTypeInput {
+        padding: 6px 26px;
+        border: 1px solid #bcbcbc;
+        background-color: #f1f1f1;
+        cursor: pointer;
+        font-size: 14px;
+        text-align: center;
+        margin: auto;
+        margin-bottom: 8px;
+        width: 250px;
+        font-family: "Lucida Calligraphy", "Apple Chancery", "Bradley Hand", cursive;
+        font-style: italic;
+    }
+    .roomTypePopup {
+        position: relative;
+        font-family: 'Segoe UI', sans-serif;
+        font-size: small;
+        letter-spacing: 0.25mm;
+        font-weight: 450;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        /* Increased width for larger popup */
+        border: 1px solid #b7b7b7;
+        background-color: #e7e7e7;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        padding: 2rem;
+    }
+    .roomContainer {
+        margin-bottom: 1rem;
+        background-color: #fbfbfb;
+        border: 1px solid #e3e3e3;
+        /* Different background color for room containers */
+        // padding: 1rem;
+        border-radius: 0px;
+        position: relative;
+    }
+    .Button {
+        font-family: 'Segoe UI', sans-serif;
+        font-weight: 450;
+        padding: 0rem 2rem;
+        // background-color: transparent;
+        // color: #000000;
+        border-bottom: 1px solid black;
+        height: 34px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        margin-top: 1rem;
+        margin-left: 0;
+        box-sizing: border-box;
+    }
+    .removeRoomButton {
+        background: none;
+        border: none;
+        color: rgb(109, 45, 5);
+        font-size: 1.5rem;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin-right: 8px;
+        cursor: pointer;
+    }
+
+    .removeRoomButton-ar {
+        background: none;
+        border: none;
+        color: rgb(109, 45, 5);
+        font-size: 1.5rem;
+        position: absolute;
+        top: 0;
+        margin: auto;
+        margin-right: 92%;
+        cursor: pointer;
+    }
+
+    .removeRoomButton:hover {
+        filter: brightness(0.2);
+    }
+
+    .removeRoomButton-ar:hover {
+        filter: brightness(0.2);
+    }
 }

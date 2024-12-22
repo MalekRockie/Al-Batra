@@ -7,6 +7,9 @@ const RoomTypeSelection = ({onRoomTypeChange}) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [rooms, setRooms] = useState([{ adults: 1, children: 0, roomType: null, package: null, roomPrice: null, package_Price: null }]);
+  const [isMobile, setIsMobile] = useState(false);
+
+
   const popupRef = useRef(null);
   const locale = useLocale();
   const t = useTranslations();
@@ -41,6 +44,15 @@ const RoomTypeSelection = ({onRoomTypeChange}) => {
     };
   }, [popupRef]);
 
+  useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768); // Mobile if width <= 768px
+        };
+        handleResize(); // Initial check
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
   const addRoom = () => {
     const newRooms = [...rooms, { adults: 1, children: 0, roomType: null, package: null, roomPrice: 0, package_Price: 0}];
     setRooms(newRooms);
@@ -73,9 +85,10 @@ const removeRoom = (index) => {
   return (
     <div className={styles.roomTypeSelection}>
       <div className={styles.roomTypeInput} onClick={() => setIsOpen(!isOpen)}>
+
         {`${rooms.length} ${rooms.length > 1 ? t("RoomSelection.Rooms") : t("RoomSelection.Room")}`}
       </div>
-      {isOpen && (
+      {!isOpen && (
         <div ref={popupRef} className={styles.roomTypePopup}>
           {rooms.map((room, index) => (
             <div key={index} className={styles.roomContainer}>
