@@ -171,4 +171,30 @@
     .calendar {
         text-align: center;
     }
+
+    .calendarContainer {
+        transition: opacity 0.1s ease-out, transform 1s ease-out;
+        opacity: 1;
+        transform: translateY(20vh);
+    }
+
+    .fadeIn {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .fadeOut {
+        opacity: 1;
+        transform: translateY(-10vh);
+    }
+
+    .slideUp {
+        opacity: 1;
+        transform: translateY(0vh);
+    }
+
+    .slideDown {
+        opacity: 1;
+        transform: translateY(10vh);
+    }
 }

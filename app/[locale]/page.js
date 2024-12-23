@@ -25,9 +25,9 @@ export default function Home() {
   const t = useTranslations();
   const router = useRouter();
   const locale = useLocale();
-  const [selectedRooms, setSelectedRooms] = useState([[]]);
+  const [selectedRooms, setSelectedRooms] = useState([{ adults: 1, children: 0, roomType: null, package: null },]);
   const [selectedDates, setSelectedDates] = useState([from, to]);
-  const [isBookingVisible, setIsBookingVisible] = useState(true);
+  const [isBookingVisible, setIsBookingVisible] = useState(false);
   const [isScrolledToMax, setIsScrolledToMax] = useState(false);
   const [isMouseOver, setIsMouseOver] = useState(false);
   const [lang, setLang] = useState();
@@ -249,9 +249,11 @@ useEffect(() => {
                     <div className={homeStyle.bookingContainer}>
                         <div className={homeStyle.datePickerContainer}>
                             <div className={homeStyle.bookingTitle}>SELECT YOUR DATES</div>
-                            <div onClick={(e) => {
-                  toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
-                            <CustomDateRangePicker />
+                            <div onClick={(e) => {toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
+                            <CustomDateRangePicker
+                              selectedDates={selectedDates}
+                              setSelectedDates={setSelectedDates}
+                            />
                         </div>
                         <button className={homeStyle.continueButton} onClick={handleContinue}>
                             Continue
@@ -262,7 +264,10 @@ useEffect(() => {
                     <div className={homeStyle.bookingContainer}>
                         <div className={homeStyle.roomTypeContainer}>
                             <div className={homeStyle.bookingTitle}>Select Room Type</div>
-                            <RoomTypeSelection />
+                            <RoomTypeSelection
+                              selectedRooms={selectedRooms}
+                              setSelectedRooms={setSelectedRooms}
+                            />
                         </div>
                         <button className={homeStyle.BookingButton} onClick={handleBack}>
                             ← Back
@@ -275,11 +280,17 @@ useEffect(() => {
                         {/* Default desktop layout */}
                         <div className={homeStyle.datePickerContainer}>
                             <div className={homeStyle.bookingTitle}>Select Dates</div>
-                            <CustomDateRangePicker />
+                            <CustomDateRangePicker
+                              selectedDates={selectedDates}
+                              setSelectedDates={setSelectedDates}
+                            />
                         </div>
                         <div className={homeStyle.roomTypeContainer}>
                             <div className={homeStyle.bookingTitle}>Select Room Type</div>
-                            <RoomTypeSelection />
+                            <RoomTypeSelection
+                              selectedRooms={selectedRooms}
+                              setSelectedRooms={setSelectedRooms}
+                            />
                         </div>
                         <button className={homeStyle.searchButton}>Search</button>
                     </div>
@@ -303,8 +314,26 @@ useEffect(() => {
               </div>
             </section>
           </div>
-
           
+          {isMobile && (<div>
+            <button className={homeStyle.CheckRatesButton} onClick={(e) => {
+                  toggleBookingSection();
+                  e.preventDefault();
+                }}>
+                            {t("NavigationBar.CheckButton")}
+            </button>
+          </div>)}
+
+              <div className={homeStyle.hotelDetailsMobile}>
+                <p className={homeStyle.hotelDetailsSmall}>
+                  {t("address.Street")}
+                </p>
+                <div className={homeStyle.contactInfoHeader}>
+                  <p>info@albatrahotel.net</p>
+                  <a href="tel:+218213345509">+218 21-3345509</a>
+                </div>
+              </div>
+
           <div className={homeStyle.descImg}>
             <img src="logo.png" alt="Al-Batra Hotel Logo" className={homeStyle.descImg}/>
           </div>

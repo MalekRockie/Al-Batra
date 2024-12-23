@@ -829,6 +829,10 @@ body.scrolled .header-ar {
     background-color: #fff;
 }
 
+.CheckRatesButton {
+    display: none;
+}
+
 @media (max-width: 1240px) {
 
 
@@ -885,12 +889,10 @@ body.scrolled .header-ar {
 
     .pageContainer .main .hotelDetailsContainer
     {
-        height: 35rem;
-        margin-bottom: 10rem;
+        height: 30rem;
+        margin-bottom: 0rem;
         overflow: hidden;
     }
-    
-
     .header{
         height: 4rem;
         background-color: rgb(17, 17, 17);
@@ -960,9 +962,6 @@ body.scrolled .header-ar {
         margin: auto;
         // background-color: red;
     }
-
-
-
     .header-ar {
         height: 4rem;
         background-color: rgb(17, 17, 17);
@@ -1096,6 +1095,24 @@ body.scrolled .header-ar {
     }
     .hotelDetailsText-ar {
         display: none;
+    }
+
+    .hotelDetailsMobile{
+        text-align: center;
+    }
+
+    .hotelDetailsLarge
+    {
+        font-size: x-large;
+    }
+    .contactInfoHeader
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        margin: auto;
+        margin-top: 1rem;
     }
 
     .pageContainer .main .descSection {
@@ -1436,7 +1453,7 @@ body.scrolled .header-ar {
         position: fixed;
         right: 0;
         top: 0;
-        margin-right: 2rem;
+        margin-right: 1rem;
         margin-top: 0.6rem;
         text-align: center;
         width: 2rem;
@@ -1448,5 +1465,28 @@ body.scrolled .header-ar {
     .CloseWindow:hover {
         background-color: #e5e5e5;
     }
-}
+    .CheckRatesButton{
+        display: flex;
+        font-family: 'Segoe UI', sans-serif;
+        font-weight: 500;
+        padding: 8px 20px;
+        border: 1px solid #4e2816;
+        background-color: #ffffff;
+        color: #000000;
+        width: 90%;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        box-sizing: border-box;
+        margin: auto;
+        margin-top: 3rem;
+        margin-bottom: 2rem;
+        justify-content: center;
+    }
 
+    .CheckRatesButton:hover {
+        background-color: #0a0a0a;
+        color: #ffffff;
+        border: 1px solid #ffffff;
+    }
+}

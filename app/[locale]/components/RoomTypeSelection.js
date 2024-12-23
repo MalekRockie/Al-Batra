@@ -2,11 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from '../../../scss/RoomTypeSelection.module.scss';
 import {useLocale, useTranslations} from 'next-intl';
 
-const RoomTypeSelection = ({onRoomTypeChange}) => {
+const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
+  const rooms = selectedRooms || [];
 // const [selectedRoomType, setSelectedRoomType] = useState('');
 
   const [isOpen, setIsOpen] = useState(false);
-  const [rooms, setRooms] = useState([{ adults: 1, children: 0, roomType: null, package: null, roomPrice: null, package_Price: null }]);
+  // const [rooms, setRooms] = useState([{ adults: 1, children: 0, roomType: null, package: null, roomPrice: null, package_Price: null }]);
   const [isMobile, setIsMobile] = useState(false);
 
 
@@ -23,7 +24,7 @@ const RoomTypeSelection = ({onRoomTypeChange}) => {
 
 
   const handleRoomUpdate = (newRooms) => {
-    setRooms(newRooms);
+    setSelectedRooms(newRooms);
     if (onRoomTypeChange)
       {
         onRoomTypeChange(newRooms);
@@ -53,32 +54,34 @@ const RoomTypeSelection = ({onRoomTypeChange}) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-  const addRoom = () => {
-    const newRooms = [...rooms, { adults: 1, children: 0, roomType: null, package: null, roomPrice: 0, package_Price: 0}];
-    setRooms(newRooms);
-    handleRoomUpdate(newRooms);
-  };
 
-const removeRoom = (index) => {
-  if (rooms.length > 1) {
-    const updatedRooms = rooms.filter((_, roomIndex) => roomIndex !== index);
-    setRooms(updatedRooms);
-    onRoomTypeChange(updatedRooms);
-  }
-};
+    
+    
+    const addRoom = () => {
+      const newRooms = [...rooms, { adults: 1, children: 0, roomType: null, package: null, roomPrice: 0, package_Price: 0 }];
+      setSelectedRooms(newRooms);
+    };
+    
+    const removeRoom = (index) => {
+      if (rooms.length > 1) {
+        const updatedRooms = rooms.filter((_, roomIndex) => roomIndex !== index);
+        setSelectedRooms(updatedRooms);
+        // onRoomTypeChange(updatedRooms);
+      }
+    };
 
+    const handleAdultChange = (index, value) => {
+        const newRooms = [...rooms];
+        newRooms[index].adults = Math.max(1, Math.min(value, 3 - newRooms[index].children));
+        setSelectedRooms(newRooms);
+    };
 
-  const handleAdultChange = (index, value) => {
-    const newRooms = [...rooms];
-    newRooms[index].adults = Math.max(1, Math.min(value, 3 - newRooms[index].children));
-    handleRoomUpdate(newRooms);
-  };
+    const handleChildChange = (index, value) => {
+        const newRooms = [...rooms];
+        newRooms[index].children = Math.max(0, Math.min(value, 3 - newRooms[index].adults));
+        setSelectedRooms(newRooms);
+    };
 
-  const handleChildChange = (index, value) => {
-    const newRooms = [...rooms];
-    newRooms[index].children = Math.max(0, Math.min(value, 3 - newRooms[index].adults));
-    handleRoomUpdate(newRooms);
-  };
 
   
 
@@ -86,9 +89,9 @@ const removeRoom = (index) => {
     <div className={styles.roomTypeSelection}>
       <div className={styles.roomTypeInput} onClick={() => setIsOpen(!isOpen)}>
 
-        {`${rooms.length} ${rooms.length > 1 ? t("RoomSelection.Rooms") : t("RoomSelection.Room")}`}
+      {`${selectedRooms?.length || 0} ${selectedRooms?.length > 1 ? t("RoomSelection.Rooms") : t("RoomSelection.Room")}`}
       </div>
-      {!isOpen && (
+      {isOpen || isMobile && (
         <div ref={popupRef} className={styles.roomTypePopup}>
           {rooms.map((room, index) => (
             <div key={index} className={styles.roomContainer}>

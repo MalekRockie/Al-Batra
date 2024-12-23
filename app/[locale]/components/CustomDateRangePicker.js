@@ -6,12 +6,11 @@ import {
 } from 'date-fns';
 import styles from  '../../../scss/CustomDateRangePicker.module.scss';
 import { useLocale, useTranslations } from 'next-intl';
+import NextIntersectionObserver from './NextIntersectionObserver';
 
-const CustomDateRangePicker = ({ onDateRangeChange }) => {
+const CustomDateRangePicker = ({ selectedDates, setSelectedDates, onDateRangeChange }) => {
   const today = new Date();
-  const tomorrow = addDays(today, 1);
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedDates, setSelectedDates] = useState([today, tomorrow]);
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const calendarRef = useRef(null);
@@ -22,7 +21,26 @@ const CustomDateRangePicker = ({ onDateRangeChange }) => {
 
   const isRTL = locale === 'ar';
   
+  const handleDateClick = (date) =>
+    {
+      const [start, end] = selectedDates;
+      if(!start || (start && end)) 
+        {
+          setSelectedDates([date, null]);
+        } 
+        else if(isBefore(date, start))
+        {
+          setSelectedDates([date, start]);
+        }
+        else {
+          setSelectedDates([start, date]);
+        }
 
+        const updatedDates = [start, date];
+        if (onDateRangeChange){
+          onDateRangeChange(updatedDates);
+        }
+    };
 
 
 
@@ -48,23 +66,6 @@ const CustomDateRangePicker = ({ onDateRangeChange }) => {
       return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-
-  const handleDateClick = (date) => {
-    const [start, end] = selectedDates;
-
-    if (!start || (start && end)) {
-      setSelectedDates([date, null]);
-    } else if (isBefore(date, start)) {
-      setSelectedDates([date, start]);
-    } else {
-      setSelectedDates([start, date]);
-    }
-
-    const updatedDates = [start, date]; // Update the dates here
-    if (onDateRangeChange) {
-      onDateRangeChange(updatedDates); // Call the onDateRangeChange with updatedDates
-    }
-  };
 
   const openCalenderBox = () => {
     setIsOpen(!isOpen);
@@ -127,7 +128,6 @@ const CustomDateRangePicker = ({ onDateRangeChange }) => {
           {`${format(selectedDates[0], 'MMM d, yyyy')} - ${selectedDates[1] ? format(selectedDates[1], 'MMM d, yyyy') : ''}`}
         </div>
       )
-      
       }
       {isOpen && (
         <div ref={calendarRef} className={styles.calendarPopup}>
@@ -136,7 +136,15 @@ const CustomDateRangePicker = ({ onDateRangeChange }) => {
           )}
           {/* Reversing the buttons for RTL */}
           <div className={styles.calendarsContainer}>
+            <NextIntersectionObserver
+              classes={styles.calendarContainer}
+              topIn={styles.fadeIn}
+              topOut={styles.fadeOut}
+              bottomIn={styles.slideUp}
+              bottomOut={styles.slideDown}
+            >
               {renderCalendars()}
+            </NextIntersectionObserver>
           </div>
           {!isMobile && (
             <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>{isRTL ? '<' : '>'}</button>
