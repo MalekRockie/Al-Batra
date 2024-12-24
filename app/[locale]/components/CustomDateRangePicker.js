@@ -72,14 +72,15 @@ const CustomDateRangePicker = ({ selectedDates, setSelectedDates, onDateRangeCha
   };
 
   const renderCalendars = () => {
-  const monthsToRender = isMobile ? 10 : 2; // 5 months for mobile, 2 months otherwise
-  const calendars = [];
-  
-  for (let i = 0; i < monthsToRender; i++) {
-    calendars.push(renderCalendar(addMonths(currentMonth, i)));
-  }
+    const monthsToRender = isMobile ? 10 : 2; // 5 months for mobile, 2 months otherwise
+    const calendars = [];
+    
+    for (let i = 0; i < monthsToRender; i++) {
+      const month = addMonths(currentMonth, i);
+      calendars.push(<div key={i}>{renderCalendar(month)}</div>);
+    }
 
-  return calendars;
+    return calendars;
 };
 
   const renderCalendar = (month) => {

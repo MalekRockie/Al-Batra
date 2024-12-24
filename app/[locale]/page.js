@@ -264,15 +264,18 @@ useEffect(() => {
                     <div className={homeStyle.bookingContainer}>
                         <div className={homeStyle.roomTypeContainer}>
                             <div className={homeStyle.bookingTitle}>Select Room Type</div>
+                            <div onClick={(e) => {toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
                             <RoomTypeSelection
                               selectedRooms={selectedRooms}
                               setSelectedRooms={setSelectedRooms}
                             />
                         </div>
-                        <button className={homeStyle.BookingButton} onClick={handleBack}>
-                            ← Back
-                        </button>
-                        <button className={homeStyle.BookingButton}>Search</button>
+                        <div className={homeStyle.buttonsForBookBar}>
+                          <button className={homeStyle.BookingButton} onClick={handleBack}>
+                              ← Back
+                          </button>
+                          <button className={homeStyle.BookingButton}>Search</button>
+                        </div>
                     </div>
                 )}
                 {!isMobile && (
@@ -324,15 +327,17 @@ useEffect(() => {
             </button>
           </div>)}
 
-              <div className={homeStyle.hotelDetailsMobile}>
-                <p className={homeStyle.hotelDetailsSmall}>
-                  {t("address.Street")}
-                </p>
-                <div className={homeStyle.contactInfoHeader}>
-                  <p>info@albatrahotel.net</p>
-                  <a href="tel:+218213345509">+218 21-3345509</a>
+            {isMobile && (
+                <div className={homeStyle.hotelDetailsMobile}>
+                  <p className={homeStyle.hotelDetailsSmall}>
+                    {t("address.Street")}
+                  </p>
+                  <div className={homeStyle.contactInfoHeader}>
+                    <p>info@albatrahotel.net</p>
+                    <a href="tel:+218213345509">+218 21-3345509</a>
+                  </div>
                 </div>
-              </div>
+            )}
 
           <div className={homeStyle.descImg}>
             <img src="logo.png" alt="Al-Batra Hotel Logo" className={homeStyle.descImg}/>

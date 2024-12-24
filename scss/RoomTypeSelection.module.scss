@@ -183,12 +183,21 @@
         top: 100%;
         left: 0;
         width: 100%;
+        min-width: 22rem;
         /* Increased width for larger popup */
         border: 1px solid #b7b7b7;
-        background-color: #e7e7e7;
+        background-color: #ffffff;
         box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
         z-index: 10;
-        padding: 2rem;
+        padding: 1rem;
+        padding-left: 0%;
+        padding-right: 0%;
+        // min-height: auto;
+        height: 60vh;
+        margin-bottom: 0rem;
+        overflow-y: auto;
+        overflow-x: auto;
+
     }
     .roomContainer {
         margin-bottom: 1rem;
@@ -197,6 +206,10 @@
         /* Different background color for room containers */
         // padding: 1rem;
         border-radius: 0px;
+        width: 90%;
+        margin-right: auto;
+        margin-left: auto;
+        min-width: 20rem;
         position: relative;
     }
     .Button {
