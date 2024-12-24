@@ -657,6 +657,29 @@
     width: 40rem;
 }
 
+.LeftSide
+{
+
+}
+
+.RightSide
+{
+
+}
+
+.OptionIcon
+{
+    width: 1.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.OptionElement
+{
+    display: flex;
+    margin-bottom: 1rem;
+}
+
 .spinnerContainer {
     display: flex;
     flex-direction: column;
@@ -692,4 +715,126 @@
     font-size: 14px;
     color: #555;
     /* Optional: style the text */
+}
+
+@media (max-width: 768px) 
+{
+    .RoomsLists 
+    {
+        text-align: center;
+        align-items: center;
+        margin: auto;
+        // background-color: #ceb780;
+        width: 95%;
+    }
+    .RoomContainer 
+    {
+        margin-top: 100px;
+        text-align: center;
+        border: 1px solid #ceb780;
+        background-color: #0e0e0e;
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        z-index: 2;
+        overflow: hidden;
+        box-sizing: border-box;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+    .RoomCardContainerRightside {
+        color: #ffffff;
+        font-size: x-large;
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        // background-color: #ef0000;
+        font-family: 'Segoe UI', sans-serif;
+        display: flex;
+        flex-direction: column;
+    }
+    .RoomCardContainerRightsideLeftHalf {
+        // background-color: #2600ff;
+        width: 100%;
+        margin-left: 5rem;
+    }
+    .RoomCardContainerRightsideRightHalf {
+        // background-color: #11ff00;
+        width: auto;
+    }
+    .RoomTitleAndDesc {
+        width: auto;
+        margin: auto;
+        margin-top: 1rem;
+        font-weight: 300;
+        height: auto;
+        width: 95%;
+        // overflow: auto;
+        // background-color: rebeccapurple;
+    }
+    .RoomDescription {
+        // display: none;
+        font-size: 1.4ex;
+        padding-top: 1rem;
+        color: #ceb780;
+        text-align: center;
+    }
+    
+    .PackageDescriptionEN {
+        font-size: 1.3ex;
+        padding-top: 1rem;
+        color: #ceb780;
+        text-align: left;
+    }
+    .viewMoreDetails {
+        position: absolute;
+        text-align: center;
+        margin: auto;
+        margin-top: 5rem;
+        width: 8rem;
+        color: white;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    .reserveButtonContainer {
+        width: auto;
+        margin: auto;
+        margin-right: 5%;
+        margin-bottom: 1rem;
+        margin-top: 2rem;
+        }
+
+    .optionsContainer {
+        display: none; // Default to hidden
+        transition: opacity 0.3s ease;
+        opacity: 0; // Start with an opacity of 0
+        width: 100%;
+        margin: auto;
+        padding-bottom: 5rem;
+    }
+
+    .optionsContainer.visible {
+        display: block; // Show the options container when visible
+        opacity: 1; // Set opacity to 1 for visible state
+        // animation: slideIn 0.2s linear;
+        z-index: 1;
+    }
+
+    .option {
+        padding: 20px; // Some padding for the options
+        padding-left: 10px;
+        border: 1px solid #ceb780; // Example border for options
+        border-top: 0;
+        height: auto;
+        background-color: #0e0e0e;
+        font-family: 'Segoe UI', sans-serif;
+        font-weight: 200;
+        z-index: 5;
+        text-align: left;
+    }
+    .optionTitle {
+        font-size: small;
+        font-weight: 400;
+        letter-spacing: 0.15em;
+    }
 }

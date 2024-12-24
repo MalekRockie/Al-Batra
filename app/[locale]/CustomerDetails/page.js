@@ -28,7 +28,7 @@ const CustomerDetails = () => {
   const [isScrolledToMax, setIsScrolledToMax] = useState(false);
   const [phone, setPhone] = useState('');
   const [reservationID, setReservationID] = useState('');
-  const [isReservationSuccessful, setIsReservationSuccessful] = useState(true);
+  const [isReservationSuccessful, setIsReservationSuccessful] = useState(false);
   const [countries, setCountries] = useState([]);
   const [selectedDialCode, setSelectedDialCode] = useState('');
   const [totalCostEstimate, setTotalCostEstimate]= useState(0.00);

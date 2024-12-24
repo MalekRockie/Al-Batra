@@ -1,13 +1,16 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import CustomDateRangePicker from '../components/CustomDateRangePicker';
 import RoomTypeSelection from '../components/RoomTypeSelection';
+import homeStyle from '../../../scss/Home.module.scss';
 import { Box } from '@mui/material';
 import styles from '../../../scss/Home.module.scss';
 import RoomSearchModule from '../../../scss/RoomSearch.module.scss';
 import { useRouter } from 'next/navigation';
 import {useLocale, useTranslations} from 'next-intl';
+import Link from 'next/link';
+import CustomerLocaleSwitcher from '../../../components/customerLocaleSwitcher.tsx'
 
 
 
@@ -46,15 +49,33 @@ const RoomSearch = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [PackageSelection, setPackageSelection] = useState(true);
   const [totalCostEstimate, setTotalCostEstimate] = useState(0);
+  const [currentStep, setCurrentStep] = useState('dateSelection');
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const containerRef = useRef(null);
+
+
   //should be true only when the used is about to proceed to the next page
   const [isRoomSelectionComplete, setRoomSelectionComplete] = useState(false);
   const bookingTitleClass = locale === "ar" ? RoomSearchModule['bookingTitle-ar'] : RoomSearchModule.bookingTitle;
   const selectedRoomContainerClass = locale === "ar" ? RoomSearchModule['selectedRoomContainer-ar'] : RoomSearchModule.selectedRoomContainer;
   const unSelectedRoomContainerClass = locale === "ar" ? RoomSearchModule['unSelectedRoomContainer-ar'] : RoomSearchModule.unSelectedRoomContainer;
   const RoomsRequestedBoldFontClass = locale === "ar" ? RoomSearchModule['RoomsRequestedBoldFont-ar'] : RoomSearchModule.RoomsRequestedBoldFont;
+  
   const RoomsRequestedNonBoldFontClass = locale === "ar" ? RoomSearchModule['RoomsRequestedNonBoldFont-ar'] : RoomSearchModule.RoomsRequestedNonBoldFont;
   const RoomsRequestedClass = locale === "ar" ? RoomSearchModule['RoomsRequested-ar'] : RoomSearchModule.RoomsRequested;
-//RoomsRequested
+  const closeIconClass = locale === "ar" ? homeStyle['close-icon-ar'] : homeStyle['close-icon'];
+  const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['hamburger'];
+  const bookingTitle = locale === "ar" ? homeStyle['bookingTitle-ar'] : homeStyle.bookingTitle;
+  const headerClass = locale === "ar" ? homeStyle['header-ar'] : homeStyle.header;
+  const navLogoTitleClass = locale === "ar" ? homeStyle['logoTitleNav-ar'] : homeStyle.logoTitleNav;
+  const logoClass = locale === "ar" ? homeStyle['logo-ar'] : homeStyle.logo; 
+  const titleNavClass = locale === "ar" ? homeStyle['titleNav-ar'] : homeStyle.titleNav; 
+  const titleClass = locale === "ar" ? homeStyle['title-ar'] : homeStyle.title; 
+  const navClass = locale === "ar" ? homeStyle['nav-ar'] : homeStyle.nav;
+  const langSwitcherClass = locale === "ar" ? homeStyle['langSwitcherContainer-ar'] : homeStyle.langSwitcherContainer;
+
 
   //handles selecting the room before prompting the used to select the package for each room
   const handleSelectRoomType = (roomIndex, roomTypePicked, room_Price) => {
@@ -90,7 +111,7 @@ const RoomSearch = () => {
   };
 
 
-//Handles selecting the package for each selected room once that room is selected
+  //Handles selecting the package for each selected room once that room is selected
   const handleSelectpackage = (package_type, packagePrice) => 
   {
     const updatedRooms = [...selectedRooms];
@@ -133,7 +154,6 @@ const RoomSearch = () => {
         router.push(`./CustomerDetails?${params.toString()}`);
   }
 
-
   const handleDateRangeChange = (dates) => {
     setSelectedDates(dates);
     console.log('Selected Dates:', dates);
@@ -146,6 +166,19 @@ const RoomSearch = () => {
     setTempSelectedRooms(newRooms);
   };
 
+    const toggleMenu = () => {
+    // setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen((prevState) => !prevState);
+  }
+
+  useEffect(() => {
+          const handleResize = () => {
+              setIsMobile(window.innerWidth <= 768); // Mobile if width <= 768px
+          };
+          handleResize(); // Initial check
+          window.addEventListener('resize', handleResize);
+          return () => window.removeEventListener('resize', handleResize);
+      }, []);
 
   // const handleRoomTypeChange = (roomType) => {
   //   setSelectedRooms(roomType);
@@ -160,7 +193,7 @@ const RoomSearch = () => {
         `http://localhost:8080/room/availableRoomTypes?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`
       );
       const data = await response.json();
-      // console.log('Fetched room types:', data);
+      console.log('Fetched room types:', data);
       setRoomType(data); // Set the fetched room types in the state
     } catch (error) {
       console.error('Error fetching room types:', error);
@@ -252,6 +285,15 @@ const RoomSearch = () => {
     }
   };
 
+  //This is for the mobile phone version
+  const handleContinue = () => {
+        setCurrentStep('roomSelection'); // Move to room selection on continue
+    };
+  const handleBack = () => {
+          setCurrentStep('dateSelection'); // Go back to date selection
+      };
+
+
   const calculateNights = (checkInDate, checkOutDate) => {
     const checkIn = new Date(checkInDate);
     const checkOut = new Date(checkOutDate);
@@ -315,65 +357,65 @@ const RoomSearch = () => {
 
 
 
-useEffect(() => {
-    //Here we should set the selectedRooms if it was already passed by the used in a previous page that directed them here
+  useEffect(() => {
+      //Here we should set the selectedRooms if it was already passed by the used in a previous page that directed them here
 
-    const searchParams = new URLSearchParams(window.location.search);
-    const selectedRoomsParams = searchParams.get('rooms');
-    const checkInDateParam = searchParams.get('checkIn');
-    const checkOutDateParam = searchParams.get('checkOut');
+      const searchParams = new URLSearchParams(window.location.search);
+      const selectedRoomsParams = searchParams.get('rooms');
+      const checkInDateParam = searchParams.get('checkIn');
+      const checkOutDateParam = searchParams.get('checkOut');
 
-    
-    
-    const defaultRoom = { adults: 1, children: 0, roomType: null, package: null, roomPrice: 0.0, package_Price: 0.0};
-    // console.log("Default: ", defaultRoom);
-    
-    setSelectedRooms(prevState => {
-      // Check if prevState is null or empty
-      if (prevState == null || prevState.length === 0) {
-        if (selectedRoomsParams) {
-          try {
-            // Try to parse the selectedRoomsParams if available
-            const parsedRooms = JSON.parse(selectedRoomsParams);
-            return parsedRooms; // Return the parsed rooms if successful
-          } catch (e) {
-            // If parsing fails, log the error and use the default room
-            console.error('Error parsing selectedRooms:', e);
+      
+      
+      const defaultRoom = { adults: 1, children: 0, roomType: null, package: null, roomPrice: 0.0, package_Price: 0.0};
+      // console.log("Default: ", defaultRoom);
+      
+      setSelectedRooms(prevState => {
+        // Check if prevState is null or empty
+        if (prevState == null || prevState.length === 0) {
+          if (selectedRoomsParams) {
+            try {
+              // Try to parse the selectedRoomsParams if available
+              const parsedRooms = JSON.parse(selectedRoomsParams);
+              return parsedRooms; // Return the parsed rooms if successful
+            } catch (e) {
+              // If parsing fails, log the error and use the default room
+              console.error('Error parsing selectedRooms:', e);
+            }
           }
+
+          // If no valid `selectedRoomsParams`, fallback to the default room
+          console.log("Selected rooms are empty or null");
+          console.log(selectedRoomsParams); // Log the param
+          // console.log("default: ",defaultRoom); // Log the default room
+
+          const updatedRooms = [...prevState];  // Make a copy of the previous state
+          updatedRooms[0] = defaultRoom;       // Update the first element with the default room
+          return updatedRooms;                 // Return the updated state
         }
 
-        // If no valid `selectedRoomsParams`, fallback to the default room
-        console.log("Selected rooms are empty or null");
-        console.log(selectedRoomsParams); // Log the param
-        // console.log("default: ",defaultRoom); // Log the default room
+        // If `selectedRooms` is not empty, return the current state
+        return prevState;
+      });
 
-        const updatedRooms = [...prevState];  // Make a copy of the previous state
-        updatedRooms[0] = defaultRoom;       // Update the first element with the default room
-        return updatedRooms;                 // Return the updated state
+      if (selectedDates[0] && selectedDates[1]) {
+        const checkIn = selectedDates[0].toISOString().split('T')[0]; // Format as YYYY-MM-DD
+        const checkOut = selectedDates[1].toISOString().split('T')[0]; // Format as YYYY-MM-DD
+
+        // console.log({ checkIn, checkOut });
+
+        // Fetch room types from the API with selected dates
+        fetchRoomTypes(checkIn, checkOut);
+        fetchAvailablePackages();
+      } else {
+        alert('Please select a check-in/check-out date and room size!');
       }
-
-      // If `selectedRooms` is not empty, return the current state
-      return prevState;
-    });
-
-    if (selectedDates[0] && selectedDates[1]) {
-      const checkIn = selectedDates[0].toISOString().split('T')[0]; // Format as YYYY-MM-DD
-      const checkOut = selectedDates[1].toISOString().split('T')[0]; // Format as YYYY-MM-DD
-
-      // console.log({ checkIn, checkOut });
-
-      // Fetch room types from the API with selected dates
-      fetchRoomTypes(checkIn, checkOut);
-      fetchAvailablePackages();
-    } else {
-      alert('Please select a check-in/check-out date and room size!');
-    }
-  }, [selectedRooms, selectedDates]);
+    }, [selectedRooms, selectedDates]);
 
   return (
     <div className={RoomSearchModule.main}>
       {/* Header */}
-      <header className={RoomSearchModule.header}>
+      {/* <header className={RoomSearchModule.header}>
           <title>{t("HomePage.roomSearchTitle")}</title>
           <meta name="description" content="Experience the finest luxury at our hotel" />
           <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
@@ -386,32 +428,147 @@ useEffect(() => {
             </nav>
           </div>
         </div>
-      </header>
+      </header> */}
+      <header className={`${headerClass} ${isMenuOpen ? homeStyle.active : ''}${isScrolledToMax && !isMouseOver ? homeStyle.gradient : homeStyle.solid}`}>
+
+          <div className={hamburgerClass} onClick={toggleMenu}>
+            <div className={homeStyle.lines}></div>
+            <div className={homeStyle.lines}></div>
+            <div className={homeStyle.lines}></div>
+          </div>
+
+          <div
+          ref={containerRef}
+          className={`${navLogoTitleClass} ${isMenuOpen ? homeStyle.active : ''}`}>
+
+            
+            <div className={closeIconClass} onClick={toggleMenu}>
+                <div className={homeStyle.line1}></div>
+                <div className={homeStyle.line2}></div>
+            </div>
+
+            <img src="logo.png" alt="Al-Batra Hotel Logo" className={logoClass} />
+            {/* Hamburger Icon */}
+
+            <div className={titleNavClass}>
+              <h1 className={titleClass}>{t('HomePage.title')}</h1>
+
+              {/* Navigation Links */}
+              <nav className={`${navClass}`}>
+                <Link href={`/${locale}`}>{t('NavigationBar.Home')}</Link>
+                <a href="">{t('NavigationBar.Rooms')}</a>
+                <a href="">{t('NavigationBar.Dinning')}</a>
+                <a href="" onClick={(e) => {
+                  toggleBookingSection();
+                  e.preventDefault();
+                }}>{t('NavigationBar.Booking')}</a>
+                <a href={`/${locale}/ReservationRetrieval`}>{t('NavigationBar.MyReservation')}</a>
+              </nav>
+            </div>
+            {/* Language Switcher */}
+            <div className={langSwitcherClass}>
+              <CustomerLocaleSwitcher />
+            </div>
+          </div>
+
+        </header>
 
       {/* Booking Section */}
-      <div
+      {/* <div
         className={RoomSearchModule.bookingBar}
       >
         <section id="booking" className={RoomSearchModule.bookingSection}>
           <Box className={RoomSearchModule.bookingContainer}>
             <div className={RoomSearchModule.datePickerContainer}>
               <div className={bookingTitleClass}>{t("NavigationBar.Dates")}</div>
-              <CustomDateRangePicker onDateRangeChange={handleDateRangeChange} />
+              <CustomDateRangePicker
+                              selectedDates={selectedDates}
+                              setSelectedDates={setSelectedDates}
+                            />
             </div>
             <div className={styles.roomTypeContainer}>
               <div className={bookingTitleClass}>{t("NavigationBar.RoomSize")}</div>
-              <RoomTypeSelection onRoomTypeChange={handleRoomSelectedChange}/>
+              <RoomTypeSelection
+                              selectedRooms={selectedRooms}
+                              setSelectedRooms={setSelectedRooms}
+                            />
             </div>
             <button className={styles.searchButton} onClick={handleUpdateSearch}>
               {t("NavigationBar.updateSearch")}
             </button>
           </Box>
         </section>
+      </div> */}
+
+
+
+
+      <div className={`${homeStyle.bookingBar} ${isMobile && currentStep === 'dateSelection' ? homeStyle.dateActive : ''} 
+        ${isMobile && currentStep === 'roomSelection' ? homeStyle.roomActive : ''}`}>
+                {/* Render differently based on screen size */}
+                {isMobile && currentStep === 'dateSelection' && (
+                    <div className={homeStyle.bookingContainer}>
+                        <div className={homeStyle.datePickerContainer}>
+                            <div className={homeStyle.bookingTitle}>SELECT YOUR DATES</div>
+                            <div onClick={(e) => {toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
+                            <CustomDateRangePicker
+                              selectedDates={selectedDates}
+                              setSelectedDates={setSelectedDates}
+                            />
+                        </div>
+                        <button className={homeStyle.continueButton} onClick={handleContinue}>
+                            {t("NavigationBar.Continue")}
+                        </button>
+                    </div>
+                )}
+                {isMobile && currentStep === 'roomSelection' && (
+                    <div className={homeStyle.bookingContainer}>
+                        <div className={homeStyle.roomTypeContainer}>
+                            <div className={homeStyle.bookingTitle}>Select Room Type</div>
+                            <div onClick={(e) => {toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
+                            <RoomTypeSelection
+                              selectedRooms={selectedRooms}
+                              setSelectedRooms={setSelectedRooms}
+                            />
+                        </div>
+                        <div className={homeStyle.buttonsForBookBar}>
+                          <button className={homeStyle.BookingButton} onClick={handleBack}>
+                              ← {t("NavigationBar.Back")}
+                          </button>
+                          <button className={homeStyle.BookingButton}>{t("NavigationBar.Search")}</button>
+                        </div>
+                    </div>
+                )}
+                {!isMobile && (
+                    <div className={homeStyle.bookingContainer}>
+                        {/* Default desktop layout */}
+                        <div className={homeStyle.datePickerContainer}>
+                            <div className={bookingTitle}>{t("NavigationBar.Dates")}</div>
+                            <CustomDateRangePicker
+                              selectedDates={selectedDates}
+                              setSelectedDates={setSelectedDates}
+                            />
+                        </div>
+                        <div className={homeStyle.roomTypeContainer}>
+                            <div className={bookingTitle}>{t("NavigationBar.RoomSize")}</div>
+                            <RoomTypeSelection
+                              selectedRooms={selectedRooms}
+                              setSelectedRooms={setSelectedRooms}
+                            />
+                        </div>
+                        <button onClick={handleUpdateSearch} className={homeStyle.searchButton}>{t("NavigationBar.Search")}</button>
+                    </div>
+                )}
       </div>
 
 
+
+
+
+
+
       {/* Selected Room */}
-      <div className={RoomSearchModule.Container3}>
+      {/* <div className={RoomSearchModule.Container3}>
         {!isLoading && selectedRooms.length > 0 && (
           <div>
               <hr className={RoomSearchModule.line} />
@@ -473,16 +630,16 @@ useEffect(() => {
           </div>
 
         )}
-      </div>
+      </div> */}
 
       
 
 
 
       {/* Rooms Section */}
-      <div className={RoomSearchModule.Container1}>
+      {/* <div className={RoomSearchModule.Container1}>
         <div className={RoomSearchModule.Container2}>OUR ACCOMMODATIONS</div>
-      </div>
+      </div> */}
 
       {/* Room List */}
       {/* Loading spinner */}
@@ -550,7 +707,23 @@ useEffect(() => {
                   >
                     <div className={RoomSearchModule.option}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div className={RoomSearchModule.optionTitle}>Our rooms offer comfort and convenience with modern décor, plush bedding, flat-screen TV, Wi-Fi, and spacious work desk. Private bathrooms feature rainfall showers and premium toiletries for a relaxing stay.</div>
+                        <div className={RoomSearchModule.optionTitle}>
+                          <div className={RoomSearchModule.LeftSide}>
+                            <div className={RoomSearchModule.OptionElement}>
+                              <img className={RoomSearchModule.OptionIcon} src="../bed_icon.png" />
+                              2 Queen beds and 1 Twin bed
+                            </div>
+                            <div className={RoomSearchModule.OptionElement}>
+                              <img className={RoomSearchModule.OptionIcon} src="../wifi_icon.png" />
+                              High internet speed wifi
+                            </div>
+                          </div>
+                          <div className={RoomSearchModule.RightSide}>
+
+                          </div>
+                          {/* Our rooms offer comfort and convenience with modern décor, plush bedding, flat-screen TV, Wi-Fi, and spacious work desk. Private bathrooms feature rainfall showers and premium toiletries for a relaxing stay. */}
+                          
+                          </div>
                       </div>
                     </div>
                   </div>

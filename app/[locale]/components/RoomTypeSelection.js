@@ -91,7 +91,7 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
 
       {`${selectedRooms?.length || 0} ${selectedRooms?.length > 1 ? t("RoomSelection.Rooms") : t("RoomSelection.Room")}`}
       </div>
-      {isOpen || isMobile && (
+      {isOpen || !isMobile && (
         <div ref={popupRef} className={styles.roomTypePopup}>
           {rooms.map((room, index) => (
             <div key={index} className={styles.roomContainer}>

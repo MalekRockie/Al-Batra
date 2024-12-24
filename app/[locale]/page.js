@@ -103,7 +103,7 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
     setIsBookingVisible(!isBookingVisible);
   };
 
-useEffect(() => {
+  useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768); // Mobile if width <= 768px
         };
@@ -242,8 +242,8 @@ useEffect(() => {
         </header>
 
 
-        <div className={`${homeStyle.bookingBar} ${isBookingVisible ? homeStyle.visible : homeStyle.hidden} ${isMobile && currentStep === 'dateSelection' ? homeStyle.dateActive : ''} ${
-                isMobile && currentStep === 'roomSelection' ? homeStyle.roomActive : ''}`}>
+        <div className={`${homeStyle.bookingBar} ${isBookingVisible ? homeStyle.visible : homeStyle.hidden} ${isMobile && currentStep === 'dateSelection' ? homeStyle.dateActive : ''} 
+        ${isMobile && currentStep === 'roomSelection' ? homeStyle.roomActive : ''}`}>
                 {/* Render differently based on screen size */}
                 {isMobile && currentStep === 'dateSelection' && (
                     <div className={homeStyle.bookingContainer}>
@@ -256,7 +256,7 @@ useEffect(() => {
                             />
                         </div>
                         <button className={homeStyle.continueButton} onClick={handleContinue}>
-                            Continue
+                            {t("NavigationBar.Continue")}
                         </button>
                     </div>
                 )}
@@ -272,9 +272,9 @@ useEffect(() => {
                         </div>
                         <div className={homeStyle.buttonsForBookBar}>
                           <button className={homeStyle.BookingButton} onClick={handleBack}>
-                              ← Back
+                              ← {t("NavigationBar.Back")}
                           </button>
-                          <button className={homeStyle.BookingButton}>Search</button>
+                          <button className={homeStyle.BookingButton}>{t("NavigationBar.Search")}</button>
                         </div>
                     </div>
                 )}
@@ -282,20 +282,20 @@ useEffect(() => {
                     <div className={homeStyle.bookingContainer}>
                         {/* Default desktop layout */}
                         <div className={homeStyle.datePickerContainer}>
-                            <div className={homeStyle.bookingTitle}>Select Dates</div>
+                            <div className={bookingTitle}>{t("NavigationBar.Dates")}</div>
                             <CustomDateRangePicker
                               selectedDates={selectedDates}
                               setSelectedDates={setSelectedDates}
                             />
                         </div>
                         <div className={homeStyle.roomTypeContainer}>
-                            <div className={homeStyle.bookingTitle}>Select Room Type</div>
+                            <div className={bookingTitle}>{t("NavigationBar.RoomSize")}</div>
                             <RoomTypeSelection
                               selectedRooms={selectedRooms}
                               setSelectedRooms={setSelectedRooms}
                             />
                         </div>
-                        <button className={homeStyle.searchButton}>Search</button>
+                        <button onClick={handleSearch} className={homeStyle.searchButton}>{t("NavigationBar.Search")}</button>
                     </div>
                 )}
         </div>
