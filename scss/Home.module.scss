@@ -897,8 +897,7 @@ body.scrolled .header-ar {
     .header{
         height: 4rem;
         background-color: rgb(17, 17, 17);
-        z-index: 2;
-        // z-index: 3;
+        z-index: 10;
         // overflow: hidden;
     }
     .header.active {
@@ -929,7 +928,7 @@ body.scrolled .header-ar {
         height: 100%;
         border-left: rgb(82, 82, 82) 0.1px solid;
         overflow: hidden;
-        z-index: 1;
+        z-index: 10;
         transition: transform 0.3s ease;
     } 
     .header .logoTitleNav.active 
@@ -966,7 +965,7 @@ body.scrolled .header-ar {
     .header-ar {
         height: 4rem;
         background-color: rgb(17, 17, 17);
-        z-index: 2;
+        z-index: 4;
         // overflow: hidden;
     }
 
@@ -1040,7 +1039,26 @@ body.scrolled .header-ar {
         // background-color: red;
     }
 
-
+    .nonFocusShader {
+        // visibility: hidden;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 3;
+    }
+    .nonFocusShader.active {
+        visibility: visible;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 5;
+    }
 
     .pageContainer{
         /* Ensure full width */
@@ -1261,7 +1279,7 @@ body.scrolled .header-ar {
         flex-direction: column;
         align-items: center;
         gap: 0rem;
-        z-index: 10;
+        z-index: 11;
         top: 0%;
         text-align: center;
     }
@@ -1304,6 +1322,7 @@ body.scrolled .header-ar {
         width: 100%;        
     }
     .bookingBar {
+        z-index: 11;
         position: fixed;
         display: inline;
         width: 100%;
@@ -1315,7 +1334,6 @@ body.scrolled .header-ar {
         background-color: rgba(252, 251, 251, 1);
         padding: 0rem;
         box-sizing: border-box;
-        z-index: 2;
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: none;
         box-shadow: 0 6px 10px rgba(0, 0, 0, 1);

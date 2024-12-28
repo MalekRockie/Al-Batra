@@ -46,7 +46,7 @@ export default function CustomerLocaleSwitcher() {
 
   return (
     <a className={langSwitcherClass} onClick={handleLangSwitch}>
-      <img src="intl100.png" alt="lang" className={homeStyle.globalIcon}/>
+      <img src="../intl100.png" alt="lang" className={homeStyle.globalIcon}/>
       {languageLabel}
     </a>
   );

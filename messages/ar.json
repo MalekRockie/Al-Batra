@@ -96,6 +96,11 @@
     "Edit": "عـدل",
     "SELECTPACKAGE": "اختار الباقة",
     "SELECTROOM": "اختار الغرفة"
+  },  
+  "RoomSearch":
+  {
+    "navBarTitle": "اخـتـر غـرفـتـك",
+    "OurAccommodations": "أمـاكـن الإقـامـة لـديـنـا"
   },
   "CustomerPage":
   {

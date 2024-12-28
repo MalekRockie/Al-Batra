@@ -97,6 +97,11 @@
     "SELECTPACKAGE": "SELECT PACKAGE",
     "SELECTROOM": "SELECT ROOM"
   },
+  "RoomSearch":
+  {
+    "navBarTitle": "CHOOSE YOUR ROOM",
+    "OurAccommodations": "OUR ACCOMMODATIONS"
+  },
   "CustomerPage":
   {
     "PaymentPageTitle": "Payment Page - Al Batra Hotel",
