@@ -1,20 +1,15 @@
 "use client";
 
-import Head from 'next/head';
 import { useState, useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import {defineRouting} from 'next-intl/routing';
-import { Box } from '@mui/material';
 import Link from 'next/link';
 import RoomTypeSelection from './components/RoomTypeSelection';
 import CustomDateRangePicker from './components/CustomDateRangePicker';
-import Carousel from './components/Carousel';
 import homeStyle from '../../scss/Home.module.scss';
 import {useLocale, useTranslations} from 'next-intl';
 import CustomerLocaleSwitcher from '../../components/customerLocaleSwitcher.tsx'
 import EmblaCarousel from './components/EmblaCarousel.jsx';
 import '../../scss/embla.module.scss';
-import { Noto_Sans_JP } from 'next/font/google';
 
 
 export default function Home() {

@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 import CustomDateRangePicker from '../components/CustomDateRangePicker';
 import RoomTypeSelection from '../components/RoomTypeSelection';
 import homeStyle from '../../../scss/Home.module.scss';
-import { Box, Dialog } from '@mui/material';
 import styles from '../../../scss/Home.module.scss';
 import RoomSearchModule from '../../../scss/RoomSearch.module.scss';
 import { useRouter } from 'next/navigation';

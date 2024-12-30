@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from 'react';
-// import { useRouter, usePathname } from 'next/navigation';
 import { Box } from '@mui/material';
 import CustomerDetailsModule from '../../../scss/CustomerDetails.module.scss';
 import RoomSearchModule from '../../../scss/RoomSearch.module.scss';
@@ -240,7 +239,9 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
 
 
   return (
-  <div className={CustomerDetailsModule.page}>
+
+    
+  <div className={CustomerDetailsModule.main}>
     <div>
       <title>{t("CustomerPage.PaymentPageTitle")}</title>
       <link rel="icon" href="/favicon.ico" />
@@ -307,7 +308,7 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
           </div>
         </div>
       ) : (
-        <div className={CustomerDetailsModule.main}>
+        <div className={CustomerDetailsModule.page}>
 
       {/* Booking Section */}
 

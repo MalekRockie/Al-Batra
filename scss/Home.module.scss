@@ -1443,7 +1443,11 @@ body.scrolled .header-ar {
     .roomTypeContainer {
         color: #000;
         width: 100%;
+        margin-bottom: 1rem;
+        overflow-x: hidden;
+        
     }
+
     
     .bookingTitle {
         // background-color: #cf0202;
@@ -1475,7 +1479,7 @@ body.scrolled .header-ar {
         cursor: pointer;
         transition: background-color 0.3s ease, color 0.3s ease;
         width: 80%;
-        margin-bottom: 2%;
+        margin-bottom: 5%;
         box-sizing: border-box;
     }
     .CloseWindow {

@@ -131,25 +131,27 @@ const CustomDateRangePicker = ({ selectedDates, setSelectedDates, onDateRangeCha
       )
       }
       {isOpen && (
-        <div ref={calendarRef} className={styles.calendarPopup}>
-          {!isMobile && (
-            <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>{isRTL ? '>' : '<'}</button>
-          )}
-          {/* Reversing the buttons for RTL */}
-          <div className={styles.calendarsContainer}>
-            <NextIntersectionObserver
-              classes={styles.calendarContainer}
-              topIn={styles.fadeIn}
-              topOut={styles.fadeOut}
-              bottomIn={styles.slideUp}
-              bottomOut={styles.slideDown}
-            >
-              {renderCalendars()}
-            </NextIntersectionObserver>
+        <div className={styles.calenderPopUpContainer}>
+          <div ref={calendarRef} className={styles.calendarPopup}>
+            {!isMobile && (
+              <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>{isRTL ? '>' : '<'}</button>
+            )}
+            {/* Reversing the buttons for RTL */}
+            <div className={styles.calendarsContainer}>
+              <NextIntersectionObserver
+                classes={styles.calendarContainer}
+                topIn={styles.fadeIn}
+                topOut={styles.fadeOut}
+                bottomIn={styles.slideUp}
+                bottomOut={styles.slideDown}
+              >
+                {renderCalendars()}
+              </NextIntersectionObserver>
+            </div>
+            {!isMobile && (
+              <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>{isRTL ? '<' : '>'}</button>
+            )}
           </div>
-          {!isMobile && (
-            <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>{isRTL ? '<' : '>'}</button>
-          )}
         </div>
       )}
     </div>
