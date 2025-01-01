@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
+import '../../globals.css';  
 import { Box } from '@mui/material';
 import CustomerDetailsModule from '../../../scss/CustomerDetails.module.scss';
 import RoomSearchModule from '../../../scss/RoomSearch.module.scss';
@@ -23,15 +24,14 @@ const CustomerDetails = () => {
   const [selectedRooms, setSelectedRooms] = useState([[]]);
   const [checkInDate, setCheckInDate] = useState('');
   const [checkOutDate, setCheckOutDate] = useState('');
-  const [isBookingVisible, setIsBookingVisible] = useState(true);
-  const [isScrolledToMax, setIsScrolledToMax] = useState(false);
   const [phone, setPhone] = useState('');
   const [reservationID, setReservationID] = useState('');
   const [isReservationSuccessful, setIsReservationSuccessful] = useState(false);
   const [countries, setCountries] = useState([]);
   const [selectedDialCode, setSelectedDialCode] = useState('');
   const [totalCostEstimate, setTotalCostEstimate]= useState(0.00);
-
+  const [roomType, setRoomType] = useState([[]]);
+  const [roomTypeNames, setRoomTypeNames] = useState([]);
 
   // const router = useRouter();
   const t = useTranslations();
@@ -113,10 +113,12 @@ const CustomerDetails = () => {
     const checkInDateParam = searchParams.get('checkInDate');
     const checkOutDateParam = searchParams.get('checkOutDate');
     const totalCost = searchParams.get('totalCostEstimate');
+    const roomTypeParams = searchParams.get('roomType');
 
     setSelectedRooms(selectedRoomsParams || '');
     setCheckInDate(checkInDateParam || '');
     setCheckOutDate(checkOutDateParam || '');
+    setRoomType(roomTypeParams || '');
 
     if (selectedRoomsParams) {
       try {
@@ -124,6 +126,13 @@ const CustomerDetails = () => {
       } catch (e) {
         // console.error('Error parsing selectedRooms:', e);
         setSelectedRooms([]); // Default to an empty array if parsing fails
+      }
+    }
+    if (roomTypeParams) {
+      try {
+        setRoomType(JSON.parse(roomTypeParams));
+      } catch (e) {
+        setRoomType([]); 
       }
     }
 
@@ -134,7 +143,8 @@ const CustomerDetails = () => {
   }, []);
 
   useEffect(() => {
-    // console.log('Selected Rooms:', selectedRooms); // Logs array of selected rooms
+    console.log('Selected Rooms:', selectedRooms); // Logs array of selected rooms
+    console.log('roomType:', roomType);
     // console.log('Check-In Date:', checkInDate);
     // console.log('Check-Out Date:', checkOutDate);
     // console.log('Total Cost Estimate:', totalCostEstimate);
@@ -160,6 +170,23 @@ const CustomerDetails = () => {
 
   }, [selectedRooms, checkInDate, checkOutDate, totalCostEstimate]);
 
+ const getRoomTypeName = async (roomTypeID) => {
+    const room = roomType.find(r => r.roomTypeID === roomTypeID);
+    return room ? room[`typeName_${locale}`] : 'Unknown Room Type';
+  };
+
+    useEffect(() => {
+    const fetchRoomTypes = async () => {
+      // Create an array of promises to fetch all room types for selected rooms
+      const roomNames = await Promise.all(
+        selectedRooms.map(room => getRoomTypeName(room.roomType))
+      );
+      setRoomTypeNames(roomNames);
+      console.log('Room Names:', roomTypeNames);
+    };
+
+    fetchRoomTypes();
+  }, [selectedRooms]);
 
 
   useEffect(() =>
@@ -182,10 +209,10 @@ const CustomerDetails = () => {
     }
     if (!formData.customer.nationality) errors.nationality = true;
 
-    setFormErrors(errors);
 
     // Stop submission if there are errors
     if (Object.keys(errors).length > 0) {
+      console.log('Customer info:', formData);
       alert(t("CustomerPage.IncompleteDataAlert"));
       return;
     }
@@ -241,7 +268,7 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
   return (
 
     
-  <div className={CustomerDetailsModule.main}>
+  <div>
     <div>
       <title>{t("CustomerPage.PaymentPageTitle")}</title>
       <link rel="icon" href="/favicon.ico" />
@@ -278,7 +305,7 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
                     className={ReservationSectionBoxtClass}>
                       <div>
                         <div>
-                          Room: {room.roomType}
+                          Room: {roomTypeNames[rooms.roomType] || 'Loading...'}
                         </div>
                         <img src={`../room1.jpg`} className={CustomerDetailsModule.img}/> <br/> <br/> 
                       </div>
@@ -308,295 +335,214 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
           </div>
         </div>
       ) : (
-        <div className={CustomerDetailsModule.page}>
+        <div className={CustomerDetailsModule.main}>
 
-      {/* Booking Section */}
+          {/* Booking Section */}
 
-        {/* Header */}
-        <header
-          className={CustomerDetailsModule.bookingBar}
-        >
-          <div className={CustomerDetailsModule.logoTitleNav}>
-            <a href="/">
-              <img src="../logo.png" alt="Al-Batra Hotel Logo" className={CustomerDetailsModule.logo} />
-            </a>
-            <div className={RoomSearchModule.titleNav}>
-              <nav className={RoomSearchModule.nav}>
-              </nav>
+          {/* Header */}
+          <header
+            className={CustomerDetailsModule.bookingBar}
+          >
+            <div className={CustomerDetailsModule.logoTitleNav}>
+              <a href="/">
+                <img src="../logo.png" alt="Al-Batra Hotel Logo" className={CustomerDetailsModule.logo} />
+              </a>
+              <div className={RoomSearchModule.titleNav}>
+                <nav className={RoomSearchModule.nav}>
+                </nav>
+              </div>
             </div>
-          </div>
-        </header>
+          </header>
 
-      <div className={dividerClass}>
-        {/* Left Side */}
-        <div className={CustomerDetailsModule.left}>
-          <div className={CustomerDetailsModule.title}>
-            {t("CustomerPage.YOUR RESERVATION")}
-          </div>
-          <div className={CustomerDetailsModule.desc1}>
-           {selectedRooms.length} Room - 2 Adults, 1 Child
-          <br/>
-            {checkInDate} - {checkOutDate}
-          <br/>
+          <div className={dividerClass}>
+            {/* Left Side */}
+            <div className={CustomerDetailsModule.left}>
+              <div className={CustomerDetailsModule.title}>
+                {t("CustomerPage.YOUR RESERVATION")}
+              </div>
+              <div className={CustomerDetailsModule.desc1}>
+              {selectedRooms.length} Room - 2 Adults, 1 Child
+              <br/>
+                {checkInDate} - {checkOutDate}
+              <br/>
 
-          </div>
-        <div className={CustomerDetailsModule.horizantalLine}/>
-          <div className={CustomerDetailsModule.leftContainer1}>
+              </div>
+            <div className={CustomerDetailsModule.horizantalLine}/>
+              <div className={CustomerDetailsModule.leftContainer1}>
 
-                    {selectedRooms.map((rooms, index) => {
-                return (
-                  <div key={rooms.id || index}>
-                    <div className={desc2Class}>
-                      {rooms.roomType}<br/> {t("CustomerPage.AverageRatePerNight")}
-                    </div>
-                    <div className={priceTextClass}>
-                      ${Number(rooms.roomPrice).toFixed(2)}
-                    </div>                    
-                    {rooms.package_Price != 0 && 
-                    ( <div>
+                        {selectedRooms.map((rooms, index) => {
+                    return (
+                      <div key={rooms.id || index}>
                         <div className={desc2Class}>
-                          Package:
+                          {roomTypeNames[index] || 'Loading...'}<br/> {t("CustomerPage.AverageRatePerNight")}
                         </div>
                         <div className={priceTextClass}>
-                          ${Number(rooms.package_Price).toFixed(2)}
-                        </div>
+                          ${Number(rooms.roomPrice).toFixed(2)}
+                        </div>                    
+                        {rooms.package_Price != 0 && 
+                        ( <div>
+                            <div className={desc2Class}>
+                              Package:
+                            </div>
+                            <div className={priceTextClass}>
+                              ${Number(rooms.package_Price).toFixed(2)}
+                            </div>
+                          </div>
+                        )
+                        }
                       </div>
-                    )
-                    }
-                  </div>
-                    )})}
+                        )})}
 
-          </div>
-          <div className={CustomerDetailsModule.leftContainer2}>
-            <div className={desc2Class}>
-              {t("CustomerPage.Estimated Total")}
-            </div>
-            <div className={priceTextClass}>
-              ${Number(totalCostEstimate)?.toFixed(2)}
-            </div>
-          </div>
-
-
-        </div>  
-
-        {/* Customer input Side */}
-        <div className={rightClass}>
-
-          <div className={CustomerDetailsModule.title}>
-            {t("CustomerPage.BOOKING INFORMATION")}
-          </div>
-
-          <div className={CustomerDetailsModule.CustomerContainer1}>
-            <div className={CustomerDetailsModule.CustomerContainerLabel}>
-              {t("CustomerPage.YourInformation")}
-            </div>
-
-            <div className={InfoInputContainerClass}>
-
-              {/* Left side of the box */}
-              <div className={CustomerDetailsModule.InputContainer}>
-                  <div className={CustomerDetailsModule.InputLabel}>
-                    <div className={LabelTextClass}>
-                      {t("CustomerPage.First Name")}
-                    </div>
-                  </div>
-                  <div className={CustomerDetailsModule.InputLabel}>
-                    <div className={LabelTextClass}>
-                      {t("CustomerPage.Last Name")}
-                    </div>
-                  </div>
-                  <div className={CustomerDetailsModule.InputLabel}>
-
-                    <div className={LabelTextClass}>
-                      {t("CustomerPage.Mobile Phone Number")}
-                    </div>
-                  </div>
-                  <div className={CustomerDetailsModule.InputLabel}>
-                    <div className={LabelTextClass}>
-                      {t("CustomerPage.Email Address")}
-                    </div>
-                  </div>
-                  <div className={CustomerDetailsModule.InputLabel}>
-                    <div className={LabelTextClass}>
-                      {t("CustomerPage.Confirm Email Address")}
-                    </div>
-                  </div>
-                  <div className={CustomerDetailsModule.InputLabel}>
-                    <div className={LabelTextClass}>
-                      {t("CustomerPage.Country/Region")}
-                    </div>
-                  </div>
+              </div>
+              <div className={CustomerDetailsModule.leftContainer2}>
+                <div className={desc2Class}>
+                  {t("CustomerPage.Estimated Total")}
+                </div>
+                <div className={priceTextClass}>
+                  ${Number(totalCostEstimate)?.toFixed(2)}
+                </div>
               </div>
 
-              {/* input box side aka right side */}
-              <div className={inputBoxClass}>
-                <div className={CustomerDetailsModule.Individual_InputBox}>
-                  <input
+
+            </div>  
+
+            {/* Customer input Side */}
+            <div className={rightClass}>
+
+              <div className={CustomerDetailsModule.title}>
+                {t("CustomerPage.BOOKING INFORMATION")}
+              </div>
+
+              <div className={CustomerDetailsModule.CustomerInformation}>
+                <input
                   name="first_name"
-                  type="text"
-                  autoComplete="first_name"
-                  value={formData.first_name}
+                  type="first_name"
                   onChange={handleInputChange}
-                  className={`${inputBoxClass} ${formErrors.first_name ? CustomerDetailsModule.inputError : ''}`}
-                  dir={locale === 'ar' ? 'rtl' : 'ltr'}  // Set the direction based on the locale
+                  value={formData.first_name}
+                  className={CustomerDetailsModule.inputBox}
+                  placeholder={t("CustomerPage.First Name")}
                 />
-
-                </div>
-
-                <div className={CustomerDetailsModule.Individual_InputBox}>
-                  <input
-                    type="text"
-                    name="last_name"
-                    value={formData.last_name}
-                    onChange={handleInputChange}
-                    className={`${inputBoxClass} ${formErrors.last_name ? CustomerDetailsModule.inputError : ''}`}
-                  />
-                </div>
-
-                <div className={CustomerDetailsModule.Individual_InputBox}>
-
-                  
-                    {/* Dropdown for selecting country code */}
-                  <PhoneInput
-                    country={'ly'} // Set the initial country code (e.g., 'us' for United States)
+                <input
+                  name="last_name"
+                  type="last_name"
+                  onChange={handleInputChange}
+                  value={formData.last_name}
+                  className={CustomerDetailsModule.inputBox}
+                  placeholder={t("CustomerPage.Last Name")}
+                />
+                <input
+                  name="email_address"
+                  type="email"
+                  onChange={handleInputChange}
+                  value={formData.email_address}
+                  className={CustomerDetailsModule.inputBox}
+                  placeholder={t("CustomerPage.Email Address")}
+                />
+                <input
+                  name="confirmEmailAddress"
+                  type="email"
+                  value={formData.confirmEmailAddress}
+                  onChange={handleInputChange}
+                  className={CustomerDetailsModule.inputBox}
+                  placeholder={t("CustomerPage.Confirm Email Address")}
+                />
+                <PhoneInput
+                    country="ly" // Set the initial country code
                     value={formData.phone_number}
-                    inputStyle={{width:"100%", borderRadius:"0", height:"2.44rem", border: "0.5px"}}
-                    inputProps={{
-                      name: 'phone',
-                      required: true,
-                      autoFocus: true
+                    inputStyle={{
+                      width: "19.5rem",
+                      height: "4rem",
+                      backgroundColor: "rgb(241, 241, 255)",
+                      borderRadius: "0",
+                      border: "0.5px solid #ccc", // Match other inputs
+                      paddingTop: "15px",
+                      paddingLeft: "45px",
+                      fontSize: "13px",
+                      color: "#000000",
+                      textAlign: "left",
                     }}
-                    onChange={phone => setPhone(phone)} // Handle the change event
+                    inputProps={{
+                      name: "phone",
+                      required: true,
+                      autoFocus: true,
+                    }}
+                    onChange={(phone) => setPhone(phone)} // Handle the change event
                     onlyCountries={allowedCountriesNumbers}
                   />
 
+                  <select
+                      name="nationality"
+                      value={formData.nationality}
+                      onChange={handleInputChange}
+                      className={`${inputBoxClass} ${formErrors.nationality ? CustomerDetailsModule.inputError : ''}`}
+                      required
+                    >
+                      <option value="">{t("CustomerPage.Select Nationality")}</option>
+                      {/* Default option */}
+                      {allowedCountries.map((country) => (
+                        <option key={country.code} value={country.name}>
+                          {country.name}
+                        </option>
+                      ))}
+                    </select>
+              </div>
 
-                </div>
-
-                <div className={CustomerDetailsModule.Individual_InputBox}>
-                  <input
-                    type="email"
-                    required  
-                    name="email_address"
-                    value={formData.email_address}
-                    onChange={handleInputChange}
-                    className={`${inputBoxClass} ${formErrors.email_address ? CustomerDetailsModule.inputError : ''}`}
-                  />
-                </div>
-
-                <div className={CustomerDetailsModule.Individual_InputBox}>
-                  <input
-                    type="email"
-                    name="confirmEmailAddress"
-                    value={formData.confirmEmailAddress}
-                    onChange={handleInputChange}
-                    className={`${inputBoxClass} ${formErrors.confirmEmailAddress ? CustomerDetailsModule.inputError : ''}`}
+              <div className={CustomerDetailsModule.PaymentInformation}>
+                <input
+                  type="text"
+                  className={CustomerDetailsModule.inputBox}
+                  placeholder={t("PaymentPage.Card Number")}
+                />
+                <input
+                  type="text"
+                  className={CustomerDetailsModule.inputBox}
+                  placeholder={t("PaymentPage.Name on Card")}
+                />
+                <div className={CustomerDetailsModule.expirationContainer}>
+                  <select
+                    name="expirationMonth"
+                    className={CustomerDetailsModule.inputBox}
                     required
+                  >
+                    <option value="">{t("PaymentPage.Month")}</option>
+                    {Array.from({ length: 12 }, (_, i) => (
+                      <option key={i + 1} value={i + 1}>
+                        {i + 1 < 10 ? `0${i + 1}` : i + 1}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    name="expirationYear"
+                    className={CustomerDetailsModule.inputBox}
+                    required
+                  >
+                    <option value="">{t("PaymentPage.Year")}</option>
+                    {Array.from({ length: 10 }, (_, i) => {
+                      const year = new Date().getFullYear() + i;
+                      return (
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <input
+                    type="text"
+                    className={CustomerDetailsModule.inputBox}
+                    placeholder={t("PaymentPage.CVV")}
                   />
                 </div>
-
-                <div className={CustomerDetailsModule.Individual_InputBox}>
-                <select
-                  name="nationality"
-                  value={formData.nationality}
-                  onChange={handleInputChange}
-                  className={`${inputBoxClass} ${formErrors.nationality ? CustomerDetailsModule.inputError : ''}`}
-                  required
-                >
-                  <option value="">{t("CustomerPage.Select Nationality")}</option>
-                  {/* Default option */}
-                  {allowedCountries.map((country) => (
-                    <option key={country.code} value={country.name}>
-                      {country.name}
-                    </option>
-                  ))}
-                </select>
-                </div>
               </div>
 
-                
 
-            </div>
-
-            
-          </div>
-
-
-          <div className={CustomerDetailsModule.CustomerContainer2}>
-            <div className={CustomerDetailsModule.CustomerContainerLabel}>
-              {t("CustomerPage.CARD DETAILS")}
-            </div>
-
-            <div className={InfoInputContainerClass}>
-
-              {/* Left side of the box */}
-              <div className={CustomerDetailsModule.InputContainer}>
-                  <div className={CustomerDetailsModule.InputLabel}>
-                    <div className={LabelTextClass}>
-                      {t("CustomerPage.Name on card")}
-                    </div>
-                  </div>
-                  <div className={CustomerDetailsModule.InputLabel}>
-                    <div className={LabelTextClass}>
-                      {t("CustomerPage.Card number")}
-                    </div>
-                  </div>
-                  <div className={CustomerDetailsModule.InputLabel}>
-                    <div className={LabelTextClass}>
-                      {t("CustomerPage.Card expiry date")}
-                    </div>
-                  </div>
-              </div>
-
-              {/* input box side aka right side */}
-              <div className={inputBoxClass}>
-
-                <div className={CustomerDetailsModule.Individual_InputBox}>
-                  <input
-                  type="text"
-                  name="nameOnCard"
-                  onChange={handleInputChange}
-                  className={inputBoxClass}
-                  required
-                />
-                </div>
-
-                <div className={CustomerDetailsModule.Individual_InputBox}>
-                  <input
-                  type="text"
-                  name="cardNumber"
-                  autoComplete='numberOnCard'
-                  onChange={handleInputChange}
-                  className={inputBoxClass}
-                  required
-                />
-                </div>
-                
-                <div className={CustomerDetailsModule.Individual_InputBox}>
-                  <input
-                  type="text"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  className={inputBoxClass}
-                  required
-                />
-                </div>
-              </div>
+                <button className={CustomerDetailsModule.searchButton} onClick={handleSubmit}>
+                  {t("CustomerPage.BOOK")}
+                </button>
             </div>
           </div>
 
-          <div className={CustomerDetailsModule.CustomerContainer3}>
-            <div className={AcceptedCardClass}>
-                {t("CustomerPage.AcceptedCards")}
-              </div>
-          </div>
 
-            <button className={CustomerDetailsModule.searchButton} onClick={handleSubmit}>
-              {t("CustomerPage.BOOK")}
-            </button>
-        </div>
       </div>
-    </div>
     )}
   </div>
   );

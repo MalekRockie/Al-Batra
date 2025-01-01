@@ -273,9 +273,12 @@ const RoomSearch = () => {
   const handleProceedingToNextPage = () =>
     {
       console.log(selectedRooms[0]);
+      console.log(roomType);
       const selectedRoomsString = JSON.stringify(selectedRooms);
+      const roomTypeStrings = JSON.stringify(roomType);
       const params = new URLSearchParams({
-          selectedRooms: selectedRoomsString,
+        selectedRooms: selectedRoomsString,
+        roomType: roomTypeStrings,
           checkInDate: selectedDates[0].toISOString().split('T')[0],
           checkOutDate: selectedDates[1].toISOString().split('T')[0],
           totalCostEstimate
@@ -403,6 +406,7 @@ const RoomSearch = () => {
   const handleContinue = () => {
         setCurrentStep('roomSelection'); // Move to room selection on continue
     };
+
   const handleBack = () => {
           setCurrentStep('dateSelection'); // Go back to date selection
       };
@@ -778,7 +782,8 @@ const RoomSearch = () => {
                           </div>
                           <button
                             className={RoomSearchModule.reserveButton}
-                            onClick={() => handleSelectRoomType(activeSelectedRoomIndex, room[`typeName_${locale}`], room.minRate)}
+                            onClick={() => handleSelectRoomType(activeSelectedRoomIndex, room.roomTypeID, room.minRate)}
+                            // [`typeName_${locale}`]
                           >
                             {t("RoomSelection.SELECTROOM")}
                           </button>

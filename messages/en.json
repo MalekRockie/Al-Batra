@@ -106,7 +106,7 @@
   {
     "PaymentPageTitle": "Payment Page - Al Batra Hotel",
     "YOUR RESERVATION":"YOUR RESERVATION",
-    "BOOKING INFORMATION": "BOOKING INFORMATION",
+    "BOOKING INFORMATION": "YOUR INFORMATION",
     "YourInformation": "YOUR INFORMATION",
     "First Name": "First Name*",
     "Last Name": "Last Name*",
@@ -126,6 +126,15 @@
     "Estimated Total": "Estimated Total:",
     "LoadingRoomTypes": "Loading room types...",
     "IncompleteDataAlert": "Please fill in all required fields correctly."
+  },
+  "PaymentPage":
+  {
+    "Card Number": "Card Number",
+    "Name on Card": "Name on Card",
+    "Card CVV": "Card CVV",
+    "Month": "Month",
+    "Year": "Year",
+    "CVV": "CVV"
   },
   "paymentSuccessfull":
   {

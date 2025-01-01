@@ -6,7 +6,7 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
   const rooms = selectedRooms || [];
 // const [selectedRoomType, setSelectedRoomType] = useState('');
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   // const [rooms, setRooms] = useState([{ adults: 1, children: 0, roomType: null, package: null, roomPrice: null, package_Price: null }]);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -32,8 +32,8 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
   };
 
 
-  useEffect(() => {
-    
+  useEffect(() => {   
+    console.log("initially", isOpen); 
     function handleClickOutside(event) {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
         setIsOpen(false);
@@ -82,16 +82,19 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
         setSelectedRooms(newRooms);
     };
 
-
+    const toggleRoomSelectionMenu = () => 
+      {
+        setIsOpen(!isOpen);
+      }
   
 
   return (
     <div className={styles.roomTypeSelection}>
-      <div className={styles.roomTypeInput} onClick={() => setIsOpen(!isOpen)}>
+      <div className={styles.roomTypeInput} onClick={toggleRoomSelectionMenu}>
 
       {`${selectedRooms?.length || 0} ${selectedRooms?.length > 1 ? t("RoomSelection.Rooms") : t("RoomSelection.Room")}`}
       </div>
-      {isOpen || !isMobile && (
+      {!isOpen && !isMobile && (
         <div ref={popupRef} className={styles.roomTypePopup}>
           {rooms.map((room, index) => (
             <div key={index} className={styles.roomContainer}>

@@ -269,7 +269,7 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
                           <button className={homeStyle.BookingButton} onClick={handleBack}>
                               ← {t("NavigationBar.Back")}
                           </button>
-                          <button className={homeStyle.BookingButton}>{t("NavigationBar.Search")}</button>
+                          <button onClick={handleSearch} className={homeStyle.BookingButton}>{t("NavigationBar.Search")}</button>
                         </div>
                     </div>
                 )}
