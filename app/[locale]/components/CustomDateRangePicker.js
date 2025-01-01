@@ -14,6 +14,7 @@ const CustomDateRangePicker = ({ selectedDates, setSelectedDates, onDateRangeCha
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const calendarRef = useRef(null);
+  const calendarInputBoxRef = useRef(null);
 
   const calendar = [];
   const t = useTranslations();
@@ -46,7 +47,7 @@ const CustomDateRangePicker = ({ selectedDates, setSelectedDates, onDateRangeCha
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (calendarRef.current && !calendarRef.current.contains(event.target) && isMobile) {
+      if (calendarRef.current && !calendarRef.current.contains(event.target) && calendarInputBoxRef.current && !calendarInputBoxRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     }
@@ -125,7 +126,7 @@ const CustomDateRangePicker = ({ selectedDates, setSelectedDates, onDateRangeCha
   return (
     <div className={styles.dateRangePicker}>
       {!isMobile && (
-        <div className={styles.dateRangeInput} onClick={() => openCalenderBox()}>
+        <div ref={calendarInputBoxRef} className={styles.dateRangeInput} onClick={() => openCalenderBox()}>
           {`${format(selectedDates[0], 'MMM d, yyyy')} - ${selectedDates[1] ? format(selectedDates[1], 'MMM d, yyyy') : ''}`}
         </div>
       )

@@ -12,6 +12,7 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
 
 
   const popupRef = useRef(null);
+  const inputBoxRef = useRef(null);
   const locale = useLocale();
   const t = useTranslations();
 
@@ -35,7 +36,7 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
   useEffect(() => {   
     console.log("initially", isOpen); 
     function handleClickOutside(event) {
-      if (popupRef.current && !popupRef.current.contains(event.target)) {
+      if (popupRef.current && !popupRef.current.contains(event.target) && inputBoxRef.current && !inputBoxRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     }
@@ -90,11 +91,11 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
 
   return (
     <div className={styles.roomTypeSelection}>
-      <div className={styles.roomTypeInput} onClick={toggleRoomSelectionMenu}>
+      <div ref={inputBoxRef} className={styles.roomTypeInput} onClick={toggleRoomSelectionMenu}>
 
       {`${selectedRooms?.length || 0} ${selectedRooms?.length > 1 ? t("RoomSelection.Rooms") : t("RoomSelection.Room")}`}
       </div>
-      {!isOpen && !isMobile && (
+      {isOpen && !isMobile && (
         <div ref={popupRef} className={styles.roomTypePopup}>
           {rooms.map((room, index) => (
             <div key={index} className={styles.roomContainer}>
