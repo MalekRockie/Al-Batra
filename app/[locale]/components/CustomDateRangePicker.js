@@ -60,7 +60,7 @@ const CustomDateRangePicker = ({ selectedDates, setSelectedDates, onDateRangeCha
   useEffect(() => {
       const handleResize = () => {
           setIsMobile(window.innerWidth <= 768); 
-          setIsOpen(true);
+          // setIsOpen(true);
       };
       handleResize(); // Initial check
       window.addEventListener('resize', handleResize);

@@ -34,7 +34,6 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
 
 
   useEffect(() => {   
-    console.log("initially", isOpen); 
     function handleClickOutside(event) {
       if (popupRef.current && !popupRef.current.contains(event.target) && inputBoxRef.current && !inputBoxRef.current.contains(event.target)) {
         setIsOpen(false);

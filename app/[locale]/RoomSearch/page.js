@@ -32,11 +32,11 @@ const RoomSearch = () => {
   const locale = useLocale();
 
   //Testing Here
+  const [history, setHistory] = useState([[]]);
   const [tempSelectedRooms, setTempSelectedRooms] = useState([]);
-  const [selectedRooms, setSelectedRooms] = useState([])
+  const [selectedRooms, setSelectedRooms] = useState([]);
   const [totalAdults, setTotalAdults] = useState();
   const [totalChildren, setTotalChildren] = useState();
-
   const [isBookingVisible, setIsBookingVisible] = useState(false);
   const [isScrolledToMax, setIsScrolledToMax] = useState(false);
   const [isMouseOver, setIsMouseOver] = useState(false);
@@ -103,14 +103,14 @@ const RoomSearch = () => {
       let totalChildrenCalc = 0;
       for (const rooms of selectedRooms)
         {
-          console.log(rooms.adults);
+          // console.log(rooms.adults);
           totalAdultsCalc += rooms.adults;
           totalChildrenCalc += rooms.children;
         }
         setTotalAdults(totalAdultsCalc);
         setTotalChildren(totalChildrenCalc);
-        console.log("Total Adults here is: ", totalAdults);
-        console.log("Total children here is: ", totalChildren);
+        // console.log("Total Adults here is: ", totalAdults);
+        // console.log("Total children here is: ", totalChildren);
     }, [selectedRooms, totalAdults, totalChildren])
 
   useEffect(() => {
@@ -141,6 +141,7 @@ const RoomSearch = () => {
 
   // Recalculate total cost whenever selectedRooms changes
   useEffect(() => {
+    // console.log("Selected dates: ", selectedDates[0], selectedDates[1]);
     // Calculate the total cost when selectedRooms changes
     if (selectedRooms == null) return;
     if(selectedRooms != null)
@@ -159,59 +160,61 @@ const RoomSearch = () => {
   }, [selectedRooms, selectedDates]); 
 
   useEffect(() => {
-      //Here we should set the selectedRooms if it was already passed by the used in a previous page that directed them here
+    // Get query parameters from the URL
+    const searchParams = new URLSearchParams(window.location.search);
+    const selectedRoomsParams = searchParams.get('rooms');
+    const selectedDatesParams = searchParams.get('selectedDatesToGo');
 
-      const searchParams = new URLSearchParams(window.location.search);
-      const selectedRoomsParams = searchParams.get('rooms');
-      const checkInDateParam = searchParams.get('checkIn');
-      const checkOutDateParam = searchParams.get('checkOut');
+    const defaultRoom = { adults: 1, children: 0, roomType: null, package: null, roomPrice: 0.0, package_Price: 0.0 };
 
-      
-      
-      const defaultRoom = { adults: 1, children: 0, roomType: null, package: null, roomPrice: 0.0, package_Price: 0.0};
-      // console.log("Default: ", defaultRoom);
-      
-      setSelectedRooms(prevState => {
-        // Check if prevState is null or empty
-        if (prevState == null || prevState.length === 0) {
-          if (selectedRoomsParams) {
-            try {
-              // Try to parse the selectedRoomsParams if available
-              const parsedRooms = JSON.parse(selectedRoomsParams);
-              return parsedRooms; // Return the parsed rooms if successful
-            } catch (e) {
-              // If parsing fails, log the error and use the default room
-              console.error('Error parsing selectedRooms:', e);
-            }
+    // Update selectedRooms state
+    setSelectedRooms(prevState => {
+      if (!prevState || prevState.length === 0) {
+        if (selectedRoomsParams) {
+          try {
+            // Parse selectedRoomsParams if available
+            const parsedRooms = JSON.parse(selectedRoomsParams);
+            setTempSelectedRooms(parsedRooms); // Update temporary state
+            return parsedRooms; // Return the parsed rooms
+          } catch (e) {
+            // Log error and use default room if parsing fails
+            console.error('Error parsing selectedRooms:', e);
           }
-
-          // If no valid `selectedRoomsParams`, fallback to the default room
-          console.log("Selected rooms are empty or null");
-          console.log(selectedRoomsParams); // Log the param
-          // console.log("default: ",defaultRoom); // Log the default room
-
-          const updatedRooms = [...prevState];  // Make a copy of the previous state
-          updatedRooms[0] = defaultRoom;       // Update the first element with the default room
-          return updatedRooms;                 // Return the updated state
         }
 
-        // If `selectedRooms` is not empty, return the current state
-        return prevState;
-      });
-
-      if (selectedDates[0] && selectedDates[1]) {
-        const checkIn = selectedDates[0].toISOString().split('T')[0]; // Format as YYYY-MM-DD
-        const checkOut = selectedDates[1].toISOString().split('T')[0]; // Format as YYYY-MM-DD
-
-        // console.log({ checkIn, checkOut });
-
-        // Fetch room types from the API with selected dates
-        fetchRoomTypes(checkIn, checkOut);
-        fetchAvailablePackages();
-      } else {
-        alert('Please select a check-in/check-out date and room size!');
+        // If no valid selectedRoomsParams, fallback to default room
+        const updatedRooms = [defaultRoom]; // Always initialize with the default room
+        return updatedRooms; 
       }
-    }, [selectedRooms, selectedDates]);
+      return prevState;
+    });
+
+    // Update selectedDates state
+    setSelectedDates(prevState => {
+      if (selectedDatesParams) {
+        try {
+          const parsedDates = JSON.parse(selectedDatesParams);
+          const dateObjects = parsedDates.map(date => new Date(date)); // Convert strings to Date objects
+          console.log("Parsed dates: ", dateObjects);
+          return dateObjects; // Set state with Date objects
+        } catch (e) {
+          console.error('Error parsing selectedDates:', e);
+        }
+      }
+      return prevState;
+    });
+
+    // Check if selectedDates are set before making API calls
+    if (selectedDates[0] && selectedDates[1]) {
+      const checkIn = selectedDates[0].toISOString().split('T')[0]; // Format as YYYY-MM-DD
+      const checkOut = selectedDates[1].toISOString().split('T')[0]; // Format as YYYY-MM-DD
+
+      // Fetch room types and available packages based on selected dates
+      fetchRoomTypes(checkIn, checkOut);
+      fetchAvailablePackages();
+    }
+  }, []); // Empty dependency array, runs once on mount
+
 
   //handles selecting the room before prompting the used to select the package for each room
   const handleSelectRoomType = (roomIndex, roomTypePicked, room_Price) => {
@@ -254,9 +257,9 @@ const RoomSearch = () => {
     
     updatedRooms.forEach((room, roomIndex) => 
     {
-      console.log("Total cost: ", totalCostEstimate);
-      console.log("Room: ", roomIndex, "'s price: ", room.roomPrice);
-      console.log("Room: ", roomIndex, "'s Package price: ", room.package_Price, "and ", packagePrice);
+      // console.log("Total cost: ", totalCostEstimate);
+      // console.log("Room: ", roomIndex, "'s price: ", room.roomPrice);
+      // console.log("Room: ", roomIndex, "'s Package price: ", room.package_Price, "and ", packagePrice);
     });
     if(activeSelectedRoomIndex === selectedRooms.length - 1)
       {
@@ -272,8 +275,8 @@ const RoomSearch = () => {
 
   const handleProceedingToNextPage = () =>
     {
-      console.log(selectedRooms[0]);
-      console.log(roomType);
+      // console.log(selectedRooms[0]);
+      // console.log(roomType);
       const selectedRoomsString = JSON.stringify(selectedRooms);
       const roomTypeStrings = JSON.stringify(roomType);
       const params = new URLSearchParams({
@@ -309,7 +312,7 @@ const RoomSearch = () => {
         `http://localhost:8080/room/availableRoomTypes?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`
       );
       const data = await response.json();
-      console.log('Fetched room types:', data);
+      // console.log('Fetched room types:', data);
       setRoomType(data); // Set the fetched room types in the state
     } catch (error) {
       console.error('Error fetching room types:', error);
@@ -516,15 +519,15 @@ const RoomSearch = () => {
                             <div className={homeStyle.bookingTitle}>Select Room Type</div>
                             <div onClick={(e) => {toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
                             <RoomTypeSelection
-                              selectedRooms={selectedRooms}
-                              setSelectedRooms={setSelectedRooms}
+                              selectedRooms={tempSelectedRooms}
+                              setSelectedRooms={setTempSelectedRooms}
                             />
                         </div>
                         <div className={homeStyle.buttonsForBookBar}>
                           <button className={homeStyle.BookingButton} onClick={handleBack}>
                               ← {t("NavigationBar.Back")}
                           </button>
-                          <button onClick={handleUpdateSearch} className={homeStyle.BookingButton}>{t("NavigationBar.Search")}</button>
+                          <button onClick={handleUpdateSearch} className={homeStyle.BookingButton}>{t("NavigationBar.updateSearch")}</button>
                         </div>
                     </div>
                 )}
@@ -541,11 +544,11 @@ const RoomSearch = () => {
                         <div className={homeStyle.roomTypeContainer}>
                             <div className={bookingTitle}>{t("NavigationBar.RoomSize")}</div>
                             <RoomTypeSelection
-                              selectedRooms={selectedRooms}
-                              setSelectedRooms={setSelectedRooms}
+                              selectedRooms={tempSelectedRooms}
+                              setSelectedRooms={setTempSelectedRooms}
                             />
                         </div>
-                        <button onClick={handleUpdateSearch} className={homeStyle.searchButton}>{t("NavigationBar.Search")}</button>
+                        <button onClick={handleUpdateSearch} className={homeStyle.searchButton}>{t("NavigationBar.updateSearch")}</button>
                     </div>
                 )}
         </div>

@@ -22,7 +22,7 @@ export default function Home() {
   const locale = useLocale();
   const [selectedRooms, setSelectedRooms] = useState([{ adults: 1, children: 0, roomType: null, package: null },]);
   const [selectedDates, setSelectedDates] = useState([from, to]);
-  const [isBookingVisible, setIsBookingVisible] = useState(false);
+  const [isBookingVisible, setIsBookingVisible] = useState(true);
   const [isScrolledToMax, setIsScrolledToMax] = useState(false);
   const [isMouseOver, setIsMouseOver] = useState(false);
   const [lang, setLang] = useState();
@@ -76,6 +76,7 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
       const pathname = `/${locale}/RoomSearch`;
       const checkIn = selectedDates[0]?.toISOString();
       const checkOut = selectedDates[1]?.toISOString();
+      const selectedDatesToGo = JSON.stringify(selectedDates);
       const rooms = JSON.stringify(selectedRooms);
 
       console.log({ checkIn, checkOut, rooms });
@@ -84,6 +85,7 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
       const searchParams = new URLSearchParams({
         checkIn,
         checkOut,
+        selectedDatesToGo,
         rooms
       }).toString();
 
@@ -100,6 +102,7 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
 
   useEffect(() => {
         const handleResize = () => {
+          setIsBookingVisible(false); // Close booking section on resize
             setIsMobile(window.innerWidth <= 768); // Mobile if width <= 768px
         };
         handleResize(); // Initial check

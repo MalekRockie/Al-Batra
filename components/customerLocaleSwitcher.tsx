@@ -17,7 +17,6 @@ export default function CustomerLocaleSwitcher() {
 
     useEffect(() => {
         setIsClient(true);
-        console.log("current locale:" , locale);
     }, []);
 
   if (!isClient) {
