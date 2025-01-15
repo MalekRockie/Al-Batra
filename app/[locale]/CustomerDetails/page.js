@@ -450,7 +450,7 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
                     country="ly" // Set the initial country code
                     value={formData.phone_number}
                     inputStyle={{
-                      width: "19.5rem",
+                      width: "100%",
                       height: "4rem",
                       backgroundColor: "rgb(241, 241, 255)",
                       borderRadius: "0",
@@ -544,6 +544,35 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
 
       </div>
     )}
+
+    <footer className={CustomerDetailsModule.footer}>
+      <div className={CustomerDetailsModule.footerNav}>
+        <div className={CustomerDetailsModule.footerNavCol}>
+          <a href="#home">{t("footer.Home")}</a>
+          <a href="#rooms">{t("footer.Rooms")}</a>
+          <a href="#booking">{t("footer.Booking")}</a>
+        </div>
+        <div className={CustomerDetailsModule.footerNavCol}>
+          <a href="#contactUs">{t("footer.contactUs")}</a>
+          <a href="#about">{t("footer.About")}</a>
+        </div>
+        <div className={CustomerDetailsModule.footerNavCol}>
+          <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">
+            <img src="TikTokLogo.png" alt="TikTok" className={CustomerDetailsModule.socialIcon}/>
+          </a>
+          <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+            <img src="FacebookLogo.png" alt="Facebook" className={CustomerDetailsModule.socialIcon}/>
+          </a>
+          <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
+            <img src="X_Logo.png" alt="Twitter" className={CustomerDetailsModule.socialIcon}/>
+          </a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+            <img src="InstagramLogo.png" alt="Instagram" className={CustomerDetailsModule.socialIcon}/>
+          </a>
+        </div>
+      </div>
+      <p>{t("footer.copyRight")}</p>
+    </footer>
   </div>
   );
 };

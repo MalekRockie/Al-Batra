@@ -22,13 +22,6 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.title {
-    font-size: 1.8rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    color: #333;
-}
 
 .details {
     margin-bottom: 1.5rem;
@@ -167,6 +160,7 @@
 .title
 {
     margin-top: 2rem;
+    margin-bottom: 1.5rem;
     text-align: center;
     font-family: 'Segoe UI', sans-serif;
     font-weight: 450;
@@ -246,6 +240,7 @@
     margin: auto;
     margin-top: 1rem;
     height: 5rem;
+    margin-bottom: 2rem;
 }
 
 
@@ -596,7 +591,71 @@
     height: 6rem;
 }
 
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 
+.content {
+    flex: 1;
+}
+
+.footer {
+    background: #141414;
+    color: #ffffff;
+    text-align: center;
+    padding: 1rem;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+}
+
+.footerNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.footerNavCol {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 10%;
+    gap: 0.5rem;
+}
+
+.footerNavCol:nth-child(3) {
+    margin-left: auto;
+    flex-direction: row;
+    margin-right: 30%;
+    margin-top: 2%;
+}
+
+.footerNav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+}
+
+.footerNav a:hover::after {
+    width: 0;
+    text-decoration: underline;
+}
+
+.footerNavCol a img.socialIcon {
+    width: 24px;
+    height: 24px;
+    margin-right: 0.5rem;
+}
+
+.footer p {
+    margin-top: 5rem;
+    text-align: center;
+    color: #ceb780;
+}
 
 @media (max-width: 768px) {
 
@@ -607,18 +666,18 @@
     }
     .main {
             width: 100%;
-            height: 100%;
+            height: auto;
             background-color: #ffffff;
-    }
+            }
 
     .divider {
         justify-content: center;
         display: flex;
         flex-direction: column;
-        height: 100%;
+        height: auto;
         width: 100%;
         margin-top: 10rem;
-        margin-bottom: 5rem;
+        // margin-bottom: 10rem;
     }
 
     .divider-ar {
@@ -635,88 +694,115 @@
         background-color: #f3f3f3;
         width: auto;
         border: 1px solid #c9c9c9;
+        height: auto;
+    }
+    .desc1 {
+        text-align: center;
+        margin: auto;
+        width: auto;
+        color: #4e4e4e;
+        font-size: medium;
     }
 
     .right {
-        background-color: #f3f3f3;
-        width: 50rem;
-        border: 1px solid #c9c9c9;
-        border-left: 0px solid #c9c9c9;
-        margin-top: 1rem;
-    }
-    
-    .right-ar {
-        background-color: #f3f3f3;
-        width: auto;
-        border: 1px solid #c9c9c9;
-        border-right: 0px solid #c9c9c9;
-        border-top: none;
-        margin-top: 1rem;
-    }
-    .CustomerContainer1 {
-        height: auto;
-        width: 45rem;
-        margin: auto;
-        border: 1px solid #555555;
-        
-        width: auto;
-        // display: none;
-    }
-    .CustomerContainer2 {
-        height: auto;
-        width: 45rem;
-        margin: auto;
-        margin-top: 1rem;
-        border: 1px solid #000000;
-        border-bottom: 0px solid #555555;
-        margin-bottom: 0%;
-
-        width: auto;
-        // display: none;
-    }
-
-    .CustomerContainer3 {
-        height: auto;
-        width: 45rem;
-        margin: auto;
-        margin-top: 0%;
-        color: #000000;
-        border: 1px solid #555555;
-        border-top: 0px solid #555555;
         background-color: #ffffff;
-        height: 2.0rem;
-        font-family: 'Segoe UI', sans-serif;
+        max-height: none;
+        height: auto;
+        // border: 1px solid #c9c9c9;
+        // border-left: 0px solid #c9c9c9;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: auto;
+        margin-top: 1rem;
+        overflow: none;
+        min-width: 100%;
 
-        width: auto;
-        // display: none;
     }
+
+    .right-ar {
+        background-color: #ffffff;
+        width: 100%;
+        border: 1px solid #c9c9c9;
+        // border-right: 0px solid #c9c9c9;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .CustomerInformation {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        /* Adjust column width */
+        gap: 1.2rem;
+        width: 80vw;
+        border-bottom: #c5c5c5 solid 1px;
+        padding-bottom: 2rem;
+        // background-color: #efefef;
+    }
+
+    .PaymentInformation {
+        margin: auto;
+        margin-top: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        max-width: 100%;
+        padding-bottom: 2rem;
+        background-color: #f9f9f9;
+        // border: 1px solid #ddd;
+        border-radius: 0px;
+        padding: 2rem;
+        margin-bottom: 0rem;
+    }
+    .expirationContainer {
+        display: flex;
+        flex-direction: column;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1.2rem;
+        margin-bottom: 5rem;
+    }
+    .inputBox {
+        margin: auto;
+        width: 80vw;
+        height: 4rem;
+        background-color: rgb(241, 241, 255);
+        border: 0.5px solid #ccc;
+        /* Default border */
+        padding: 0 10px;
+        font-size: 14px;
+        color: #000;
+        outline: none;
+        /* Removes the default browser outline */
+    }
+
+    .inputBox:focus {
+        border: 0.5px solid #ccc;
+        /* Keeps the border unchanged */
+        box-shadow: none;
+        /* Prevents any focus-specific shadow */
+    }
+
     .searchButton {
         font-family: 'Segoe UI', sans-serif;
         font-weight: 400;
-        padding: 4px 20px;
+        padding: 15px 20px;
         border: 1px solid #ffffff;
         background-color: #000000;
         color: #ffffff;
-        height: 34px;
+        height: 6 0px;
         font-size: 16px;
         cursor: pointer;
         transition: background-color 0.3s ease, color 0.3s ease;
-        width: 10rem;
-        // left: 0;
-        margin: auto;
-        margin-top: 3rem;
-        margin-bottom: 3rem;
-    }
-    .InputContainer
-    {
-        display: none;
-    }
-    .Individual_InputBox {
-        border: 0.5px solid #9c9c9c;
-        border-top: 0px solid #000000;
-        border-right: 0px solid #000000;
-        text-align: left;
+        width: 90%;
         display: flex;
-        width: 100%;
+        justify-content: center;
+        margin: auto;
+        margin-bottom: 10rem;
+        z-index: 3;
     }
+
+    .searchButton:hover {
+        background-color: #ffffff;
+        color: #000000;
+        border: 1px solid #000000;
+    }
+
 }
