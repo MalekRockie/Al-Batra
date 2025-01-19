@@ -330,7 +330,7 @@ const RoomSearch = () => {
         `http://localhost:8080/PackagePlan/GetAvailablePackages`
       );
       const data = await response.json();
-      // console.log("Fetched available Package plans: ", data);
+      console.log("Fetched available Package plans: ", data);
       setAvailablePackages(data);
     }
     catch(error)
@@ -441,6 +441,13 @@ const RoomSearch = () => {
 
   return (
     <div>
+      
+      
+      <title>{t('HomePage.roomSearchTitle')}</title>
+      <link rel="icon" href="/favicon.ico" />
+      <meta name="description" content="Experience the finest luxury at our hotel" />
+      <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="homeStyleheet" />
+
 
       {/* Header */}
       <header className={`${headerClass} ${isMenuOpen ? homeStyle.active : ''}${isScrolledToMax && !isMouseOver ? homeStyle.gradient : homeStyle.solid}`}>

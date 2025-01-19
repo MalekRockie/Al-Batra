@@ -42,7 +42,7 @@ const CustomerDetails = () => {
   const dividerClass = locale === "ar" ? CustomerDetailsModule['divider-ar'] : CustomerDetailsModule.divider;
   const InfoInputContainerClass = locale === "ar" ? CustomerDetailsModule['InfoInputContainer-ar'] : CustomerDetailsModule.InfoInputContainer;
   const rightClass = locale === "ar" ? CustomerDetailsModule['right-ar'] : CustomerDetailsModule.right;
-  const inputBoxClass = locale === "ar" ? CustomerDetailsModule['inputBox-ar'] : CustomerDetailsModule.inputBox;
+  // const inputBoxClass = locale === "ar" ? CustomerDetailsModule['inputBox-ar'] : CustomerDetailsModule.inputBox;
   const AcceptedCardClass = locale === "ar" ? CustomerDetailsModule['AcceptedCardLabel-ar'] : CustomerDetailsModule.AcceptedCardLabel;
   const LabelTextClass = locale === "ar" ? CustomerDetailsModule['LabelText-ar'] : CustomerDetailsModule.LabelText;
   const desc2Class = locale === "ar" ? CustomerDetailsModule['desc2-ar'] : CustomerDetailsModule.desc2;
@@ -50,7 +50,10 @@ const CustomerDetails = () => {
   const ReservationSectionBoxtClass = locale === "ar" ? CustomerDetailsModule['ReservationSectionBox-ar'] : CustomerDetailsModule.ReservationSectionBox;
   const ReservationSectionTitletClass = locale === "ar" ? CustomerDetailsModule['ReservationSectionTitle-ar'] : CustomerDetailsModule.ReservationSectionTitle;
 //ReservationSectionTitle
- const ReservationSectionTitleClass = locale === "ar" ? CustomerDetailsModule['ReservationSectionTitle-ar'] : CustomerDetailsModule.ReservationSectionTitle;
+  const ReservationSectionTitleClass = locale === "ar" ? CustomerDetailsModule['ReservationSectionTitle-ar'] : CustomerDetailsModule.ReservationSectionTitle;
+  const inputBoxClass = locale === "ar" ? CustomerDetailsModule["inputBox-ar"] : CustomerDetailsModule.inputBox;
+  const footerNavClass = locale === "ar" ? CustomerDetailsModule["footerNav-ar"] : CustomerDetailsModule.footerNav;
+  const footerNavColClass = locale == "ar" ? CustomerDetailsModule["footerNavCol-ar"] : CustomerDetailsModule.footerNavCol;
 
 
   const [formData, setFormData] = useState({
@@ -419,7 +422,7 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
                   type="first_name"
                   onChange={handleInputChange}
                   value={formData.first_name}
-                  className={CustomerDetailsModule.inputBox}
+                  className={inputBoxClass}
                   placeholder={t("CustomerPage.First Name")}
                 />
                 <input
@@ -427,7 +430,7 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
                   type="last_name"
                   onChange={handleInputChange}
                   value={formData.last_name}
-                  className={CustomerDetailsModule.inputBox}
+                  className={inputBoxClass}
                   placeholder={t("CustomerPage.Last Name")}
                 />
                 <input
@@ -435,7 +438,7 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
                   type="email"
                   onChange={handleInputChange}
                   value={formData.email_address}
-                  className={CustomerDetailsModule.inputBox}
+                  className={inputBoxClass}
                   placeholder={t("CustomerPage.Email Address")}
                 />
                 <input
@@ -443,7 +446,7 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
                   type="email"
                   value={formData.confirmEmailAddress}
                   onChange={handleInputChange}
-                  className={CustomerDetailsModule.inputBox}
+                  className={inputBoxClass}
                   placeholder={t("CustomerPage.Confirm Email Address")}
                 />
                 <PhoneInput
@@ -490,18 +493,18 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
               <div className={CustomerDetailsModule.PaymentInformation}>
                 <input
                   type="text"
-                  className={CustomerDetailsModule.inputBox}
+                  className={inputBoxClass}
                   placeholder={t("PaymentPage.Card Number")}
                 />
                 <input
                   type="text"
-                  className={CustomerDetailsModule.inputBox}
+                  className={inputBoxClass}
                   placeholder={t("PaymentPage.Name on Card")}
                 />
                 <div className={CustomerDetailsModule.expirationContainer}>
                   <select
                     name="expirationMonth"
-                    className={CustomerDetailsModule.inputBox}
+                    className={inputBoxClass}
                     required
                   >
                     <option value="">{t("PaymentPage.Month")}</option>
@@ -513,7 +516,7 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
                   </select>
                   <select
                     name="expirationYear"
-                    className={CustomerDetailsModule.inputBox}
+                    className={inputBoxClass}
                     required
                   >
                     <option value="">{t("PaymentPage.Year")}</option>
@@ -528,7 +531,7 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
                   </select>
                   <input
                     type="text"
-                    className={CustomerDetailsModule.inputBox}
+                    className={inputBoxClass}
                     placeholder={t("PaymentPage.CVV")}
                   />
                 </div>
@@ -546,13 +549,13 @@ const allowedCountriesNumbers = countriesData.countries.map(country => country.c
     )}
 
     <footer className={CustomerDetailsModule.footer}>
-      <div className={CustomerDetailsModule.footerNav}>
-        <div className={CustomerDetailsModule.footerNavCol}>
+      <div className={footerNavClass}>
+        <div className={footerNavColClass}>
           <a href="#home">{t("footer.Home")}</a>
           <a href="#rooms">{t("footer.Rooms")}</a>
           <a href="#booking">{t("footer.Booking")}</a>
         </div>
-        <div className={CustomerDetailsModule.footerNavCol}>
+        <div className={footerNavColClass}>
           <a href="#contactUs">{t("footer.contactUs")}</a>
           <a href="#about">{t("footer.About")}</a>
         </div>
