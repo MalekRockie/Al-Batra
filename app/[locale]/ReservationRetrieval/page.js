@@ -5,8 +5,8 @@ import Head from 'next/head';
 import { Box } from '@mui/material';
 import Link from 'next/link';
 import styles from '../../../scss/Home.module.scss';
-import CustomDateRangePicker from "../components/CustomDateRangePicker";
-import RoomTypeSelection from "../components/RoomTypeSelection";
+import CustomDateRangePicker from '../components/CustomDateRangePicker';
+import RoomTypeSelection from '../components/RoomTypeSelection';
 import ReservationRetrievalModule from '../../../scss/ReservationRetrieval.module.scss'
 import {useLocale, useTranslations} from 'next-intl';
 
@@ -22,7 +22,7 @@ to.setDate(from.getDate() + 1);
 const [isScrolledToMax, setIsScrolledToMax] = useState(false);
 const [isBookingVisible, setIsBookingVisible] = useState(false);
 const [selectedDates, setSelectedDates] = useState([from, to]);
-const [selectedRooms, setSelectedRooms] = useState([[]]);
+const [selectedRooms, setSelectedRooms] = useState([{ adults: 1, children: 0, roomType: null, package: null },]);
 const [customerLastName, setCustomerLastName] = useState('');
 const [referenceCode, setReferenceCode] = useState('');
 const [reservationData , setReservationData] = useState(null);
@@ -146,7 +146,6 @@ return (
                 <Link href={`/${locale}`}>Home</Link>
                 <a href="">ROOMS</a>
                 <a href="">DINING</a>
-                <a href="">AMENITIES</a>
                 <a href="" onClick={(e) => {
                 toggleBookingSection();
                 e.preventDefault();
@@ -162,12 +161,17 @@ return (
             <Box className={styles.bookingContainer}>
             <div className={styles.datePickerContainer}>
                 <div className={styles.bookingTitle}>CHECK IN - CHECK OUT</div>
-                <CustomDateRangePicker onDateRangeChange={handleDateRangeChange} />
-            </div>
+                <CustomDateRangePicker
+                              selectedDates={selectedDates}
+                              setSelectedDates={setSelectedDates}
+                            />            </div>
             <div className={styles.roomTypeContainer}>
                 <div className={styles.bookingTitle}>ROOM SIZE</div>
-                <RoomTypeSelection onRoomTypeChange={setSelectedRooms}/>
-            </div>
+                <RoomTypeSelection
+                    selectedRooms={selectedRooms}
+                    setSelectedRooms={setSelectedRooms}
+                />
+                </div>
             <button className={styles.searchButton} onClick={handleSearch}>
                 CHECK RATES
             </button>
