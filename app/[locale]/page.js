@@ -22,7 +22,7 @@ export default function Home() {
   const locale = useLocale();
   const [selectedRooms, setSelectedRooms] = useState([{ adults: 1, children: 0, roomType: null, package: null },]);
   const [selectedDates, setSelectedDates] = useState([from, to]);
-  const [isBookingVisible, setIsBookingVisible] = useState(true);
+  const [isBookingVisible, setIsBookingVisible] = useState(false);
   const [isScrolledToMax, setIsScrolledToMax] = useState(false);
   const [isMouseOver, setIsMouseOver] = useState(false);
   const [lang, setLang] = useState();
@@ -101,14 +101,20 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
   };
 
   useEffect(() => {
-        const handleResize = () => {
-          setIsBookingVisible(false); // Close booking section on resize
-            setIsMobile(window.innerWidth <= 768); // Mobile if width <= 768px
-        };
-        handleResize(); // Initial check
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    const handleResize = () => {
+      const isMobile = window.innerWidth <= 768;
+      setIsMobile(isMobile);
+      // Set bookingVisible to true ONLY if NOT mobile
+      setIsBookingVisible(!isMobile);
+    };
+  
+    // Initial check on mount
+    handleResize();
+  
+    // Update on window resize
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []); // Empty dependency array = runs once on mount
 
   useEffect(() => {
         function handleScroll() {

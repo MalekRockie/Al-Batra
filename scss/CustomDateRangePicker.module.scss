@@ -47,7 +47,9 @@
 .calendarsContainer {
     display: flex;
 }
-
+.calendarContainer {
+    display: flex;
+}
 .calendar {
     margin: 0 25px;
     text-align: center;
@@ -186,6 +188,10 @@
         transition: opacity 0.1s ease-out, transform 1s ease-out;
         opacity: 1;
         transform: translateY(20vh);
+    }
+    .calendarContainer {
+        display: flex;
+        flex-direction: column;
     }
 
     .fadeIn {

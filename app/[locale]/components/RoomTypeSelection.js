@@ -6,9 +6,9 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
   const rooms = selectedRooms || [];
 // const [selectedRoomType, setSelectedRoomType] = useState('');
 
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   // const [rooms, setRooms] = useState([{ adults: 1, children: 0, roomType: null, package: null, roomPrice: null, package_Price: null }]);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
 
 
   const popupRef = useRef(null);
@@ -23,6 +23,23 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
   const roomSelectedLabelClass = locale === "ar" ? styles['roomSelectedLabel-ar'] : styles.roomSelectedLabel;
   const removeRoomButtonClass = locale === "ar" ? styles['removeRoomButton-ar'] : styles.removeRoomButton;
 
+  useEffect(() => {
+    const handleResize = () => {
+      const isMobile = window.innerWidth <= 768;
+      setIsOpen(isMobile);
+      setIsMobile(isMobile);
+      console.log("Current window width is mobile:", isMobile); // Log derived value
+    };
+  
+    handleResize(); // Initial check
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []); // Empty dependency array = runs once on mount
+  
+  // Optional: Log state updates
+  useEffect(() => {
+    console.log("isMobile state:", isMobile);
+  }, [isMobile]);
 
   const handleRoomUpdate = (newRooms) => {
     setSelectedRooms(newRooms);
@@ -36,7 +53,11 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
   useEffect(() => {   
     function handleClickOutside(event) {
       if (popupRef.current && !popupRef.current.contains(event.target) && inputBoxRef.current && !inputBoxRef.current.contains(event.target)) {
-        setIsOpen(false);
+        if(!isMobile)
+        {
+          setIsOpen(false);
+          console.log(isMobile)
+        }
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -45,14 +66,7 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
     };
   }, [popupRef]);
 
-  useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768); // Mobile if width <= 768px
-        };
-        handleResize(); // Initial check
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+
 
 
     
@@ -84,7 +98,8 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
 
     const toggleRoomSelectionMenu = () => 
       {
-        setIsOpen(!isOpen);
+        if(!isMobile)
+         { setIsOpen(!isOpen);}
       }
   
 
@@ -94,7 +109,7 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
 
       {`${selectedRooms?.length || 0} ${selectedRooms?.length > 1 ? t("RoomSelection.Rooms") : t("RoomSelection.Room")}`}
       </div>
-      {isOpen && !isMobile && (
+      {isOpen && (
         <div ref={popupRef} className={styles.roomTypePopup}>
           {rooms.map((room, index) => (
             <div key={index} className={styles.roomContainer}>
