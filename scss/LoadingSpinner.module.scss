@@ -1,0 +1,44 @@
+// ImageSpinner.module.scss
+.spinnerContainer {
+    margin-top: 6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .spinnerWrapper {
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+  }
+  
+  .spinnerBorder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 3px solid transparent;
+    border-top-color: var(--spinner-color); // Dynamic color
+    border-radius: 50%;
+    animation: spin var(--animation-speed) linear infinite;
+    box-sizing: border-box;
+  }
+  
+  .staticImage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    // width: var(--image-size);
+    // height: var(--image-size);
+    // border-radius: 50%;
+    object-fit: cover;
+    z-index: 1;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

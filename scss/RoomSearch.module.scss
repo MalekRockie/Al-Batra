@@ -710,68 +710,68 @@
     /* Optional: style the text */
 }
 
-        .nonFocusShader {
-            // visibility: hidden;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 30;
-        }
-    
-        .nonFocusShader.active {
-            visibility: visible;
-        }
+.nonFocusShader {
+    // visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 30;
+}
 
-        .dialog {
-            width: 15rem;
-            height: 20rem;
-            background-color: white;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .dialogText
-        {
-            color: black;
-            text-align: center;
-            font-size: small;
-            padding-top: 2rem;
-        }
+.nonFocusShader.active {
+    visibility: visible;
+}
 
-        .alertIcon
-        {   
-            margin: auto;
-            margin-top: 2rem;
-        }
-        .dialogButtonContainer
-        {
-            display: flex;
-            margin: auto;
-            margin-top: 3rem;
-            width: auto;
-            height: auto;
-            color: black;
-        }
-        .dialogButton
-        {
-            border: #000000 solid 1px;
-            background-color: #ffffff;
-            margin: auto;
-            width: 6rem;
-            height: 4rem;
-            padding: 1rem;
-            font-size: x-small;
-            font-weight: 500;
-        }
-        .dialogButton:hover {
-            border: #8b8b8b solid 1px;
-            background-color: #000000;
-            color: white;
-        }
+.dialog {
+    width: 15rem;
+    height: 20rem;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.dialogText
+{
+    color: black;
+    text-align: center;
+    font-size: small;
+    padding-top: 2rem;
+}
+
+.alertIcon
+{   
+    margin: auto;
+    margin-top: 2rem;
+}
+.dialogButtonContainer
+{
+    display: flex;
+    margin: auto;
+    margin-top: 3rem;
+    width: auto;
+    height: auto;
+    color: black;
+}
+.dialogButton
+{
+    border: #000000 solid 1px;
+    background-color: #ffffff;
+    margin: auto;
+    width: 6rem;
+    height: 4rem;
+    padding: 1rem;
+    font-size: x-small;
+    font-weight: 500;
+}
+.dialogButton:hover {
+    border: #8b8b8b solid 1px;
+    background-color: #000000;
+    color: white;
+}
 
 @media (max-width: 768px) 
 {

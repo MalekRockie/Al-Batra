@@ -10,7 +10,8 @@ import {useLocale, useTranslations} from 'next-intl';
 import CustomerLocaleSwitcher from '../../components/customerLocaleSwitcher.tsx'
 import EmblaCarousel from './components/EmblaCarousel.jsx';
 import '../../scss/embla.module.scss';
-
+import LoadingSpinner from './components/LoadingSpinner';
+import useBookingReady from './hooks/useBookingReady';
 
 export default function Home() {
 
@@ -31,6 +32,8 @@ export default function Home() {
   const [clickedOutsideNavBar, setClickedOutsideNavBar] = useState(false);
   const [currentStep, setCurrentStep] = useState('dateSelection');
   const [isMobile, setIsMobile] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const isBookingReady = useBookingReady({ isMobile, currentStep });
 
   //Major stlying classes
   const navClass = locale === "ar" ? homeStyle['nav-ar'] : homeStyle.nav;
@@ -54,6 +57,14 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
   const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
   const containerRef = useRef(null);
 
+
+  useEffect(() => {
+    if (isBookingReady) {
+      // Add slight delay for smooth transition
+      const timer = setTimeout(() => setIsLoading(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isBookingReady]);
 
   const handleDateRangeChange = (dates) => {
     setSelectedDates(dates);
@@ -185,262 +196,276 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
 
 
   return (
-    <div className={homeStyle.pageContainer}>
-      {/* <div className={homeStyle.uConstruction}>
-        <p>
-          Website still Under construction!
-        </p>
-      </div> */}
-      
-      <div className={homeStyle.container}>
+    <div>
+      {isLoading ? (
+      <LoadingSpinner
+      imageSrc="/logo.jpg"
+      imageSize={80}
+      spinnerSize={140}
+      borderSize={4}
+      animationSpeed="1s"
+  />
+      ) : (
+        <div className={homeStyle.pageContainer}>
+        {/* <div className={homeStyle.uConstruction}>
+          <p>
+            Website still Under construction!
+          </p>
+        </div> */}
+        
+        <div className={homeStyle.container}>
 
-          <title>Al Batra Hotel</title>
-          <link rel="icon" href="/favicon.ico" />
-          <meta name="description" content="Experience the finest luxury at our hotel" />
-          <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="homeStyleheet" />
+            <title>Al Batra Hotel</title>
+            <link rel="icon" href="/favicon.ico" />
+            <meta name="description" content="Experience the finest luxury at our hotel" />
+            <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="homeStyleheet" />
 
-        {/* Hamburger Icon */}
+          {/* Hamburger Icon */}
 
-        <header className={`${headerClass} ${isMenuOpen ? homeStyle.active : ''}${isScrolledToMax && !isMouseOver ? homeStyle.gradient : homeStyle.solid}`}>
+          <header className={`${headerClass} ${isMenuOpen ? homeStyle.active : ''}${isScrolledToMax && !isMouseOver ? homeStyle.gradient : homeStyle.solid}`}>
 
-          <div className={hamburgerClass} onClick={toggleMenu}>
-            <div className={homeStyle.lines}></div>
-            <div className={homeStyle.lines}></div>
-            <div className={homeStyle.lines}></div>
-          </div>
-
-          <div
-          ref={containerRef}
-          className={`${navLogoTitleClass} ${isMenuOpen ? homeStyle.active : ''}`}>
-
-            
-            <div className={closeIconClass} onClick={toggleMenu}>
-                <div className={homeStyle.line1}></div>
-                <div className={homeStyle.line2}></div>
+            <div className={hamburgerClass} onClick={toggleMenu}>
+              <div className={homeStyle.lines}></div>
+              <div className={homeStyle.lines}></div>
+              <div className={homeStyle.lines}></div>
             </div>
 
-            <img src="logo.png" alt="Al-Batra Hotel Logo" className={logoClass} />
-            {/* Hamburger Icon */}
+            <div
+            ref={containerRef}
+            className={`${navLogoTitleClass} ${isMenuOpen ? homeStyle.active : ''}`}>
 
-            <div className={titleNavClass}>
-              <h1 className={titleClass}>{t('HomePage.title')}</h1>
-
-              {/* Navigation Links */}
-              <nav className={`${navClass}`}>
-                <Link href={`/${locale}`}>{t('NavigationBar.Home')}</Link>
-                <a href="">{t('NavigationBar.Rooms')}</a>
-                <a href="">{t('NavigationBar.Dinning')}</a>
-                <a href="" onClick={(e) => {
-                  toggleBookingSection();
-                  e.preventDefault();
-                }}>{t('NavigationBar.Booking')}</a>
-                <a href={`/${locale}/ReservationRetrieval`}>{t('NavigationBar.MyReservation')}</a>
-              </nav>
-            </div>
-            {/* Language Switcher */}
-            <div className={langSwitcherClass}>
-              <CustomerLocaleSwitcher />
-            </div>
-          </div>
-
-        </header>
-
-
-        <div className={`${homeStyle.bookingBar} ${isBookingVisible ? homeStyle.visible : homeStyle.hidden} ${isMobile && currentStep === 'dateSelection' ? homeStyle.dateActive : ''} 
-        ${isMobile && currentStep === 'roomSelection' ? homeStyle.roomActive : ''}`}>
-                {/* Render differently based on screen size */}
-                {isMobile && currentStep === 'dateSelection' && (
-                    <div className={homeStyle.bookingContainer}>
-                        <div className={homeStyle.datePickerContainer}>
-                            <div className={homeStyle.bookingTitle}>SELECT YOUR DATES</div>
-                            <div onClick={(e) => {toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
-                            <CustomDateRangePicker
-                              selectedDates={selectedDates}
-                              setSelectedDates={setSelectedDates}
-                            />
-                        </div>
-                        <button className={homeStyle.continueButton} onClick={handleContinue}>
-                            {t("NavigationBar.Continue")}
-                        </button>
-                    </div>
-                )}
-                {isMobile && currentStep === 'roomSelection' && (
-                    <div className={homeStyle.bookingContainer}>
-                        <div className={homeStyle.roomTypeContainer}>
-                            <div className={homeStyle.bookingTitle}>Select Room Type</div>
-                            <div onClick={(e) => {toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
-                            <RoomTypeSelection
-                              selectedRooms={selectedRooms}
-                              setSelectedRooms={setSelectedRooms}
-                            />
-                        </div>
-                        <div className={homeStyle.buttonsForBookBar}>
-                          <button className={homeStyle.BookingButton} onClick={handleBack}>
-                              ← {t("NavigationBar.Back")}
-                          </button>
-                          <button onClick={handleSearch} className={homeStyle.BookingButton}>{t("NavigationBar.Search")}</button>
-                        </div>
-                    </div>
-                )}
-                {!isMobile && (
-                    <div className={homeStyle.bookingContainer}>
-                        {/* Default desktop layout */}
-                        <div className={homeStyle.datePickerContainer}>
-                            <div className={bookingTitle}>{t("NavigationBar.Dates")}</div>
-                            <CustomDateRangePicker
-                              selectedDates={selectedDates}
-                              setSelectedDates={setSelectedDates}
-                            />
-                        </div>
-                        <div className={homeStyle.roomTypeContainer}>
-                            <div className={bookingTitle}>{t("NavigationBar.RoomSize")}</div>
-                            <RoomTypeSelection
-                              selectedRooms={selectedRooms}
-                              setSelectedRooms={setSelectedRooms}
-                            />
-                        </div>
-                        <button onClick={handleSearch} className={homeStyle.searchButton}>{t("NavigationBar.Search")}</button>
-                    </div>
-                )}
-        </div>
-
-        {/* <main> */}
-        <div className={homeStyle.main}>
-          <div className={homeStyle.hotelDetailsContainer}>
-            <section className={homeStyle.hotelDetails}>
-              <div className={hotelDetailsText}>
-                <h2 className={homeStyle.hotelDetailsSmall}>{t("address.Title")}</h2>
-                <h1 className={homeStyle.hotelDetailsLarge}>{t("address.City")}</h1>
-                <p className={homeStyle.hotelDetailsSmall}>
-                  {t("address.Street")}
-                </p>
-                <div className={homeStyle.contactInfoHeader}>
-                  <p>info@albatrahotel.net</p>
-                  <p>+218 21-3345509</p>
-                </div>
+              
+              <div className={closeIconClass} onClick={toggleMenu}>
+                  <div className={homeStyle.line1}></div>
+                  <div className={homeStyle.line2}></div>
               </div>
-            </section>
-          </div>
-          
-          {isMobile && (<div>
-            <button className={homeStyle.CheckRatesButton} onClick={(e) => {
-                  toggleBookingSection();
-                  e.preventDefault();
-                }}>
-                            {t("NavigationBar.CheckButton")}
-            </button>
-          </div>)}
 
-            {isMobile && (
-                <div className={homeStyle.hotelDetailsMobile}>
+              <img src="logo.png" alt="Al-Batra Hotel Logo" className={logoClass} />
+              {/* Hamburger Icon */}
+
+              <div className={titleNavClass}>
+                <h1 className={titleClass}>{t('HomePage.title')}</h1>
+
+                {/* Navigation Links */}
+                <nav className={`${navClass}`}>
+                  <Link href={`/${locale}`}>{t('NavigationBar.Home')}</Link>
+                  <a href="">{t('NavigationBar.Rooms')}</a>
+                  <a href="">{t('NavigationBar.Dinning')}</a>
+                  <a href="" onClick={(e) => {
+                    toggleBookingSection();
+                    e.preventDefault();
+                  }}>{t('NavigationBar.Booking')}</a>
+                  <a href={`/${locale}/ReservationRetrieval`}>{t('NavigationBar.MyReservation')}</a>
+                </nav>
+              </div>
+              {/* Language Switcher */}
+              <div className={langSwitcherClass}>
+                <CustomerLocaleSwitcher />
+              </div>
+            </div>
+
+          </header>
+
+
+          <div className={`${homeStyle.bookingBar} ${isBookingVisible ? homeStyle.visible : homeStyle.hidden} ${isMobile && currentStep === 'dateSelection' ? homeStyle.dateActive : ''} 
+          ${isMobile && currentStep === 'roomSelection' ? homeStyle.roomActive : ''}`}>
+                  {/* Render differently based on screen size */}
+                  {isMobile && currentStep === 'dateSelection' && (
+                      <div className={homeStyle.bookingContainer}>
+                          <div className={homeStyle.datePickerContainer}>
+                              <div className={homeStyle.bookingTitle}>SELECT YOUR DATES</div>
+                              <div onClick={(e) => {toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
+                              <CustomDateRangePicker
+                                selectedDates={selectedDates}
+                                setSelectedDates={setSelectedDates}
+                              />
+                          </div>
+                          <button className={homeStyle.continueButton} onClick={handleContinue}>
+                              {t("NavigationBar.Continue")}
+                          </button>
+                      </div>
+                  )}
+                  {isMobile && currentStep === 'roomSelection' && (
+                      <div className={homeStyle.bookingContainer}>
+                          <div className={homeStyle.roomTypeContainer}>
+                              <div className={homeStyle.bookingTitle}>Select Room Type</div>
+                              <div onClick={(e) => {toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
+                              <RoomTypeSelection
+                                selectedRooms={selectedRooms}
+                                setSelectedRooms={setSelectedRooms}
+                              />
+                          </div>
+                          <div className={homeStyle.buttonsForBookBar}>
+                            <button className={homeStyle.BookingButton} onClick={handleBack}>
+                                ← {t("NavigationBar.Back")}
+                            </button>
+                            <button onClick={handleSearch} className={homeStyle.BookingButton}>{t("NavigationBar.Search")}</button>
+                          </div>
+                      </div>
+                  )}
+                  {!isMobile && (
+                      <div className={homeStyle.bookingContainer}>
+                          {/* Default desktop layout */}
+                          <div className={homeStyle.datePickerContainer}>
+                              <div className={bookingTitle}>{t("NavigationBar.Dates")}</div>
+                              <CustomDateRangePicker
+                                selectedDates={selectedDates}
+                                setSelectedDates={setSelectedDates}
+                              />
+                          </div>
+                          <div className={homeStyle.roomTypeContainer}>
+                              <div className={bookingTitle}>{t("NavigationBar.RoomSize")}</div>
+                              <RoomTypeSelection
+                                selectedRooms={selectedRooms}
+                                setSelectedRooms={setSelectedRooms}
+                              />
+                          </div>
+                          <button onClick={handleSearch} className={homeStyle.searchButton}>{t("NavigationBar.Search")}</button>
+                      </div>
+                  )}
+          </div>
+
+          {/* <main> */}
+          <div className={homeStyle.main}>
+            <div className={homeStyle.hotelDetailsContainer}>
+              <section className={homeStyle.hotelDetails}>
+                <div className={hotelDetailsText}>
+                  <h2 className={homeStyle.hotelDetailsSmall}>{t("address.Title")}</h2>
+                  <h1 className={homeStyle.hotelDetailsLarge}>{t("address.City")}</h1>
                   <p className={homeStyle.hotelDetailsSmall}>
                     {t("address.Street")}
                   </p>
                   <div className={homeStyle.contactInfoHeader}>
                     <p>info@albatrahotel.net</p>
-                    <a href="tel:+218213345509">+218 21-3345509</a>
+                    <p>+218 21-3345509</p>
                   </div>
                 </div>
-            )}
-
-          <div className={homeStyle.descImg}>
-            <img src="logo.png" alt="Al-Batra Hotel Logo" className={homeStyle.descImg}/>
-          </div>
-          
-          <div className={homeStyle.descSection}>
-            <div className={homeStyle.descTitle}>
-              {t('MainDescription.title')}
-            </div>
-            <div className={homeStyle.description}>
-              {t('MainDescription.description')}
-            </div>
-          </div>
-          {/* <Carousel /> */}
-
-          <div className={homeStyle.carouselContainer}>
-            <EmblaCarousel slides={SLIDES} options={OPTIONS} />
-          </div>
-
-          <section id="rooms" className={homeStyle.section}>
-            {/* <div className={homeStyle.descTitle}>Our Rooms</div> */}
-            {/* <div className={homeStyle.rooms}>
-              <div className={homeStyle.roomContainer}>
-                <div className={homeStyle.roomTextContainer}>
-                  <div className={homeStyle.descTitle2}>Deluxe Room</div>
-                  <p>Spacious and elegantly designed.</p>
-                  <p>Experience the epitome of luxury in our Deluxe Rooms. Spacious and elegantly designed, each detail is meticulously crafted to provide unparalleled comfort and sophistication. Indulge in plush bedding, state-of-the-art amenities, and breathtaking views, creating an unforgettable retreat that embodies refined elegance.</p>
-                </div>
-                <div className={homeStyle.roomImageContainer}>
-                  <img src="room1.jpg" alt="Deluxe Room" className={homeStyle.roomImage} />
-                </div>
-              </div>
-            </div> */}
-            {/* <div className={homeStyle.rooms}>
-              <div className={homeStyle.roomContainer}>
-                <div className={homeStyle.roomImageContainer}>
-                  <img src="/room2.jpg" alt="Suite" className={homeStyle.roomImage} />
-                </div>
-                <div className={homeStyle.roomTextContainer}>
-                  <h4>Suite</h4>
-                  <p>Luxury and comfort with stunning views.</p>
-                </div>
-              </div>
-            </div> */}
-          </section>
-
-          <section id="dining" className={homeStyle.sectionDinner}>
-            {/* <div className={homeStyle.descTitle}>Dining</div> */}
-            <div className={homeStyle.dining}>
-              <div className={homeStyle.restaurant}>
-                <img src="dining1.jpg" alt="Restaurant" />
-                <div className={homeStyle.diningDesc1}>
-                  <div className={homeStyle.descTitle2}>{t("mainCards.RestruantTitle")}</div>
-                  {t("mainCards.RestruantDesc")}
-                </div>
-              </div>
+              </section>
             </div>
             
-            <div className={homeStyle.dining}>
-              <div className={homeStyle.restaurant}>
-                <img src="dining2.jpg" alt="Cafe" />
-                <div className={homeStyle.diningDesc2}>
-                  <div className={homeStyle.descTitle2}>{t("mainCards.CafeTitle")}</div>
-                    {t("mainCards.CafeDesc")}
-                </div>
+            {isMobile && (<div>
+              <button className={homeStyle.CheckRatesButton} onClick={(e) => {
+                    toggleBookingSection();
+                    e.preventDefault();
+                  }}>
+                              {t("NavigationBar.CheckButton")}
+              </button>
+            </div>)}
+
+              {isMobile && (
+                  <div className={homeStyle.hotelDetailsMobile}>
+                    <p className={homeStyle.hotelDetailsSmall}>
+                      {t("address.Street")}
+                    </p>
+                    <div className={homeStyle.contactInfoHeader}>
+                      <p>info@albatrahotel.net</p>
+                      <a href="tel:+218213345509">+218 21-3345509</a>
+                    </div>
+                  </div>
+              )}
+
+            <div className={homeStyle.descImg}>
+              <img src="logo.png" alt="Al-Batra Hotel Logo" className={homeStyle.descImg}/>
+            </div>
+            
+            <div className={homeStyle.descSection}>
+              <div className={homeStyle.descTitle}>
+                {t('MainDescription.title')}
+              </div>
+              <div className={homeStyle.description}>
+                {t('MainDescription.description')}
               </div>
             </div>
-          </section>
-        </div>
+            {/* <Carousel /> */}
 
-        <footer className={homeStyle.footer}>
-          <div className={homeStyle.footerNav}>
-            <div className={homeStyle.footerNavCol}>
-              <a href="#home">{t("footer.Home")}</a>
-              <a href="#rooms">{t("footer.Rooms")}</a>
-              <a href="#booking">{t("footer.Booking")}</a>
+            <div className={homeStyle.carouselContainer}>
+              <EmblaCarousel slides={SLIDES} options={OPTIONS} />
             </div>
-            <div className={homeStyle.footerNavCol}>
-              <a href="#contactUs">{t("footer.contactUs")}</a>
-              <a href="#about">{t("footer.About")}</a>
-            </div>
-            <div className={homeStyle.footerNavCol}>
-              <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">
-                <img src="TikTokLogo.png" alt="TikTok" className={homeStyle.socialIcon}/>
-              </a>
-              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-                <img src="FacebookLogo.png" alt="Facebook" className={homeStyle.socialIcon}/>
-              </a>
-              <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
-                <img src="X_Logo.png" alt="Twitter" className={homeStyle.socialIcon}/>
-              </a>
-              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-                <img src="InstagramLogo.png" alt="Instagram" className={homeStyle.socialIcon}/>
-              </a>
-            </div>
+
+            <section id="rooms" className={homeStyle.section}>
+              {/* <div className={homeStyle.descTitle}>Our Rooms</div> */}
+              {/* <div className={homeStyle.rooms}>
+                <div className={homeStyle.roomContainer}>
+                  <div className={homeStyle.roomTextContainer}>
+                    <div className={homeStyle.descTitle2}>Deluxe Room</div>
+                    <p>Spacious and elegantly designed.</p>
+                    <p>Experience the epitome of luxury in our Deluxe Rooms. Spacious and elegantly designed, each detail is meticulously crafted to provide unparalleled comfort and sophistication. Indulge in plush bedding, state-of-the-art amenities, and breathtaking views, creating an unforgettable retreat that embodies refined elegance.</p>
+                  </div>
+                  <div className={homeStyle.roomImageContainer}>
+                    <img src="room1.jpg" alt="Deluxe Room" className={homeStyle.roomImage} />
+                  </div>
+                </div>
+              </div> */}
+              {/* <div className={homeStyle.rooms}>
+                <div className={homeStyle.roomContainer}>
+                  <div className={homeStyle.roomImageContainer}>
+                    <img src="/room2.jpg" alt="Suite" className={homeStyle.roomImage} />
+                  </div>
+                  <div className={homeStyle.roomTextContainer}>
+                    <h4>Suite</h4>
+                    <p>Luxury and comfort with stunning views.</p>
+                  </div>
+                </div>
+              </div> */}
+            </section>
+
+            <section id="dining" className={homeStyle.sectionDinner}>
+              {/* <div className={homeStyle.descTitle}>Dining</div> */}
+              <div className={homeStyle.dining}>
+                <div className={homeStyle.restaurant}>
+                  <img src="dining1.jpg" alt="Restaurant" />
+                  <div className={homeStyle.diningDesc1}>
+                    <div className={homeStyle.descTitle2}>{t("mainCards.RestruantTitle")}</div>
+                    {t("mainCards.RestruantDesc")}
+                  </div>
+                </div>
+              </div>
+              
+              <div className={homeStyle.dining}>
+                <div className={homeStyle.restaurant}>
+                  <img src="dining2.jpg" alt="Cafe" />
+                  <div className={homeStyle.diningDesc2}>
+                    <div className={homeStyle.descTitle2}>{t("mainCards.CafeTitle")}</div>
+                      {t("mainCards.CafeDesc")}
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
-          <p>{t("footer.copyRight")}</p>
-        </footer>
-      </div>
+
+          <footer className={homeStyle.footer}>
+            <div className={homeStyle.footerNav}>
+              <div className={homeStyle.footerNavCol}>
+                <a href="#home">{t("footer.Home")}</a>
+                <a href="#rooms">{t("footer.Rooms")}</a>
+                <a href="#booking">{t("footer.Booking")}</a>
+              </div>
+              <div className={homeStyle.footerNavCol}>
+                <a href="#contactUs">{t("footer.contactUs")}</a>
+                <a href="#about">{t("footer.About")}</a>
+              </div>
+              <div className={homeStyle.footerNavCol}>
+                <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">
+                  <img src="TikTokLogo.png" alt="TikTok" className={homeStyle.socialIcon}/>
+                </a>
+                <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+                  <img src="FacebookLogo.png" alt="Facebook" className={homeStyle.socialIcon}/>
+                </a>
+                <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
+                  <img src="X_Logo.png" alt="Twitter" className={homeStyle.socialIcon}/>
+                </a>
+                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+                  <img src="InstagramLogo.png" alt="Instagram" className={homeStyle.socialIcon}/>
+                </a>
+              </div>
+            </div>
+            <p>{t("footer.copyRight")}</p>
+          </footer>
+        </div>
+      </div>)}
     </div>
+
+
+
   );
 }

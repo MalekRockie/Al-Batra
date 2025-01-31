@@ -15,7 +15,7 @@ import CustomerLocaleSwitcher from '../../../components/customerLocaleSwitcher.t
 
 const LoadingSpinner = () => (
   <div className={RoomSearchModule.spinnerContainer}>
-    <div className={RoomSearchModule.spinner}></div> {/* Add spinner CSS */}
+    <div className={RoomSearchModule.spinner}></div>
     <p>Loading available rooms...</p>
   </div>
 );
