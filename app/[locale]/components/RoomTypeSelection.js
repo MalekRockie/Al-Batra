@@ -7,8 +7,8 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
 // const [selectedRoomType, setSelectedRoomType] = useState('');
 
   const [isOpen, setIsOpen] = useState(false);
-  // const [rooms, setRooms] = useState([{ adults: 1, children: 0, roomType: null, package: null, roomPrice: null, package_Price: null }]);
   const [isMobile, setIsMobile] = useState(true);
+  const isMobileRef = useRef(isMobile);
 
 
   const popupRef = useRef(null);
@@ -26,15 +26,17 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
   useEffect(() => {
     const handleResize = () => {
       const isMobile = window.innerWidth <= 768;
-      setIsOpen(isMobile);
       setIsMobile(isMobile);
-      console.log("Current window width is mobile:", isMobile); // Log derived value
+      if(isMobile)
+      {
+      setIsOpen(isMobileRef.current);
+      }
     };
   
     handleResize(); // Initial check
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []); // Empty dependency array = runs once on mount
+  }, []);
   
   // Optional: Log state updates
   useEffect(() => {
@@ -49,17 +51,24 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
       }
   };
 
+  useEffect(() => {
+    isMobileRef.current = isMobile;
+  }, [isMobile]); // Add isMobile as a dependency
 
-  useEffect(() => {   
+  useEffect(() => {
     function handleClickOutside(event) {
-      if (popupRef.current && !popupRef.current.contains(event.target) && inputBoxRef.current && !inputBoxRef.current.contains(event.target)) {
-        if(!isMobile)
-        {
-          setIsOpen(false);
-          console.log(isMobile)
-        }
+      console.log("clicked", isMobileRef.current);
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target) &&
+        inputBoxRef.current &&
+        !inputBoxRef.current.contains(event.target) &&
+        !isMobileRef.current 
+      ) {
+        setIsOpen(false);
       }
     }
+  
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);

@@ -149,17 +149,6 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
           updatedRooms[0] = defaultRoom; 
           setSelectedRooms(updatedRooms);
         }
-
-        // window.addEventListener('scroll', handleScroll);
-        // const header = document.querySelector(`.${headerClass}`);
-        // header.addEventListener('mouseover', handleMouseOver);
-        // header.addEventListener('mouseout', handleMouseOut);
-
-        // return () => {
-        //     window.removeEventListener('scroll', handleScroll);
-        //     header.removeEventListener('mouseover', handleMouseOver);
-        //     header.removeEventListener('mouseout', handleMouseOut);
-        // };
     }, []);
 
   useEffect(() => {

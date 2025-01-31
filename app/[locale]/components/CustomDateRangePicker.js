@@ -59,14 +59,18 @@ const CustomDateRangePicker = ({ selectedDates, setSelectedDates, onDateRangeCha
 
   useEffect(() => {
       const handleResize = () => {
-          setIsMobile(window.innerWidth <= 768); 
-          setIsOpen(true);
+        setIsMobile(window.innerWidth <= 768); 
+        if(isMobile) ;
       };
       handleResize(); // Initial check
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    if(isMobile)
+    {
+      setIsOpen(true);
+    }
+  })
 
   const openCalenderBox = () => {
     setIsOpen(!isOpen);

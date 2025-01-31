@@ -31,7 +31,7 @@
     border: 1px solid #bcbcbc;
     border-radius: 0px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row-reverse;
     align-items: center;
     padding: 16px;
 }
@@ -46,9 +46,11 @@
 
 .calendarsContainer {
     display: flex;
+    flex-direction: row;
 }
 .calendarContainer {
     display: flex;
+    flex-direction: row-reverse;
 }
 .calendar {
     margin: 0 25px;
