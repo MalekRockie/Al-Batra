@@ -464,8 +464,5 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
         </div>
       </div>)}
     </div>
-
-
-
   );
 }
