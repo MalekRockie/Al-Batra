@@ -47,8 +47,8 @@ export default function Home() {
   const hotelDetailsText = locale === "ar" ? homeStyle['hotelDetailsText-ar'] : homeStyle.hotelDetailsText;
   const closeIconClass = locale === "ar" ? homeStyle['close-icon-ar'] : homeStyle['close-icon'];
 //.hamburger
-const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['hamburger'];
-
+  const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['hamburger'];
+  const bookingTitleClass = locale === "ar" ? homeStyle['bookingTitle-ar'] : bookingTitle['bookingTitle'];
 
   // const langSwitcher = LocaleSwitcher();
 
@@ -116,7 +116,6 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
       const isMobile = window.innerWidth <= 768;
       setIsMobile(isMobile);
       // Set bookingVisible to true ONLY if NOT mobile
-      setIsBookingVisible(!isMobile);
     };
   
     // Initial check on mount
@@ -125,8 +124,13 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
     // Update on window resize
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []); // Empty dependency array = runs once on mount
+  }, []);
 
+  useEffect(()=>{
+    if(!isMobile){
+      setIsBookingVisible(false);
+    }
+  }, [])
   useEffect(() => {
         function handleScroll() {
             const scrollPosition = window.scrollY;
@@ -262,7 +266,7 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
                   {isMobile && currentStep === 'dateSelection' && (
                       <div className={homeStyle.bookingContainer}>
                           <div className={homeStyle.datePickerContainer}>
-                              <div className={homeStyle.bookingTitle}>SELECT YOUR DATES</div>
+                              <div className={bookingTitleClass}>{t("NavigationBar.SelectDates")}</div>
                               <div onClick={(e) => {toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
                               <CustomDateRangePicker
                                 selectedDates={selectedDates}
@@ -277,7 +281,7 @@ const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['
                   {isMobile && currentStep === 'roomSelection' && (
                       <div className={homeStyle.bookingContainer}>
                           <div className={homeStyle.roomTypeContainer}>
-                              <div className={homeStyle.bookingTitle}>Select Room Type</div>
+                              <div className={homeStyle.bookingTitle}>{t("NavigationBar.SelectRoomType")}</div>
                               <div onClick={(e) => {toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
                               <RoomTypeSelection
                                 selectedRooms={selectedRooms}

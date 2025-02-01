@@ -1346,6 +1346,7 @@ body.scrolled .header-ar {
         visibility: visible;
         transform: translateY(0);
         opacity: 1;
+        margin-top: 0;
         animation: slideUp 0.5s ease-out forwards;
     }
 
@@ -1461,10 +1462,14 @@ body.scrolled .header-ar {
     }
 
     .bookingTitle-ar {
-        font-family: 'Segoe UI', sans-serif;
-        font-weight: 400;
+        font-family:Georgia, 'Times New Roman', Times, serif;
+        font-weight: 200;
         font-size: medium;
-        text-align: right;
+        margin: auto;
+        margin-top: 1rem;
+        padding: 0px;
+        letter-spacing: 0;
+        text-align: center;
     }
 
     .continueButton {
