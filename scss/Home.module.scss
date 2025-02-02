@@ -385,6 +385,7 @@ body.scrolled .header-ar {
     font-family: 'Segoe UI', sans-serif;
     font-size: 3rem;
     margin: 0.5rem 0;
+    font-weight: 100;
 }
 
 .hotelDetails::after {
@@ -902,7 +903,7 @@ body.scrolled .header-ar {
     .header.active {
         height: 10rem;
         background-color: rgb(17, 17, 17);
-        // z-index: 3;
+        z-index: 3;
     }
     .header .title {
         // display: none;
@@ -964,7 +965,7 @@ body.scrolled .header-ar {
     .header-ar {
         height: 4rem;
         background-color: rgb(17, 17, 17);
-        z-index: 4;
+        z-index: 10;
         // overflow: hidden;
     }
 

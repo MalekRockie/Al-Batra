@@ -10,15 +10,7 @@ import { useRouter } from 'next/navigation';
 import {useLocale, useTranslations} from 'next-intl';
 import Link from 'next/link';
 import CustomerLocaleSwitcher from '../../../components/customerLocaleSwitcher.tsx'
-
-
-
-const LoadingSpinner = () => (
-  <div className={RoomSearchModule.spinnerContainer}>
-    <div className={RoomSearchModule.spinner}></div>
-    <p>Loading available rooms...</p>
-  </div>
-);
+import LoadingSpinner from '../components/LoadingSpinner';
 
 
 
@@ -79,6 +71,7 @@ const RoomSearch = () => {
   const titleClass = locale === "ar" ? homeStyle['title-ar'] : homeStyle.title; 
   const navClass = locale === "ar" ? homeStyle['nav-ar'] : homeStyle.nav;
   const langSwitcherClass = locale === "ar" ? homeStyle['langSwitcherContainer-ar'] : homeStyle.langSwitcherContainer;
+  const Container2Class = locale === "ar" ? RoomSearchModule['Container2-ar'] : RoomSearchModule.Container2;
 
   useEffect (() => 
     {
@@ -215,7 +208,6 @@ const RoomSearch = () => {
     }
   }, []); // Empty dependency array, runs once on mount
 
-
   //handles selecting the room before prompting the used to select the package for each room
   const handleSelectRoomType = (roomIndex, roomTypePicked, room_Price) => {
     setSelectedRooms(prevSelectedRooms => {
@@ -225,11 +217,13 @@ const RoomSearch = () => {
         roomType: roomTypePicked, // Set the selected package type
         roomPrice: room_Price
       };
-      // console.log("Room: ", roomIndex ,"Selected Room: ", selectedRooms[roomIndex]);
+      console.log("Room: ", roomIndex ,"Selected Room: ", selectedRooms[roomIndex]);
+      console.log("Selected Room: ", selectedRooms);
       setPackageSelection(false);
       return updatedRooms;
     });
   };
+
   const handleClickOutSideNavBar = (event) => {
     if (containerRef.current && !containerRef.current.contains(event.target)) {
       setIsMenuOpen(false); // Close the menu
@@ -254,7 +248,8 @@ const RoomSearch = () => {
     };
     setSelectedRooms(updatedRooms);
     setPackageSelection(true);
-    
+    console.log("Selected Room: ", selectedRooms);
+
     updatedRooms.forEach((room, roomIndex) => 
     {
       // console.log("Total cost: ", totalCostEstimate);
@@ -312,7 +307,7 @@ const RoomSearch = () => {
         `http://localhost:8080/room/availableRoomTypes?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`
       );
       const data = await response.json();
-      // console.log('Fetched room types:', data);
+      console.log('Fetched room types:', data);
       setRoomType(data); // Set the fetched room types in the state
     } catch (error) {
       console.error('Error fetching room types:', error);
@@ -387,6 +382,9 @@ const RoomSearch = () => {
 
   const handleUpdateSearch = () => {
 
+    if(isMobile){
+          setIsBookingVisible(false);
+    }
     window.scrollTo(0, 0);
     setRoomSelectionComplete(false);
     setPackageSelection(true);
@@ -404,6 +402,28 @@ const RoomSearch = () => {
       alert('Please select a check-in/check-out date and room size!');
     }
   };
+
+  const getRoomTypeName = (roomTypeID) => {
+    const roomTypes = roomType.find((type) => type.roomTypeID === roomTypeID)
+
+    if (roomType){
+      return locale === "ar" ? roomTypes.typeName_ar : roomTypes.typeName_en;
+    }
+
+    return "Unknown Room Type"
+  }
+
+  const getPackageNameByID = (package_ID) => {
+    console.log("reached", package_ID);
+    console.log("compated to: ", AvailablePackages);
+    const pkgID = AvailablePackages.find((type) => type.package_ID === package_ID);
+
+    if (AvailablePackages){
+      return locale === "ar" ? pkgID.package_Type_ar : pkgID.package_Type_en;
+    }
+
+    return "Package not found";
+  }
 
   //This is to traverse between different states in the mobile version of the booking bar
   const handleContinue = () => {
@@ -501,259 +521,258 @@ const RoomSearch = () => {
       {/* page content */}
       <div className={RoomSearchModule.main}>
 
-        {/* Booking Section */}
-        <div className={`${homeStyle.bookingBar} ${isBookingVisible ? homeStyle.visible : homeStyle.hidden} ${isMobile && currentStep === 'dateSelection' ? homeStyle.dateActive : ''} 
-        ${isMobile && currentStep === 'roomSelection' ? homeStyle.roomActive : ''}`}>
-                {/* Render differently based on screen size */}
-                {isMobile && currentStep === 'dateSelection' && (
-                    <div className={homeStyle.bookingContainer}>
-                        <div className={homeStyle.datePickerContainer}>
-                            <div className={homeStyle.bookingTitle}>SELECT YOUR DATES</div>
-                            <div onClick={(e) => {toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
-                            <CustomDateRangePicker
-                              selectedDates={selectedDates}
-                              setSelectedDates={setSelectedDates}
-                            />
-                        </div>
-                        <button className={homeStyle.continueButton} onClick={handleContinue}>
-                            {t("NavigationBar.Continue")}
-                        </button>
-                    </div>
-                )}
-                {isMobile && currentStep === 'roomSelection' && (
-                    <div className={homeStyle.bookingContainer}>
-                        <div className={homeStyle.roomTypeContainer}>
-                            <div className={homeStyle.bookingTitle}>Select Room Type</div>
-                            <div onClick={(e) => {toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
-                            <RoomTypeSelection
-                              selectedRooms={tempSelectedRooms}
-                              setSelectedRooms={setTempSelectedRooms}
-                            />
-                        </div>
-                        <div className={homeStyle.buttonsForBookBar}>
-                          <button className={homeStyle.BookingButton} onClick={handleBack}>
-                              ← {t("NavigationBar.Back")}
-                          </button>
-                          <button onClick={handleUpdateSearch} className={homeStyle.BookingButton}>{t("NavigationBar.updateSearch")}</button>
-                        </div>
-                    </div>
-                )}
-                {!isMobile && (
-                    <div className={homeStyle.bookingContainer}>
-                        {/* Default desktop layout */}
-                        <div className={homeStyle.datePickerContainer}>
-                            <div className={bookingTitle}>{t("NavigationBar.Dates")}</div>
-                            <CustomDateRangePicker
-                              selectedDates={selectedDates}
-                              setSelectedDates={setSelectedDates}
-                            />
-                        </div>
-                        <div className={homeStyle.roomTypeContainer}>
-                            <div className={bookingTitle}>{t("NavigationBar.RoomSize")}</div>
-                            <RoomTypeSelection
-                              selectedRooms={tempSelectedRooms}
-                              setSelectedRooms={setTempSelectedRooms}
-                            />
-                        </div>
-                        <button onClick={handleUpdateSearch} className={homeStyle.searchButton}>{t("NavigationBar.updateSearch")}</button>
-                    </div>
-                )}
-        </div>
-
-        {/* Dialog for alerting user that they're about to reset their room selection */}
-        {isDialogOpen && (
-          <div className={RoomSearchModule.nonFocusShader }>
-            <div ref={dialogRef} className={RoomSearchModule.dialog }>
-              <div onClick={CloseDialog} className={RoomSearchModule.closeSelectedRoomBar}>X</div>
-              <img className={RoomSearchModule.alertIcon} src="../alertIcon.png" />
-              <div className={RoomSearchModule.dialogText }>
-                To modify your room selection, your choices will be reset, and you will return to choosing your Room 1.
-              </div>
-              <div className={RoomSearchModule.dialogButtonContainer}>
-                <button className={RoomSearchModule.dialogButton} onClick={(e) => {
-                    toggleBookingSection();
-                    e.preventDefault();
-                  }}>SELECT NEW ROOM</button>
-                <button onClick={CloseDialog} className={RoomSearchModule.dialogButton}>CANCEL</button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* This is a shadow effect that only appears beneath the navbar when it is open. */}
-        {isMenuOpen && (
-          <div className={homeStyle.nonFocusShader }></div>
-        )}
-
-        {/* This is the room selection bar for mobile users that allows them to know what they've selected */}
-        {isMobile &&(
-          <div className={RoomSearchModule.selectedRoomBar}>
-            <div>
-              <div>ROOM {activeSelectedRoomIndex+1}</div>
-              <div>CHOOSE YOUR ROOM TYPE</div>
-              <div>CHOOSE YOUR PACKAGE</div>
-            </div>
-            <button onClick={openDialog} className={RoomSearchModule.editButton}>
-              EDIT
-            </button>
-          </div>
-        )}
-
-        {/* Selected Room */}
-        <div className={`${RoomSearchModule.Container3} ${isRoomTrackerBarOpen ? RoomSearchModule.active : ''}`}>
-
-
-          {!isLoading && selectedRooms.length > 0 && (
-            <div>
-                <hr className={RoomSearchModule.line} />
-                {/* Mobile version */}
-                {isMobile && (
-                  <div>
-                    {/* <div onClick={toggleRoomTrackerBar} className={RoomSearchModule.closeSelectedRoomBar}>X</div> */}
-                    {isRoomTrackerBarOpen && (
-                      <div className={RoomsRequestedClass}>
-                      <div className={RoomSearchModule.reservataionSummaryContainer}>
-                        <div>
-                          {selectedRooms.length} ROOM{selectedRooms.length > 1 ? 'S' : ''} - {totalAdults} ADULT{totalAdults !== 1 ? 'S' : ''}, {totalChildren} CHILD{totalChildren > 1 ? 'REN' : ''}
-                        </div>
-                        <div>
-                          {selectedDates[0].toISOString().split('T')[0]} - {selectedDates[1].toISOString().split('T')[0]}
-                        </div>
+      {/* Booking Section */}
+      <div className={`${homeStyle.bookingBar} ${isBookingVisible ? homeStyle.visible : homeStyle.hidden} ${isMobile && currentStep === 'dateSelection' ? homeStyle.dateActive : ''} 
+      ${isMobile && currentStep === 'roomSelection' ? homeStyle.roomActive : ''}`}>
+              {/* Render differently based on screen size */}
+              {isMobile && currentStep === 'dateSelection' && (
+                  <div className={homeStyle.bookingContainer}>
+                      <div className={homeStyle.datePickerContainer}>
+                          <div className={homeStyle.bookingTitle}>SELECT YOUR DATES</div>
+                          <div onClick={(e) => {toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
+                          <CustomDateRangePicker
+                            selectedDates={selectedDates}
+                            setSelectedDates={setSelectedDates}
+                          />
                       </div>
-                      {
-                        selectedRooms.map((rooms, index) => {
-                          return (
-                            
-                            <div 
-                            key={rooms.id || index}
-                            className={index === activeSelectedRoomIndex ? selectedRoomContainerClass : unSelectedRoomContainerClass}>
-
-                                
-                                <div className={RoomsRequestedBoldFontClass}>
-                                {t("RoomSelection.Room")} {index + 1} | {rooms.adults == 1 && `${rooms.adults} ${t("RoomSelection.Adult")}`} 
-                                {rooms.adults > 1 && `${rooms.adults} ${t("RoomSelection.Adults")}`}
-                                {rooms.children == 1 && ` | ${rooms.children} ${t("RoomSelection.Child")}`} 
-                                {rooms.children > 1 && ` | ${rooms.children} ${t("RoomSelection.Children")}`}
-                                <br/>
-                                {rooms.roomType == null && index == activeSelectedRoomIndex && `${t("RoomSelection.ChooseRoom")}`}
-
-
-                              <div className={RoomsRequestedNonBoldFontClass}>
-                                {rooms.roomType == null && index != activeSelectedRoomIndex && `${t("RoomSelection.ChooseRoom")}`}
-                                {rooms.roomType != null && (
-                                  <div>
-                                  {rooms.roomType}<span> | </span>
-                                  <a className={RoomSearchModule.underlinedClick} onClick={() => handleChangeSelectedRoom(index)}>{t("RoomSelection.Edit")}</a>
-                                  </div>
-                                )}
-                                </div>
-                              </div>
-
-
-
-                                <div className={RoomsRequestedBoldFontClass}>
-                                  {rooms.package == null && !PackageSelection && index === activeSelectedRoomIndex && (<div>{t("RoomSelection.ChoosePackage")}</div>)}
-                                </div>
-
-                                
-                                <div className={RoomsRequestedNonBoldFontClass}>
-                                  {rooms.package == null && PackageSelection && (<div>{t("RoomSelection.ChoosePackage")}</div>)}
-                                  {rooms.package == null && index != activeSelectedRoomIndex && !PackageSelection && (<div>{t("RoomSelection.ChoosePackage")}</div>)}
-                                  {rooms.package != null &&  (
-                                    <div>{rooms.package}<span> | </span>
-                                    <a className={RoomSearchModule.underlinedClick} onClick={() => handleEditRoomPackage(index)}>{t("RoomSelection.Edit")}</a>
-                                  
-                                  </div>
-                                )} 
-                                <br/>
-                                </div>
-                            </div>
-                          )
-                          })
-                      }
-
-                      </div>
-                    )}
+                      <button className={homeStyle.continueButton} onClick={handleContinue}>
+                          {t("NavigationBar.Continue")}
+                      </button>
                   </div>
-                )}
+              )}
+              {isMobile && currentStep === 'roomSelection' && (
+                  <div className={homeStyle.bookingContainer}>
+                      <div className={homeStyle.roomTypeContainer}>
+                          <div className={homeStyle.bookingTitle}>Select Room Type</div>
+                          <div onClick={(e) => {toggleBookingSection();}} className={homeStyle.CloseWindow}>X</div>
+                          <RoomTypeSelection
+                            selectedRooms={tempSelectedRooms}
+                            setSelectedRooms={setTempSelectedRooms}
+                          />
+                      </div>
+                      <div className={homeStyle.buttonsForBookBar}>
+                        <button className={homeStyle.BookingButton} onClick={handleBack}>
+                            ← {t("NavigationBar.Back")}
+                        </button>
+                        <button onClick={handleUpdateSearch} className={homeStyle.BookingButton}>{t("NavigationBar.updateSearch")}</button>
+                      </div>
+                  </div>
+              )}
+              {!isMobile && (
+                  <div className={homeStyle.bookingContainer}>
+                      {/* Default desktop layout */}
+                      <div className={homeStyle.datePickerContainer}>
+                          <div className={bookingTitle}>{t("NavigationBar.Dates")}</div>
+                          <CustomDateRangePicker
+                            selectedDates={selectedDates}
+                            setSelectedDates={setSelectedDates}
+                          />
+                      </div>
+                      <div className={homeStyle.roomTypeContainer}>
+                          <div className={bookingTitle}>{t("NavigationBar.RoomSize")}</div>
+                          <RoomTypeSelection
+                            selectedRooms={tempSelectedRooms}
+                            setSelectedRooms={setTempSelectedRooms}
+                          />
+                      </div>
+                      <button onClick={handleUpdateSearch} className={homeStyle.searchButton}>{t("NavigationBar.updateSearch")}</button>
+                  </div>
+              )}
+      </div>
 
-                {/* Desktop version */}
-                {!isMobile && (
-                  <div className={RoomsRequestedClass}>
-                  {
-                    selectedRooms.map((rooms, index) => {
-                      return (
-                        
-                        <div 
-                        key={rooms.id || index}
-                        className={index === activeSelectedRoomIndex ? selectedRoomContainerClass : unSelectedRoomContainerClass}>
+      {/* Dialog for alerting user that they're about to reset their room selection */}
+      {isDialogOpen && (
+        <div className={RoomSearchModule.nonFocusShader }>
+          <div ref={dialogRef} className={RoomSearchModule.dialog }>
+            <div onClick={CloseDialog} className={RoomSearchModule.closeSelectedRoomBar}>X</div>
+            <img className={RoomSearchModule.alertIcon} src="../alertIcon.png" />
+            <div className={RoomSearchModule.dialogText }>
+              To modify your room selection, your choices will be reset, and you will return to choosing your Room 1.
+            </div>
+            <div className={RoomSearchModule.dialogButtonContainer}>
+              <button className={RoomSearchModule.dialogButton} onClick={(e) => {
+                  toggleBookingSection();
+                  e.preventDefault();
+                }}>SELECT NEW ROOM</button>
+              <button onClick={CloseDialog} className={RoomSearchModule.dialogButton}>CANCEL</button>
+            </div>
+          </div>
+        </div>
+      )}
 
-                            
-                            <div className={RoomsRequestedBoldFontClass}>
-                            {t("RoomSelection.Room")} {index + 1} | {rooms.adults == 1 && `${rooms.adults} ${t("RoomSelection.Adult")}`} 
-                            {rooms.adults > 1 && `${rooms.adults} ${t("RoomSelection.Adults")}`}
-                            {rooms.children == 1 && ` | ${rooms.children} ${t("RoomSelection.Child")}`} 
-                            {rooms.children > 1 && ` | ${rooms.children} ${t("RoomSelection.Children")}`}
-                            <br/>
-                            {rooms.roomType == null && index == activeSelectedRoomIndex && `${t("RoomSelection.ChooseRoom")}`}
+      {/* This is a shadow effect that only appears beneath the navbar when it is open. */}
+      {isMenuOpen && (
+        <div className={RoomSearchModule.nonFocusShader }></div>
+      )}
+
+      {/* This is the room selection bar for mobile users that allows them to know what they've selected */}
+      {isMobile &&(
+        <div className={RoomSearchModule.selectedRoomBar}>
+          <div>
+            <div>ROOM {activeSelectedRoomIndex+1}</div>
+            <div>CHOOSE YOUR ROOM TYPE</div>
+            <div>CHOOSE YOUR PACKAGE</div>
+          </div>
+          <button onClick={openDialog} className={RoomSearchModule.editButton}>
+            EDIT
+          </button>
+        </div>
+      )}
+
+      {/* Selected Room */}
+      <div className={`${RoomSearchModule.Container3} ${isRoomTrackerBarOpen ? RoomSearchModule.active : ''}`}>
 
 
-                          <div className={RoomsRequestedNonBoldFontClass}>
-                            {rooms.roomType == null && index != activeSelectedRoomIndex && `${t("RoomSelection.ChooseRoom")}`}
-                            {rooms.roomType != null && (
-                              <div>
-                              {rooms.roomType}<span> | </span>
-                              <a className={RoomSearchModule.underlinedClick} onClick={() => handleChangeSelectedRoom(index)}>{t("RoomSelection.Edit")}</a>
+        {!isLoading && selectedRooms.length > 0 && (
+          <div>
+              <hr className={RoomSearchModule.line} />
+              {/* Mobile version */}
+              {isMobile && (
+                <div>
+                  {/* <div onClick={toggleRoomTrackerBar} className={RoomSearchModule.closeSelectedRoomBar}>X</div> */}
+                  {isRoomTrackerBarOpen && (
+                    <div className={RoomsRequestedClass}>
+                    <div className={RoomSearchModule.reservataionSummaryContainer}>
+                      <div>
+                        {selectedRooms.length} ROOM{selectedRooms.length > 1 ? 'S' : ''} - {totalAdults} ADULT{totalAdults !== 1 ? 'S' : ''}, {totalChildren} CHILD{totalChildren > 1 ? 'REN' : ''}
+                      </div>
+                      <div>
+                        {selectedDates[0].toISOString().split('T')[0]} - {selectedDates[1].toISOString().split('T')[0]}
+                      </div>
+                    </div>
+                    {
+                      selectedRooms.map((rooms, index) => {
+                        return (
+                          
+                          <div 
+                          key={rooms.id || index}
+                          className={index === activeSelectedRoomIndex ? selectedRoomContainerClass : unSelectedRoomContainerClass}>
+                              
+                              <div className={RoomsRequestedBoldFontClass}>
+                              {t("RoomSelection.Room")} {index + 1} | {rooms.adults == 1 && `${rooms.adults} ${t("RoomSelection.Adult")}`} 
+                              {rooms.adults > 1 && `${rooms.adults} ${t("RoomSelection.Adults")}`}
+                              {rooms.children == 1 && ` | ${rooms.children} ${t("RoomSelection.Child")}`} 
+                              {rooms.children > 1 && ` | ${rooms.children} ${t("RoomSelection.Children")}`}
+                              <br/>
+                              {rooms.roomType == null && index == activeSelectedRoomIndex && `${t("RoomSelection.ChooseRoom")}`}
+
+                            <div className={RoomsRequestedNonBoldFontClass}>
+                              {rooms.roomType == null && index != activeSelectedRoomIndex && `${t("RoomSelection.ChooseRoom")}`}
+                              {rooms.roomType != null && (
+                                <div>
+                                {getRoomTypeName(rooms.roomType, locale)}<span> | </span>
+                                <a className={RoomSearchModule.underlinedClick} onClick={() => handleChangeSelectedRoom(index)}>{t("RoomSelection.Edit")}</a>
+                                </div>
+                              )}
                               </div>
-                            )}
                             </div>
+
+                              <div className={RoomsRequestedBoldFontClass}>
+                                {rooms.package == null && !PackageSelection && index === activeSelectedRoomIndex && (<div>{t("RoomSelection.ChoosePackage")}</div>)}
+                              </div>
+
+                              
+                              <div className={RoomsRequestedNonBoldFontClass}>
+                                {rooms.package == null && PackageSelection && (<div>{t("RoomSelection.ChoosePackage")}</div>)}
+                                {rooms.package == null && index != activeSelectedRoomIndex && !PackageSelection && (<div>{t("RoomSelection.ChoosePackage")}</div>)}
+                                {rooms.package != null &&  (
+                                  <div>{getPackageNameByID(rooms.package, locale)}<span> | </span>
+                                  <a className={RoomSearchModule.underlinedClick} onClick={() => handleEditRoomPackage(index)}>{t("RoomSelection.Edit")}</a>
+                                
+                                </div>
+                              )} 
+                              <br/>
+                              </div>
+                          </div>
+                        )
+                        })
+                    }
+
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Desktop version */}
+              {!isMobile && (
+                <div className={RoomsRequestedClass}>
+                {
+                  selectedRooms.map((rooms, index) => {
+                    return (
+                      
+                      <div 
+                      key={rooms.id || index}
+                      className={index === activeSelectedRoomIndex ? selectedRoomContainerClass : unSelectedRoomContainerClass}>
+
+                          
+                          <div className={RoomsRequestedBoldFontClass}>
+                          {t("RoomSelection.Room")} {index + 1} | {rooms.adults == 1 && `${rooms.adults} ${t("RoomSelection.Adult")}`} 
+                          {rooms.adults > 1 && `${rooms.adults} ${t("RoomSelection.Adults")}`}
+                          {rooms.children == 1 && ` | ${rooms.children} ${t("RoomSelection.Child")}`} 
+                          {rooms.children > 1 && ` | ${rooms.children} ${t("RoomSelection.Children")}`}
+                          <br/>
+                          {rooms.roomType == null && index == activeSelectedRoomIndex && `${t("RoomSelection.ChooseRoom")}`}
+
+
+                        <div className={RoomsRequestedNonBoldFontClass}>
+                          {rooms.roomType == null && index != activeSelectedRoomIndex && `${t("RoomSelection.ChooseRoom")}`}
+                          {rooms.roomType != null && (
+                            <div>
+                            {getRoomTypeName(rooms.roomType, locale)}<span> | </span>
+                            <a className={RoomSearchModule.underlinedClick} onClick={() => handleChangeSelectedRoom(index)}>{t("RoomSelection.Edit")}</a>
+                            </div>
+                          )}
+                          </div>
+                        </div>
+
+
+
+                          <div className={RoomsRequestedBoldFontClass}>
+                            {rooms.package == null && !PackageSelection && index === activeSelectedRoomIndex && (<div>{t("RoomSelection.ChoosePackage")}</div>)}
                           </div>
 
-
-
-                            <div className={RoomsRequestedBoldFontClass}>
-                              {rooms.package == null && !PackageSelection && index === activeSelectedRoomIndex && (<div>{t("RoomSelection.ChoosePackage")}</div>)}
-                            </div>
-
+                          
+                          <div className={RoomsRequestedNonBoldFontClass}>
+                            {rooms.package == null && PackageSelection && (<div>{t("RoomSelection.ChoosePackage")}</div>)}
+                            {rooms.package == null && index != activeSelectedRoomIndex && !PackageSelection && (<div>{t("RoomSelection.ChoosePackage")}</div>)}
+                            {rooms.package != null &&  (
+                              <div>{getPackageNameByID(rooms.package, locale)}<span> | </span>
+                              <a className={RoomSearchModule.underlinedClick} onClick={() => handleEditRoomPackage(index)}>{t("RoomSelection.Edit")}</a>
                             
-                            <div className={RoomsRequestedNonBoldFontClass}>
-                              {rooms.package == null && PackageSelection && (<div>{t("RoomSelection.ChoosePackage")}</div>)}
-                              {rooms.package == null && index != activeSelectedRoomIndex && !PackageSelection && (<div>{t("RoomSelection.ChoosePackage")}</div>)}
-                              {rooms.package != null &&  (
-                                <div>{rooms.package}<span> | </span>
-                                <a className={RoomSearchModule.underlinedClick} onClick={() => handleEditRoomPackage(index)}>{t("RoomSelection.Edit")}</a>
-                              
-                              </div>
-                            )} 
-                            <br/>
                             </div>
-                        </div>
-                      )
-                      })
-                  }
+                          )} 
+                          <br/>
+                          </div>
+                      </div>
+                    )
+                    })
+                }
 
-                  </div>
-                )}
+                </div>
+              )}
 
-                <hr className={RoomSearchModule.line2} />
-            </div>
-
-          )}
-        </div>
-
-        {/* Rooms Section */}
-        {!isLoading && (
-          <div className={RoomSearchModule.Container1}>
-            <div className={RoomSearchModule.Container2}>{t("RoomSearch.OurAccommodations")}</div>
+              <hr className={RoomSearchModule.line2} />
           </div>
+
         )}
+      </div>
 
-
-        {/* Loading spinner */}
-        {isLoading ? (
-          <LoadingSpinner />
-        ) : (
-
+      {/* Rooms Section */}
+      {!isLoading && (
+        <div className={RoomSearchModule.Container1}>
+          <div className={Container2Class}>{t("RoomSearch.OurAccommodations")}</div>
+        </div>
+      )}
+      {/* Loading spinner */}
+      {isLoading ? (
+        <LoadingSpinner
+          imageSrc="../../logo.jpg"
+          imageSize={80}
+          spinnerSize={140}
+          borderSize={4}
+          animationSpeed="1s"
+          />
+      ) : (
         <div className={RoomSearchModule.RoomsLists}>
         {/* ^ Room List ^ */}
 
@@ -849,7 +868,6 @@ const RoomSearch = () => {
           )}
         </div>
         )}
-
         {AvailablePackages.map((pkg, index) => (
           <div key={index}>
             {PackageSelection == false && (
@@ -867,7 +885,7 @@ const RoomSearch = () => {
                         <div className={RoomSearchModule.RoomTitleAndDesc}>
                           <div className={RoomSearchModule.packageTitle}>
                             <div>
-                              {pkg.package_Type}
+                              {pkg[`package_Type_${locale}`]}
                             </div>
                             <div className={RoomSearchModule.PackageDescriptionEN}>
                               <div>
@@ -885,7 +903,7 @@ const RoomSearch = () => {
                         <div className={RoomSearchModule.selectPackageButtonContainer}>
                         <button 
                         className={RoomSearchModule.reserveButton}
-                        onClick={()=> handleSelectpackage(pkg.package_Type, pkg.package_Price)}
+                        onClick={()=> handleSelectpackage(pkg.package_ID, pkg.package_Price)}
                         >
                           {t("RoomSelection.SELECTPACKAGE")}
                         </button>
@@ -900,8 +918,6 @@ const RoomSearch = () => {
               )}
           </div>
         ))}
-
-
         {/* Proceed to the next page box */}
         <div className={`${RoomSearchModule.proceedBox} ${isRoomSelectionComplete ? RoomSearchModule.visible : RoomSearchModule.hidden}`}>
           <div className={RoomSearchModule.proceedInfoContainer}>
