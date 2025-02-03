@@ -510,10 +510,6 @@ const RoomSearch = () => {
                 <a href={`/${locale}/ReservationRetrieval`}>{t('NavigationBar.MyReservation')}</a>
               </nav>
             </div>
-            {/* Language Switcher */}
-            <div className={langSwitcherClass}>
-              <CustomerLocaleSwitcher />
-            </div>
           </div>
 
       </header>

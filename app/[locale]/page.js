@@ -49,7 +49,7 @@ export default function Home() {
 //.hamburger
   const hamburgerClass = locale === "ar" ? homeStyle['hamburger-ar'] : homeStyle['hamburger'];
   const bookingTitleClass = locale === "ar" ? homeStyle['bookingTitle-ar'] : bookingTitle['bookingTitle'];
-
+  const titleMobileClass = locale === "ar" ? homeStyle['titleMobile-ar'] : homeStyle['titleMobile'];
   // const langSwitcher = LocaleSwitcher();
 
   const OPTIONS = { loop: true};
@@ -205,7 +205,6 @@ export default function Home() {
             Website still Under construction!
           </p>
         </div> */}
-        
         <div className={homeStyle.container}>
 
             <title>Al Batra Hotel</title>
@@ -222,6 +221,7 @@ export default function Home() {
               <div className={homeStyle.lines}></div>
               <div className={homeStyle.lines}></div>
             </div>
+            <img src="logo.png" alt="Al-Batra Hotel Logo" className={logoClass} />
 
             <div
             ref={containerRef}
@@ -233,14 +233,16 @@ export default function Home() {
                   <div className={homeStyle.line2}></div>
               </div>
 
-              <img src="logo.png" alt="Al-Batra Hotel Logo" className={logoClass} />
+              {/* <img src="logo.png" alt="Al-Batra Hotel Logo" className={logoClass} /> */}
               {/* Hamburger Icon */}
 
               <div className={titleNavClass}>
-                <h1 className={titleClass}>{t('HomePage.title')}</h1>
+              <h1 className={titleClass}>{t('HomePage.title')}</h1>
 
                 {/* Navigation Links */}
                 <nav className={`${navClass}`}>
+                  <img src="logo.png" className={homeStyle.logoMobileNav} alt="Al-Batra Hotel Logo"/>
+                  <div className={titleMobileClass}>{t('HomePage.title')}</div>
                   <Link href={`/${locale}`}>{t('NavigationBar.Home')}</Link>
                   <a href="">{t('NavigationBar.Rooms')}</a>
                   <a href="">{t('NavigationBar.Dinning')}</a>
@@ -259,7 +261,9 @@ export default function Home() {
 
           </header>
 
-
+          {isMenuOpen && (
+          <div className={homeStyle.nonFocusShader }></div>
+        )}
           <div className={`${homeStyle.bookingBar} ${isBookingVisible ? homeStyle.visible : homeStyle.hidden} ${isMobile && currentStep === 'dateSelection' ? homeStyle.dateActive : ''} 
           ${isMobile && currentStep === 'roomSelection' ? homeStyle.roomActive : ''}`}>
                   {/* Render differently based on screen size */}
