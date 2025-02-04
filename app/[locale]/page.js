@@ -54,7 +54,70 @@ export default function Home() {
 
   const OPTIONS = { loop: true};
   const SLIDE_COUNT = 8;
-  const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
+  const SLIDES = [
+    {
+      imageSrc: 'hotel1.jpg',
+      altText: 'Slide 1',
+      titleKey: 'Gallery.BusinessCenter',
+      descKey: 'Gallery.BusinessDesc'
+    },
+    {
+      imageSrc: 'room2.jpg',
+      altText: 'Slide 2',
+      titleKey: 'Gallery.LobbyLounge',
+      descKey: 'Gallery.LobbyDesc'
+    },
+    {
+      imageSrc: 'hero.jpg',
+      altText: 'Slide 3',
+      titleKey: 'Gallery.Welcome',
+      descKey: 'Gallery.WelcomeDesc'
+    },
+    {
+      imageSrc: 'room3.jpg',
+      altText: 'Slide 5',
+      titleKey: 'Gallery.ExecutiveSuites',
+      descKey: 'Gallery.ExecutiveDesc'
+    },
+    {
+      imageSrc: 'room1.jpg',
+      altText: 'Slide 4',
+      titleKey: 'Gallery.DeluxeRooms',
+      descKey: 'Gallery.DeluxeDesc'
+    }
+  ];
+  const SLIDES2 = [
+    {
+      imageSrc: './Gallery/Food1.jpg',
+      altText: 'Slide 1',
+      titleKey: 'Gallery.BusinessCenter',
+      descKey: 'Gallery.BusinessDesc'
+    },
+    {
+      imageSrc: './Gallery/Food2.jpg',
+      altText: 'Slide 2',
+      titleKey: 'Gallery.LobbyLounge',
+      descKey: 'Gallery.LobbyDesc'
+    },
+    {
+      imageSrc: './Gallery/Food3.jpg',
+      altText: 'Slide 3',
+      titleKey: 'Gallery.Welcome',
+      descKey: 'Gallery.WelcomeDesc'
+    },
+    {
+      imageSrc: './Gallery/Food4.jpg',
+      altText: 'Slide 5',
+      titleKey: 'Gallery.ExecutiveSuites',
+      descKey: 'Gallery.ExecutiveDesc'
+    },
+    {
+      imageSrc: './Gallery/Food5.jpg',
+      altText: 'Slide 4',
+      titleKey: 'Gallery.DeluxeRooms',
+      descKey: 'Gallery.DeluxeDesc'
+    }
+  ];
   const containerRef = useRef(null);
 
 
@@ -244,7 +307,7 @@ export default function Home() {
                   <img src="logo.png" className={homeStyle.logoMobileNav} alt="Al-Batra Hotel Logo"/>
                   <div className={titleMobileClass}>{t('HomePage.title')}</div>
                   <Link href={`/${locale}`}>{t('NavigationBar.Home')}</Link>
-                  <a href="">{t('NavigationBar.Rooms')}</a>
+                  <a href={`/${locale}/Rooms`}>{t('NavigationBar.Rooms')}</a>
                   <a href="">{t('NavigationBar.Dinning')}</a>
                   <a href="" onClick={(e) => {
                     toggleBookingSection();
@@ -379,35 +442,18 @@ export default function Home() {
               <EmblaCarousel slides={SLIDES} options={OPTIONS} />
             </div>
 
-            <section id="rooms" className={homeStyle.section}>
-              {/* <div className={homeStyle.descTitle}>Our Rooms</div> */}
-              {/* <div className={homeStyle.rooms}>
-                <div className={homeStyle.roomContainer}>
-                  <div className={homeStyle.roomTextContainer}>
-                    <div className={homeStyle.descTitle2}>Deluxe Room</div>
-                    <p>Spacious and elegantly designed.</p>
-                    <p>Experience the epitome of luxury in our Deluxe Rooms. Spacious and elegantly designed, each detail is meticulously crafted to provide unparalleled comfort and sophistication. Indulge in plush bedding, state-of-the-art amenities, and breathtaking views, creating an unforgettable retreat that embodies refined elegance.</p>
-                  </div>
-                  <div className={homeStyle.roomImageContainer}>
-                    <img src="room1.jpg" alt="Deluxe Room" className={homeStyle.roomImage} />
-                  </div>
-                </div>
-              </div> */}
-              {/* <div className={homeStyle.rooms}>
-                <div className={homeStyle.roomContainer}>
-                  <div className={homeStyle.roomImageContainer}>
-                    <img src="/room2.jpg" alt="Suite" className={homeStyle.roomImage} />
-                  </div>
-                  <div className={homeStyle.roomTextContainer}>
-                    <h4>Suite</h4>
-                    <p>Luxury and comfort with stunning views.</p>
-                  </div>
-                </div>
-              </div> */}
-            </section>
-
             <section id="dining" className={homeStyle.sectionDinner}>
               {/* <div className={homeStyle.descTitle}>Dining</div> */}
+              {/* <EmblaCarousel 
+                slides={SLIDES2}
+                options={OPTIONS}
+                style={{
+                  '--embla-height': '100vh',
+                  '--slide-height': '100vh',
+                  '--image-height': '80%',
+                  '--slide-spacing': '1rem'
+                }}
+              /> */}
               <div className={homeStyle.dining}>
                 <div className={homeStyle.restaurant}>
                   <img src="dining1.jpg" alt="Restaurant" />
