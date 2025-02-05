@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-  --transition-duration: 300ms;
-  /* Custom transition duration for smooth theme changes */
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
@@ -19,11 +11,7 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: black;
-  transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
   /* Smooth transition for theme change */
 
-  min-height: 100vh;
   /* Ensures body takes at least full height of the viewport */
 }

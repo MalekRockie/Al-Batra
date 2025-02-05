@@ -24,7 +24,7 @@ const Rooms = () => {
 
   //Testing Here
   const [history, setHistory] = useState([[]]);
-  const [tempSelectedRooms, setTempSelectedRooms] = useState([]);
+  const [tempSelectedRooms, setTempSelectedRooms] = useState([{ adults: 1, children: 0, roomType: null, package: null },]);
   const [selectedRooms, setSelectedRooms] = useState([]);
   const [totalAdults, setTotalAdults] = useState();
   const [totalChildren, setTotalChildren] = useState();
@@ -63,6 +63,7 @@ const Rooms = () => {
   const titleClass = locale === "ar" ? homeStyle['title-ar'] : homeStyle.title; 
   const navClass = locale === "ar" ? homeStyle['nav-ar'] : homeStyle.nav;
   const Container2Class = locale === "ar" ? RoomsModule['Container2-ar'] : RoomsModule.Container2;
+  const titleMobileClass = locale === "ar" ? homeStyle['titleMobile-ar'] : homeStyle['titleMobile'];
 
   useEffect (() => 
     {
@@ -218,7 +219,7 @@ const Rooms = () => {
 
 
   return (
-    <div>
+    <div className={RoomsModule.body}>
       
       
       <title>{t('HomePage.roomSearchTitle')}</title>
@@ -230,50 +231,51 @@ const Rooms = () => {
       {/* Header */}
       <header className={`${headerClass} ${isMenuOpen ? homeStyle.active : ''}${isScrolledToMax && !isMouseOver ? homeStyle.gradient : homeStyle.solid}`}>
 
-          <div className={hamburgerClass} onClick={toggleMenu}>
-            <div className={homeStyle.lines}></div>
-            <div className={homeStyle.lines}></div>
-            <div className={homeStyle.lines}></div>
+        <div className={hamburgerClass} onClick={toggleMenu}>
+          <div className={homeStyle.lines}></div>
+          <div className={homeStyle.lines}></div>
+          <div className={homeStyle.lines}></div>
+        </div>
+        <img src="../../logo.png" alt="Al-Batra Hotel Logo" className={logoClass} />
+
+        <div
+        ref={containerRef}
+        className={`${navLogoTitleClass} ${isMenuOpen ? homeStyle.active : ''}`}>
+
+          
+          <div className={closeIconClass} onClick={toggleMenu}>
+              <div className={homeStyle.line1}></div>
+              <div className={homeStyle.line2}></div>
           </div>
 
-          {isMobile &&(
-            <div className={RoomsModule.titeInNavBar}>CHOOSE YOUR ROOM</div>
-          )}
+          {/* <img src="logo.png" alt="Al-Batra Hotel Logo" className={logoClass} /> */}
+          {/* Hamburger Icon */}
 
-          <div
-          ref={containerRef}
-          className={`${navLogoTitleClass} ${isMenuOpen ? homeStyle.active : ''}`}>
+          <div className={titleNavClass}>
+          <h1 className={titleClass}>{t('HomePage.title')}</h1>
 
-            
-            <div className={closeIconClass} onClick={toggleMenu}>
-                <div className={homeStyle.line1}></div>
-                <div className={homeStyle.line2}></div>
-            </div>
-
-            <img src="../../logo.png" alt="Al-Batra Hotel Logo" className={logoClass} />
-            {/* Hamburger Icon */}
-
-            <div className={titleNavClass}>
-              <h1 className={titleClass}>{t('HomePage.title')}</h1>
-
-              {/* Navigation Links */}
-              <nav className={`${navClass}`}>
-                <Link href={`/${locale}`}>{t('NavigationBar.Home')}</Link>
-                <a href="">{t('NavigationBar.Rooms')}</a>
-                <a href="">{t('NavigationBar.Dinning')}</a>
-                <a href="" onClick={(e) => {
-                  toggleBookingSection();
-                  e.preventDefault();
-                }}>{t('NavigationBar.Booking')}</a>
-                <a href={`/${locale}/ReservationRetrieval`}>{t('NavigationBar.MyReservation')}</a>
-              </nav>
-            </div>
+            {/* Navigation Links */}
+            <nav className={`${navClass}`}>
+              <img src= "../../logo.png" className={homeStyle.logoMobileNav} alt="Al-Batra Hotel Logo"/>
+              <div className={titleMobileClass}>{t('HomePage.title')}</div>
+              <Link href={`/${locale}`}>{t('NavigationBar.Home')}</Link>
+              <a href={`/${locale}/Rooms`}>{t('NavigationBar.Rooms')}</a>
+              <a href="">{t('NavigationBar.Dinning')}</a>
+              <a href="" onClick={(e) => {
+                toggleBookingSection();
+                e.preventDefault();
+              }}>{t('NavigationBar.Booking')}</a>
+              <a href={`/${locale}/ReservationRetrieval`}>{t('NavigationBar.MyReservation')}</a>
+            </nav>
           </div>
+        </div>
 
       </header>
 
       {/* page content */}
       <div className={RoomsModule.main}>
+      
+
 
       {/* Booking Section */}
       <div className={`${homeStyle.bookingBar} ${isBookingVisible ? homeStyle.visible : homeStyle.hidden} ${isMobile && currentStep === 'dateSelection' ? homeStyle.dateActive : ''} 
@@ -308,7 +310,7 @@ const Rooms = () => {
                         <button className={homeStyle.BookingButton} onClick={handleBack}>
                             ← {t("NavigationBar.Back")}
                         </button>
-                        <button onClick={handleUpdateSearch} className={homeStyle.BookingButton}>{t("NavigationBar.updateSearch")}</button>
+                        <button onClick={handleUpdateSearch} className={homeStyle.BookingButton}>{t("NavigationBar.Search")}</button>
                       </div>
                   </div>
               )}
@@ -329,7 +331,7 @@ const Rooms = () => {
                             setSelectedRooms={setTempSelectedRooms}
                           />
                       </div>
-                      <button onClick={handleUpdateSearch} className={homeStyle.searchButton}>{t("NavigationBar.updateSearch")}</button>
+                      <button onClick={handleUpdateSearch} className={homeStyle.searchButton}>{t("NavigationBar.Search")}</button>
                   </div>
               )}
       </div>
@@ -340,8 +342,16 @@ const Rooms = () => {
         <div className={RoomsModule.nonFocusShader }></div>
       )}
       {!isLoading && (
-        <div className={RoomsModule.Container1}>
-          <div className={Container2Class}>{t("RoomSearch.OurAccommodations")}</div>
+        <div>
+          <div className={RoomsModule.Bgg}>
+            <div className={RoomsModule.pageTitle}>
+              Our rooms
+            </div>
+          </div>
+          <div className={RoomsModule.Container1}>
+            <div className={Container2Class}>Situated on Ahmed Shawky Street in central Tripoli, Al Batra Hotel occupies a modern high-rise building with floor-to-ceiling windows offering sweeping views of Libya’s bustling capital 311. The hotel is 700 meters from Tripoli’s historic Old Town, placing guests within walking distance of landmarks like Al-Majidya Mosque, Green Square, and Tripoli’s Red Castle (Assai al-Hamra) 34. Mitiga International Airport is a 10km drive away, with the hotel providing a complimentary airport shuttle upon request </div>
+          </div>
+          <div className={RoomsModule.line}></div>
         </div>
       )}
       {/* Loading spinner */}
@@ -374,7 +384,18 @@ const Rooms = () => {
                       <div className={RoomsModule.RoomTitleAndDesc}>
                         {room[`typeName_${locale}`]}
                         <div className={RoomsModule.RoomDescription}>
-                          {room[`description_${locale}`]}
+                            <div className={RoomsModule.OptionElement}>
+                                <img className={RoomsModule.OptionIcon} src="../bed_icon.png" />
+                                  {room.bedConfiguration_en}
+                              </div>
+                              <div className={RoomsModule.OptionElement}>
+                                <img className={RoomsModule.OptionIcon} src="../occupants.png" />
+                                {room.occupancy_en}
+                              </div>
+                              <div className={RoomsModule.OptionElement}>
+                                <img className={RoomsModule.OptionIcon} src="../wifi_icon.png" />
+                                High internet speed wifi
+                            </div>
                           <div className={RoomsModule.viewMoreDetails} onClick={()=> {toggleOptions(index, room)}}>
                             View More details
                           </div>

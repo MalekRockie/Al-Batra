@@ -780,7 +780,7 @@ const RoomSearch = () => {
                   <div className={RoomSearchModule.RoomContainer}>
                     <div className={RoomSearchModule.roomImageContainer}>
                       <img
-                        src={'../room1.jpg'}
+                        src={`../Gallery/room${index+1}.jpg`}
                         alt={room.typeName}
                         className={RoomSearchModule.roomImage}
                       />
