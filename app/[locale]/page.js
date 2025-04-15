@@ -308,7 +308,6 @@ export default function Home() {
                   <div className={titleMobileClass}>{t('HomePage.title')}</div>
                   <Link href={`/${locale}`}>{t('NavigationBar.Home')}</Link>
                   <a href={`/${locale}/Rooms`}>{t('NavigationBar.Rooms')}</a>
-                  <a href="">{t('NavigationBar.Dinning')}</a>
                   <a href="" onClick={(e) => {
                     toggleBookingSection();
                     e.preventDefault();

@@ -1,11 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Aspekta:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
 .body{
     margin-top: 0%;
     background-color: white;
     height: 100%;
 }
 
+
+.noAvailability{
+    color: rgb(0, 0, 0);
+    height: 100%;
+    align-self: center;
+    text-align: center;
+    margin: auto;
+    margin-top: 1rem;
+}
 .label1
 {
     justify-content: center;
@@ -149,7 +156,7 @@
 }
 
 .Container1 {
-    margin-top: 10rem;;
+    margin-top: 9rem;;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -167,8 +174,8 @@
     text-align: center;
     // height: 50px;
     width: 50rem;
-    font-family:'Times New Roman', Times, serif;
-    font-weight: thin;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: 50;
     font-size: 20px;
     letter-spacing: 0.07em;
     // margin-top: 70px;
@@ -177,21 +184,24 @@
     margin: auto;
 }
 
-.Container2-ar{
+.Container2-ar {
     display: flex;
     justify-content: center;
     align-items: center;
-    // background-color: #ceb780;
+    // background-color: #05ea0c;
     text-align: center;
-    height: 50px;
-    font-family: 'Segoe UI', sans-serif;
-    font-weight: 200;
-    font-size: xx-large;
-    letter-spacing: 0;
-    margin-top: 70px;
+    direction: rtl;
+    // height: 50px;
+    width: 50rem;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: 50;
+    font-size: 20px;
+    letter-spacing: 0.07em;
+    // margin-top: 70px;
     padding: 0;
+    color: black;
+    margin: auto;
 }
-
 
 .Container3 {
     margin-right: auto;
@@ -327,9 +337,10 @@
     text-align: center;
     align-items: center;
     margin: auto;
-    width: 70%;
+    width: auto;
+    max-width: 70%;
     min-width: auto;
-    // background-color: blue;
+    align-items: flex-start;
 }
 
 .RoomContainer {
@@ -338,16 +349,33 @@
     border: 1px solid #cacaca;
     display: flex;
     flex-direction: column;
-    height: 25rem;
+    height: 30rem;
     width: 30rem;
     z-index: 2;
-    overflow: hidden;
+    // overflow: hidden;
     box-sizing: border-box;
     align-items: flex-start;
     justify-content: space-between;
     margin: auto;
 }
-
+.viewMoreDetails
+{
+    text-align: center;
+    margin-top: 3rem;
+    width: 12rem;
+    color: rgb(255, 255, 255);
+    background-color: #0e0e0e;
+    border: white 1px solid;
+    cursor: pointer;
+    padding: 12px;
+    align-self: flex-end;
+    margin-left: 55%;
+}
+.viewMoreDetails:hover{
+    background-color: #ffffff;
+    border: rgb(0, 0, 0) 1px solid;
+    color: #000000;
+}
 .PkgContainer {
     margin-top: 40px;
     text-align: center;
@@ -357,7 +385,7 @@
     height: 18rem;
     z-index: 2;
     // position: relative;
-    overflow: hidden;
+    // overflow: hidden;
     box-sizing: border-box;
     align-items: flex-start;
     justify-content: space-between;
@@ -389,7 +417,7 @@
 
 .roomImageContainer {
     width: 100%;
-    height: 60%;
+    height: 50%;
     // max-width: 28rem;
     // height: auto;
     // object-fit: cover;
@@ -427,6 +455,19 @@
     // background-color: rebeccapurple;
 }
 
+.RoomTitleAndDesc-ar {
+    width: 90%;
+    letter-spacing: 0.35mm;
+    // margin-left: 2rem;
+    margin: auto;
+    font-weight: bold;
+    height: 50%;
+    margin-top: 0;
+    // overflow: auto;
+    text-align: right;
+    // background-color: rebeccapurple;
+}
+
 .RoomDescription {
 
     font-size: 1.6ex;
@@ -434,6 +475,19 @@
     color: #000000;
     text-align: left;
     font-weight: 300;
+    
+}
+
+.RoomDescription-ar {
+    direction: rtl;
+    font-size: 1.6ex;
+    padding-top: 1rem;
+    color: #000000;
+    text-align: left;
+    font-weight: 300;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .PackageDescriptionEN{
@@ -510,22 +564,13 @@
 
 // RoomSearch.module.scss
 
-.viewMoreDetails
-{
-    text-align: left;
-    margin-top: 5rem;
-    width: 10rem;
-    color: white;
-    text-decoration: underline;
-    cursor: pointer;
-}
 
 
 .optionsContainer {
     display: none; // Default to hidden
     transition: opacity 0.3s ease; 
     opacity: 0; // Start with an opacity of 0
-    width: 90%;
+    width: 30rem;
     margin: auto;
     padding-bottom: 5rem;
 }
@@ -539,11 +584,10 @@
 
 .option {
     padding: 20px; // Some padding for the options
-    padding-left: 100px;
-    border: 1px solid #ceb780; // Example border for options
+    padding-left: 40px;
+    border: 1px solid #cacaca;
     border-top: 0;
     height: 10rem;
-    background-color: #0e0e0e;
     font-family: 'Segoe UI', sans-serif;
     font-weight: 200;
     z-index: 5;
@@ -662,6 +706,14 @@
     display: flex;
     margin-bottom: 0.5rem;
     font-size: x-small;
+}
+
+.OptionElement-ar {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 5px 0;
 }
 
 .spinnerContainer {
@@ -790,7 +842,7 @@
         flex-direction: column;
         height: auto;
         z-index: 2;
-        overflow: hidden;
+        // overflow: hidden;
         box-sizing: border-box;
         align-items: flex-start;
         justify-content: space-between;
@@ -1253,4 +1305,9 @@
         height: 100%;
         width: 100%;
     }
+}
+
+.viewMoreDetails-ar {
+  align-self: flex-start;
+  margin-right: auto;
 }

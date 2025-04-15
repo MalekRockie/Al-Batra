@@ -72,6 +72,7 @@ const RoomSearch = () => {
   const navClass = locale === "ar" ? homeStyle['nav-ar'] : homeStyle.nav;
   const langSwitcherClass = locale === "ar" ? homeStyle['langSwitcherContainer-ar'] : homeStyle.langSwitcherContainer;
   const Container2Class = locale === "ar" ? RoomSearchModule['Container2-ar'] : RoomSearchModule.Container2;
+  const titleMobileClass = locale === "ar" ? homeStyle['titleMobile-ar'] : homeStyle['titleMobile'];
 
   useEffect (() => 
     {
@@ -304,7 +305,7 @@ const RoomSearch = () => {
 
       setIsLoading(true);
       const response = await fetch(
-        `http://localhost:8080/room/availableRoomTypes?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`
+        `http://localhost:8080/public/room/availableRoomTypes?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`
       );
       const data = await response.json();
       console.log('Fetched room types:', data);
@@ -460,7 +461,7 @@ const RoomSearch = () => {
 
 
   return (
-    <div>
+    <div className={RoomSearchModule.main}>
       
       
       <title>{t('HomePage.roomSearchTitle')}</title>
@@ -500,6 +501,8 @@ const RoomSearch = () => {
 
               {/* Navigation Links */}
               <nav className={`${navClass}`}>
+                <img src="../../logo.jpg" className={homeStyle.logoMobileNav} alt="Al-Batra Hotel Logo"/>
+                <div className={titleMobileClass}>{t('HomePage.title')}</div>
                 <Link href={`/${locale}`}>{t('NavigationBar.Home')}</Link>
                 <a href="">{t('NavigationBar.Rooms')}</a>
                 <a href="">{t('NavigationBar.Dinning')}</a>
@@ -754,7 +757,7 @@ const RoomSearch = () => {
       </div>
 
       {/* Rooms Section */}
-      {!isLoading && (
+      {!isLoading && roomType.length > 0 && (
         <div className={RoomSearchModule.Container1}>
           <div className={Container2Class}>{t("RoomSearch.OurAccommodations")}</div>
         </div>
@@ -860,7 +863,7 @@ const RoomSearch = () => {
               </div>
             ))
           ) : (
-            <div>No rooms available for the selected dates.</div>
+            <div className={RoomSearchModule.noAvailability}>No rooms available for the selected dates.</div>
           )}
         </div>
         )}

@@ -1,6 +1,6 @@
 // ImageSpinner.module.scss
 .spinnerContainer {
-    margin-top: 6rem;
+    margin-top: 12rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,6 +31,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    filter: invert(100%);
+
     // width: var(--image-size);
     // height: var(--image-size);
     // border-radius: 50%;

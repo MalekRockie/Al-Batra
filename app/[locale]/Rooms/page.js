@@ -64,6 +64,8 @@ const Rooms = () => {
   const navClass = locale === "ar" ? homeStyle['nav-ar'] : homeStyle.nav;
   const Container2Class = locale === "ar" ? RoomsModule['Container2-ar'] : RoomsModule.Container2;
   const titleMobileClass = locale === "ar" ? homeStyle['titleMobile-ar'] : homeStyle['titleMobile'];
+  const RoomTitleAndDescClass = locale === "ar" ? RoomsModule['RoomTitleAndDesc-ar'] : RoomsModule.RoomTitleAndDesc;
+  const RoomDescriptionClass = locale === "ar" ? RoomsModule['RoomDescription-ar'] : RoomsModule.RoomDescription;
 
   useEffect (() => 
     {
@@ -184,7 +186,7 @@ const Rooms = () => {
       console.log("Trying");
       setIsLoading(true);
       const response = await fetch(
-        `http://localhost:8080/room/getAllRoomTypes`
+        `http://localhost:8080/public/room/getAllRoomTypes`
       );
       const data = await response.json();
       console.log('Fetched room types:', data);
@@ -260,7 +262,6 @@ const Rooms = () => {
               <div className={titleMobileClass}>{t('HomePage.title')}</div>
               <Link href={`/${locale}`}>{t('NavigationBar.Home')}</Link>
               <a href={`/${locale}/Rooms`}>{t('NavigationBar.Rooms')}</a>
-              <a href="">{t('NavigationBar.Dinning')}</a>
               <a href="" onClick={(e) => {
                 toggleBookingSection();
                 e.preventDefault();
@@ -381,24 +382,24 @@ const Rooms = () => {
                       />
                     </div>
                     <div className={RoomsModule.RoomCardContainerRightside}>
-                      <div className={RoomsModule.RoomTitleAndDesc}>
+                      <div className={RoomTitleAndDescClass}>
                         {room[`typeName_${locale}`]}
-                        <div className={RoomsModule.RoomDescription}>
+                        <div className={RoomDescriptionClass}>
                             <div className={RoomsModule.OptionElement}>
                                 <img className={RoomsModule.OptionIcon} src="../bed_icon.png" />
-                                  {room.bedConfiguration_en}
+                                  {room[`bedConfiguration_${locale}`]}
                               </div>
                               <div className={RoomsModule.OptionElement}>
                                 <img className={RoomsModule.OptionIcon} src="../occupants.png" />
-                                {room.occupancy_en}
+                                {room[`occupancy_${locale}`]}
                               </div>
                               <div className={RoomsModule.OptionElement}>
                                 <img className={RoomsModule.OptionIcon} src="../wifi_icon.png" />
                                 High internet speed wifi
                             </div>
-                          <div className={RoomsModule.viewMoreDetails} onClick={()=> {toggleOptions(index, room)}}>
+                          <button className={RoomsModule.viewMoreDetails} onClick={()=> {toggleOptions(index, room)}}>
                             View More details
-                          </div>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -411,29 +412,14 @@ const Rooms = () => {
                     }`}
                   >
                     <div className={RoomsModule.option}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div className={RoomsModule.optionTitle}>
-                          <div className={RoomsModule.LeftSide}>
-                            <div className={RoomsModule.OptionElement}>
-                              <img className={RoomsModule.OptionIcon} src="../bed_icon.png" />
-                                {room.bedConfiguration_en}
-                            </div>
-                            <div className={RoomsModule.OptionElement}>
-                              <img className={RoomsModule.OptionIcon} src="../occupants.png" />
-                              {room.occupancy_en}
-                            </div>
-                            <div className={RoomsModule.OptionElement}>
-                              <img className={RoomsModule.OptionIcon} src="../wifi_icon.png" />
-                              High internet speed wifi
-                            </div>
-                          </div>
+                        <div className={RoomsModule.RoomDescription}>
+                        {room[`description_${locale}`]}
                           <div className={RoomsModule.RightSide}>
 
                           </div>
                           {/* Our rooms offer comfort and convenience with modern décor, plush bedding, flat-screen TV, Wi-Fi, and spacious work desk. Private bathrooms feature rainfall showers and premium toiletries for a relaxing stay. */}
                           
                           </div>
-                      </div>
                     </div>
                   </div>
                 )}
@@ -442,10 +428,16 @@ const Rooms = () => {
               </div>
             ))
           ) : (
-            <div>No rooms available for the selected dates.</div>
+            <div></div>
           )}
         </div>
         )}
+
+        {roomType.length <= 0 && (
+            <div className={RoomsModule.noAvailability}>No rooms available for the selected dates.</div>
+          
+        )}
+
         {AvailablePackages.map((pkg, index) => (
           <div key={index}>
             {PackageSelection == false && (
