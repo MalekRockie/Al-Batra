@@ -145,7 +145,24 @@
     "lookForward": "We look forward to your stay! Please check your emails for more details",
     "reservationId": "Your reservation ID is: ",
     "reservationDetails": "Reservation Details:"
+  },
+  "ReservationRetrieval": {
+    "pageTitle": "Retrieve My Reservation",
+    "byConfirmation": "BY CONFIRMATION NUMBER",
+    "noResults": "No booking found with your provided details",
+    "lastName": "Last Name *",
+    "referenceCode": "Reference Code *",
+    "searchButton": "SEARCH",
+    "nameOnReservation": "Name On Reservation",
+    "roomType": "Room Type",
+    "nights": "Night(s)",
+    "dates": "Dates",
+    "adults": "Adult",
+    "children": "Children"
+  },
+  "BookingBar": {
+    "checkInOut": "CHECK IN - CHECK OUT",
+    "roomSize": "ROOM SIZE",
+    "checkRates": "CHECK RATES"
   }
-
-
 }

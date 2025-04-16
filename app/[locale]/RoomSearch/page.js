@@ -323,7 +323,7 @@ const RoomSearch = () => {
     {
       setIsLoading(true);
       const response = await fetch(
-        `http://localhost:8080/PackagePlan/GetAvailablePackages`
+        `http://localhost:8080/public/GetAvailablePackages`
       );
       const data = await response.json();
       console.log("Fetched available Package plans: ", data);

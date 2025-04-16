@@ -144,5 +144,24 @@
     "Month": "الشهر",
     "Year": "السنة",
     "CVV": "CVV"
+  },
+  "ReservationRetrieval": {
+    "pageTitle": "استرجاع الحجز",
+    "byConfirmation": "عن طريق رقم التأكيد",
+    "noResults": "لم يتم العثور على حجز بالتفاصيل المقدمة",
+    "lastName": "* اسم العائلة",
+    "referenceCode": "* رقم المرجع",
+    "searchButton": "بحث",
+    "nameOnReservation": "الاسم في الحجز",
+    "roomType": "نوع الغرفة",
+    "nights": "ليلة",
+    "dates": "التواريخ",
+    "adults": "بالغ",
+    "children": "أطفال"
+  },
+  "BookingBar": {
+    "checkInOut": "تسجيل الدخول - تسجيل الخروج",
+    "roomSize": "حجم الغرفة",
+    "checkRates": "التحقق من الأسعار"
   }
 }

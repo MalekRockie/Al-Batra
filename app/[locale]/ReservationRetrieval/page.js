@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Head from 'next/head';
 import { Box } from '@mui/material';
 import Link from 'next/link';
@@ -8,17 +8,19 @@ import styles from '../../../scss/Home.module.scss';
 import CustomDateRangePicker from '../components/CustomDateRangePicker';
 import RoomTypeSelection from '../components/RoomTypeSelection';
 import ReservationRetrievalModule from '../../../scss/ReservationRetrieval.module.scss'
+import CustomerLocaleSwitcher from '../../../components/customerLocaleSwitcher.tsx'
+
 import {useLocale, useTranslations} from 'next-intl';
 
 
 
 const ReservationRetrieval = () => {
-
+const t = useTranslations();
 
 const from = new Date();
 const to = new Date();
 to.setDate(from.getDate() + 1);
-
+const locale = useLocale();
 const [isScrolledToMax, setIsScrolledToMax] = useState(false);
 const [isBookingVisible, setIsBookingVisible] = useState(false);
 const [selectedDates, setSelectedDates] = useState([from, to]);
@@ -29,8 +31,24 @@ const [reservationData , setReservationData] = useState(null);
 const [noResults, setNoResults] = useState(false);
 const [isLoading, setIsLoading] = useState(false);
 const [error, setError] = useState(null);
+const [isMenuOpen, setIsMenuOpen] = useState(false);
+const containerRef = useRef(null);
 
-  const locale = useLocale();
+  const navClass = locale === "ar" ? styles['nav-ar'] : styles.nav;
+  const navLogoTitleClass = locale === "ar" ? styles['logoTitleNav-ar'] : styles.logoTitleNav;
+  const titleNavClass = locale === "ar" ? styles['titleNav-ar'] : styles.titleNav; 
+  const titleClass = locale === "ar" ? styles['title-ar'] : styles.title; 
+  const logoClass = locale === "ar" ? styles['logo-ar'] : styles.logo; 
+  const headerClass = locale === "ar" ? styles['header-ar'] : styles.header;
+  const langSwitcherClass = locale === "ar" ? styles['langSwitcherContainer-ar'] : styles.langSwitcherContainer;
+  const bookingTitle = locale === "ar" ? styles['bookingTitle-ar'] : styles.bookingTitle;
+  const hotelDetailsText = locale === "ar" ? styles['hotelDetailsText-ar'] : styles.hotelDetailsText;
+  const closeIconClass = locale === "ar" ? styles['close-icon-ar'] : styles['close-icon'];
+//.hamburger
+  const hamburgerClass = locale === "ar" ? styles['hamburger-ar'] : styles['hamburger'];
+  const bookingTitleClass = locale === "ar" ? styles['bookingTitle-ar'] : bookingTitle['bookingTitle'];
+  const titleMobileClass = locale === "ar" ? styles['titleMobile-ar'] : styles['titleMobile'];
+
 
 const handleDateRangeChange = (dates) => {
     setSelectedDates(dates);
@@ -40,6 +58,10 @@ const toggleBookingSection = () => {
     setIsBookingVisible(!isBookingVisible);
 };
 
+    const toggleMenu = () => {
+    // setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen((prevState) => !prevState);
+    }
 const handleSearch = () => {
     console.log("Selected Dates: ", selectedDates);
     console.log("Room: ", selectedRooms);
@@ -137,52 +159,79 @@ return (
         </Head>
 
         {/* Nav bar */}
-        <header className={`${styles.header} ${isScrolledToMax && !isMouseOver ? styles.gradient : styles.solid}`}>
-        <div className={styles.logoTitleNav}>
-            <img src="../logo.png" alt="Al-Batra Hotel Logo" className={styles.logo} />
-            <div className={styles.titleNav}>
-            <h1 className={styles.title}>AL-BATRA HOTEL</h1>
-            <nav className={styles.nav}>
-                <Link href={`/${locale}`}>Home</Link>
-                <a href="">ROOMS</a>
-                <a href="">DINING</a>
-                <a href="" onClick={(e) => {
-                toggleBookingSection();
-                e.preventDefault();
-                }}>BOOKING</a>
-                <a href="/ReservationRetrieval">MY RESERVATION</a>
-            </nav>
+        <header className={`${headerClass} ${isMenuOpen ? styles.active : ''}${isScrolledToMax && !isMouseOver ? styles.gradient : styles.solid}`}>
+
+            <div className={hamburgerClass} onClick={toggleMenu}>
+                <div className={styles.lines}></div>
+                <div className={styles.lines}></div>
+                <div className={styles.lines}></div>
             </div>
-        </div>
+            <img src="../logo.png" alt="Al-Batra Hotel Logo" className={logoClass} />
+
+            <div
+            ref={containerRef}
+            className={`${navLogoTitleClass} ${isMenuOpen ? styles.active : ''}`}>
+
+              
+                <div className={closeIconClass} onClick={toggleMenu}>
+                    <div className={styles.line1}></div>
+                    <div className={styles.line2}></div>
+                </div>
+
+              {/* <img src="logo.png" alt="Al-Batra Hotel Logo" className={logoClass} /> */}
+              {/* Hamburger Icon */}
+
+              <div className={titleNavClass}>
+              <h1 className={titleClass}>{t('HomePage.title')}</h1>
+
+                {/* Navigation Links */}
+                <nav className={`${navClass}`}>
+                    <img src="../logo.png" className={styles.logoMobileNav} alt="Al-Batra Hotel Logo"/>
+                    <div className={titleMobileClass}>{t('HomePage.title')}</div>
+                    <Link href={`/${locale}`}>{t('NavigationBar.Home')}</Link>
+                    <a href={`/${locale}/Rooms`}>{t('NavigationBar.Rooms')}</a>
+                    <a href="" onClick={(e) => {
+                    toggleBookingSection();
+                    e.preventDefault();
+                    }}>{t('NavigationBar.Booking')}</a>
+                    <a href={`/${locale}/ReservationRetrieval`}>{t('NavigationBar.MyReservation')}</a>
+                </nav>
+                </div>
+              {/* Language Switcher */}
+                <div className={langSwitcherClass}>
+                <CustomerLocaleSwitcher />
+                </div>
+            </div>
+
         </header>
 
         <div className={`${styles.bookingBar} ${isBookingVisible ? styles.visible : styles.hidden}`}>
         <section id="booking" className={styles.bookingSection}>
             <Box className={styles.bookingContainer}>
             <div className={styles.datePickerContainer}>
-                <div className={styles.bookingTitle}>CHECK IN - CHECK OUT</div>
+                <div className={styles.bookingTitle}>{t('BookingBar.checkInOut')}</div>
                 <CustomDateRangePicker
-                              selectedDates={selectedDates}
-                              setSelectedDates={setSelectedDates}
+                    selectedDates={selectedDates}
+                    setSelectedDates={setSelectedDates}
                             />            </div>
             <div className={styles.roomTypeContainer}>
-                <div className={styles.bookingTitle}>ROOM SIZE</div>
+                <div className={styles.bookingTitle}>{t('BookingBar.roomSize')}</div>
                 <RoomTypeSelection
                     selectedRooms={selectedRooms}
                     setSelectedRooms={setSelectedRooms}
                 />
                 </div>
             <button className={styles.searchButton} onClick={handleSearch}>
-                CHECK RATES
+                {t('BookingBar.checkRates')}
             </button>
             </Box>
         </section>
         </div>
 
         <div className={ReservationRetrievalModule.PageContainer}>
-            Retrieve My Reservation
+            {t('ReservationRetrieval.pageTitle')}
             <div className={ReservationRetrievalModule.PageContainerThinnerLabel}>
-                BY CONFIRMATION NUMBER
+                {t('ReservationRetrieval.byConfirmation')}
             </div>
         </div>
         {/* Search box */}
@@ -191,12 +240,12 @@ return (
                 <div className={ReservationRetrievalModule.SearchContainer}>
                     {noResults && (
                     <div className={ReservationRetrievalModule.NoResultsContainer}>
-                        No booking found with your provided details
+                        {t('ReservationRetrieval.noResults')}
                     </div>
                     )}
                     <div className={ReservationRetrievalModule.InputSections}>
                         <div className={ReservationRetrievalModule.InputSectionsInner}>
-                            Last Name *
+                            {t('ReservationRetrieval.lastName')}
                             <input 
                             name="lastname"
                             onChange={(e) => setCustomerLastName(e.target.value)}
@@ -206,13 +255,13 @@ return (
                         name="referenceCode"
                         onChange={(e) => setReferenceCode(e.target.value)}
                         className={ReservationRetrievalModule.InputSectionsInner}>
-                            Reference Code *
+                            {t('ReservationRetrieval.referenceCode')}
                             <input className={ReservationRetrievalModule.inputBox}/>
                         </div>
                     </div>
                     <div className={ReservationRetrievalModule.ButtonContainer}>
                         <button className={ReservationRetrievalModule.button} onClick={HandleReservationLookUp}>
-                            SEARCH
+                            {t('ReservationRetrieval.searchButton')}
                         </button>
                     </div>
                 </div>
@@ -229,21 +278,21 @@ return (
 
                     <div className={ReservationRetrievalModule.MyReservationContainerRightHalf}>
                         <div className={ReservationRetrievalModule.MyReservationContainerRightHalfMinorLabel}>
-                            Name On Reservation
+                            {t('ReservationRetrieval.nameOnReservation')}
                         </div>
                         <div className={ReservationRetrievalModule.MyReservationContainerRightHalfLabel}>
                             {/* Correcting the dynamic data rendering */}
                             {reservation.first_name} {reservation.last_name}
                         </div>
                         <div>
-                            Room Type: {reservation.roomTypeName}
+                            {t('ReservationRetrieval.roomType')}: {reservation.roomTypeName}
                         </div>
                         <div className={ReservationRetrievalModule.MyReservationContainerRightHalfDetails}>
-                            <div>1 Adult | 3 Children</div>
-                            <div>Night(s): {calculateNights(reservation.CheckInDate, reservation.CheckOutDate)}</div> {/* Assuming you have 'nights' field */}
+                            <div>{reservation.adults} {t('ReservationRetrieval.adults')} | {reservation.children} {t('ReservationRetrieval.children')}</div>
+                            <div>{t('ReservationRetrieval.nights')}: {calculateNights(reservation.CheckInDate, reservation.CheckOutDate)}</div> {/* Assuming you have 'nights' field */}
                         </div>
                         <div className={ReservationRetrievalModule.MyReservationContainerRightHalfDetails}>
-                            Dates: {reservation.CheckInDate} - {reservation.CheckOutDate} {/* Assuming you have 'startDate' and 'endDate' */}
+                            {t('ReservationRetrieval.dates')}: {reservation.CheckInDate} - {reservation.CheckOutDate} {/* Assuming you have 'startDate' and 'endDate' */}
                         </div>
                     </div>
                 </div>
