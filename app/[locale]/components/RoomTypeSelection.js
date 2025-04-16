@@ -38,11 +38,6 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
-  // Optional: Log state updates
-  useEffect(() => {
-    console.log("isMobile state:", isMobile);
-  }, [isMobile]);
-
   const handleRoomUpdate = (newRooms) => {
     setSelectedRooms(newRooms);
     if (onRoomTypeChange)
@@ -57,7 +52,6 @@ const RoomTypeSelection = ({ selectedRooms, setSelectedRooms }) => {
 
   useEffect(() => {
     function handleClickOutside(event) {
-      console.log("clicked", isMobileRef.current);
       if (
         popupRef.current &&
         !popupRef.current.contains(event.target) &&
