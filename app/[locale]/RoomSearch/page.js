@@ -11,6 +11,8 @@ import {useLocale, useTranslations} from 'next-intl';
 import Link from 'next/link';
 import CustomerLocaleSwitcher from '../../../components/customerLocaleSwitcher.tsx'
 import LoadingSpinner from '../components/LoadingSpinner';
+import { roomService } from '../../../services/api/roomService';
+import {packageService} from '../../../services/api/packageService';
 
 
 
@@ -97,14 +99,11 @@ const RoomSearch = () => {
       let totalChildrenCalc = 0;
       for (const rooms of selectedRooms)
         {
-          // console.log(rooms.adults);
           totalAdultsCalc += rooms.adults;
           totalChildrenCalc += rooms.children;
         }
         setTotalAdults(totalAdultsCalc);
         setTotalChildren(totalChildrenCalc);
-        // console.log("Total Adults here is: ", totalAdults);
-        // console.log("Total children here is: ", totalChildren);
     }, [selectedRooms, totalAdults, totalChildren])
 
   useEffect(() => {
@@ -135,7 +134,6 @@ const RoomSearch = () => {
 
   // Recalculate total cost whenever selectedRooms changes
   useEffect(() => {
-    // console.log("Selected dates: ", selectedDates[0], selectedDates[1]);
     // Calculate the total cost when selectedRooms changes
     if (selectedRooms == null) return;
     if(selectedRooms != null)
@@ -189,7 +187,6 @@ const RoomSearch = () => {
         try {
           const parsedDates = JSON.parse(selectedDatesParams);
           const dateObjects = parsedDates.map(date => new Date(date)); // Convert strings to Date objects
-          console.log("Parsed dates: ", dateObjects);
           return dateObjects; // Set state with Date objects
         } catch (e) {
           console.error('Error parsing selectedDates:', e);
@@ -218,8 +215,6 @@ const RoomSearch = () => {
         roomType: roomTypePicked, // Set the selected package type
         roomPrice: room_Price
       };
-      console.log("Room: ", roomIndex ,"Selected Room: ", selectedRooms[roomIndex]);
-      console.log("Selected Room: ", selectedRooms);
       setPackageSelection(false);
       return updatedRooms;
     });
@@ -249,14 +244,7 @@ const RoomSearch = () => {
     };
     setSelectedRooms(updatedRooms);
     setPackageSelection(true);
-    console.log("Selected Room: ", selectedRooms);
 
-    updatedRooms.forEach((room, roomIndex) => 
-    {
-      // console.log("Total cost: ", totalCostEstimate);
-      // console.log("Room: ", roomIndex, "'s price: ", room.roomPrice);
-      // console.log("Room: ", roomIndex, "'s Package price: ", room.package_Price, "and ", packagePrice);
-    });
     if(activeSelectedRoomIndex === selectedRooms.length - 1)
       {
         // setTotalCostEstimate(0);
@@ -271,8 +259,6 @@ const RoomSearch = () => {
 
   const handleProceedingToNextPage = () =>
     {
-      // console.log(selectedRooms[0]);
-      // console.log(roomType);
       const selectedRoomsString = JSON.stringify(selectedRooms);
       const roomTypeStrings = JSON.stringify(roomType);
       const params = new URLSearchParams({
@@ -304,12 +290,8 @@ const RoomSearch = () => {
     try {
 
       setIsLoading(true);
-      const response = await fetch(
-        `http://localhost:8080/public/room/availableRoomTypes?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`
-      );
-      const data = await response.json();
-      console.log('Fetched room types:', data);
-      setRoomType(data); // Set the fetched room types in the state
+      const data = await roomService.getAvailableRoomTypes(checkInDate, checkOutDate);
+      setRoomType(data);
     } catch (error) {
       console.error('Error fetching room types:', error);
     } finally 
@@ -322,11 +304,7 @@ const RoomSearch = () => {
     try 
     {
       setIsLoading(true);
-      const response = await fetch(
-        `http://localhost:8080/public/GetAvailablePackages`
-      );
-      const data = await response.json();
-      console.log("Fetched available Package plans: ", data);
+      const data = await packageService.getAvailablePackages();
       setAvailablePackages(data);
     }
     catch(error)
@@ -415,8 +393,6 @@ const RoomSearch = () => {
   }
 
   const getPackageNameByID = (package_ID) => {
-    console.log("reached", package_ID);
-    console.log("compated to: ", AvailablePackages);
     const pkgID = AvailablePackages.find((type) => type.package_ID === package_ID);
 
     if (AvailablePackages){
