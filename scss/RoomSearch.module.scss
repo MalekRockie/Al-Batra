@@ -1297,3 +1297,23 @@
         width: 100%;
     }
 }
+
+.nightsInfo {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+.costDisplay {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.nightsCount {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: normal;
+}

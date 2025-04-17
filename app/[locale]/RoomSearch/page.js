@@ -481,7 +481,6 @@ const RoomSearch = () => {
                 <div className={titleMobileClass}>{t('HomePage.title')}</div>
                 <Link href={`/${locale}`}>{t('NavigationBar.Home')}</Link>
                 <a href="">{t('NavigationBar.Rooms')}</a>
-                <a href="">{t('NavigationBar.Dinning')}</a>
                 <a href="" onClick={(e) => {
                   toggleBookingSection();
                   e.preventDefault();
@@ -489,6 +488,7 @@ const RoomSearch = () => {
                 <a href={`/${locale}/ReservationRetrieval`}>{t('NavigationBar.MyReservation')}</a>
               </nav>
             </div>
+
           </div>
 
       </header>
@@ -896,19 +896,23 @@ const RoomSearch = () => {
         {/* Proceed to the next page box */}
         <div className={`${RoomSearchModule.proceedBox} ${isRoomSelectionComplete ? RoomSearchModule.visible : RoomSearchModule.hidden}`}>
           <div className={RoomSearchModule.proceedInfoContainer}>
-              <div className={RoomSearchModule.proceedBoxDescCost}>
-                <div className={RoomSearchModule.proceedBoxDesc}>
-                  Estimate cost
-                </div>
+            <div className={RoomSearchModule.proceedBoxDescCost}>
+              <div className={RoomSearchModule.proceedBoxDesc}>
+                Estimate cost
+              </div>
+              <div className={RoomSearchModule.costDisplay}>
                 ${totalCostEstimate.toFixed(2)}
+                <span className={RoomSearchModule.nightsCount}>
+                  ({calculateNights(selectedDates[0], selectedDates[1])} {t("RoomSearch.nights")})
+                </span>
               </div>
-              <div className={RoomSearchModule.proceedBoxButtonContainer}>
-                <button className={RoomSearchModule.proceedBoxButton} onClick={()=>((handleProceedingToNextPage()))}>
-                    Continue
-                </button>
-              </div>
+            </div>
+            <div className={RoomSearchModule.proceedBoxButtonContainer}>
+              <button className={RoomSearchModule.proceedBoxButton} onClick={()=>((handleProceedingToNextPage()))}>
+                Continue
+              </button>
+            </div>
           </div>
-
         </div>
       </div>
 

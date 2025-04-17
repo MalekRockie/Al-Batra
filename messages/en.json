@@ -101,7 +101,8 @@
   "RoomSearch":
   {
     "navBarTitle": "CHOOSE YOUR ROOM",
-    "OurAccommodations": "OUR ACCOMMODATIONS"
+    "OurAccommodations": "OUR ACCOMMODATIONS",
+    "nights": "nights"
   },
   "CustomerPage":
   {
